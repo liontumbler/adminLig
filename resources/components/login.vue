@@ -62,7 +62,7 @@
 <script>
 import { RecaptchaV2 } from '../js/libs/RecaptchaV2/recaptchaV2.js';
 import { ApiService } from "../services/services.js";
-import inputp from "../../resources/components/controls/input.vue";
+import inputp from "../components/controls/input.vue";
 
 export default {
     name: 'login',
