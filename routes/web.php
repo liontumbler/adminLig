@@ -16,9 +16,11 @@ use App\Http\Controllers\LoginController;
 */
 
 Route::get('/', [PaginaController::class, 'index'])->name('principal');
-Route::get('/login', [LoginController::class, 'index'])->name('loginView');
+Route::get('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginAdmin');
+Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->name('loginTrabajador');
 
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
 
-Route::post('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginAdmin');
+Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm');
+Route::post('/loginTra', [LoginController::class, 'loginTra'])->name('loginTra');
 

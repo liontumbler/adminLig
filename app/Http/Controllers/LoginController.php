@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Gimnasio;
+
 class LoginController extends Controller
 {
     /*protected ILoginService $loginService;
@@ -14,9 +16,14 @@ class LoginController extends Controller
         $this->loginService=$loginService;
     }*/
 
-    public function index()
+    public function loginAdmin()
     {
-        return view('login');
+        return view('loginAdmin');
+    }
+
+    public function loginTrabajador()
+    {
+        return view('loginTrabajador');
     }
 
     public function recaptcha(Request $request) {
@@ -30,7 +37,7 @@ class LoginController extends Controller
         return $response;
     }
 
-    public function loginAdmin(Request $request) {
+    public function loginAdm(Request $request) {
 
         $validator = Validator::make($request->all(), [
             'nickname' => 'required|string|max:50|min:1',
@@ -43,10 +50,11 @@ class LoginController extends Controller
             ]);
         }
 
-        return 'edwin';
+        $gimnasio = new Gimnasio();
+        return $gimnasio->login($request->all());;
     }
 
-    public function logout(Request $request) {
+    public function loginAdmOut(Request $request) {
 
         $variableValid = $request->validate([
             'nickname' => 'required|string|max:50|min:1',

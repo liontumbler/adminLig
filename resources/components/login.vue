@@ -7,15 +7,45 @@
                 </div>
                 <div class="col-lg-12 mb-1">
                     <label for="nickname" class="form-label">Nickname *</label>
-                    <input type="text" class="form-control" id="nickname" ref="nickname" placeholder="Digite la nickname del trabajador" required minlength="1" maxlength="50" textarroba>
+                    <input-component
+                        ref="nickname"
+                        :id="'nickname'"
+                        :type="'text'"
+                        :value="''"
+                        :minlength="1"
+                        :maxlength="50"
+                        :required="true"
+                        :textarroba="true"
+                        :placeholder="'Digite la nickname del trabajador'"
+                    ></input-component>
                 </div>
                 <div class="col-lg-6 mb-1">
                     <label for="clave" class="form-label">Clave *</label>
-                    <input type="password" class="form-control" id="clave" ref="clave" placeholder="Digite la clave del trabajador" required minlength="1" maxlength="50">
+                    <input-component
+                        ref="clave"
+                        :id="'clave'"
+                        :type="'password'"
+                        :value="''"
+                        :minlength="1"
+                        :maxlength="50"
+                        :required="true"
+                        :placeholder="'Digite la clave del trabajador'"
+                    ></input-component>
                 </div>
                 <div class="col-lg-6 mb-2" v-if="login == 'trabajador'">
                     <label for="caja" class="form-label">Caja *</label>
-                    <input type="number" class="form-control" id="caja" ref="caja" placeholder="Digite el monto del efectivo" required max="1000000" min="0" value="0">
+                    <input-component
+                        ref="caja"
+                        :id="'caja'"
+                        :type="'number'"
+                        :value="'0'"
+                        :minlength="1"
+                        :maxlength="50"
+                        :min="0"
+                        :max="1000000"
+                        :required="true"
+                        :placeholder="'Digite el monto del efectivo'"
+                    ></input-component>
                 </div>
                 <div class="col-lg-12 mb-1">
                     <div id="recaptcha"></div>
@@ -32,9 +62,13 @@
 <script>
 import { RecaptchaV2 } from '../js/libs/RecaptchaV2/recaptchaV2.js';
 import { ApiService } from "../services/services.js";
+import inputp from "../../resources/components/controls/input.vue";
 
 export default {
     name: 'login',
+    components: {
+        "input-component": inputp,
+    },
     props: {
         login: {
             type: String,
@@ -53,6 +87,7 @@ export default {
     methods: {
         trabajar(e) {
             this.recapchav2.validarRV2S(async (valid) => {
+                console.log(this.$refs.nickname.$refs, 'ref');
                 let validCampos = false;
                 let urlLogin = 'loginAdmin';
                 if (this.login == 'trabajador') {
@@ -85,7 +120,12 @@ export default {
         },
         validarCampos(arrayCampos) {
             for (let i = 0; i < arrayCampos.length; i++) {
-                let campo = arrayCampos[i]
+                let ref = arrayCampos[i]
+                let campo = ''
+                for (const e in arrayCampos[i].$refs) {
+                    campo = arrayCampos[i].$refs[e];
+                }
+                console.log(campo, ref.textarroba);
 
                 if (!campo.value && campo.required) {
                     campo.setCustomValidity(campo.validationMessage);
@@ -117,6 +157,36 @@ export default {
                         return campo;
                     }
                 }
+
+                if (campo.type == 'password') {
+                    if (campo.value.length < 8) {
+                        campo.setCustomValidity('la password es menor a 8 caracteres');
+                        campo.focus();
+                        if (campo.select)
+                            campo.select();
+
+                        return campo;
+                    }
+
+                    const lowercaseCount = (campo.value.match(/[a-z]/g) || []).length;
+                    const uppercaseCount = (campo.value.match(/[A-Z]/g) || []).length;
+                    const numberCount = (campo.value.match(/[0-9]/g) || []).length;
+                    const specialCharCount = (campo.value.match(/[^a-zA-Z0-9 ]/g) || []).length;
+                    if (
+                        lowercaseCount < 2 ||
+                        uppercaseCount < 2 ||
+                        numberCount < 2 ||
+                        specialCharCount < 2
+                    ) {
+                        campo.setCustomValidity('la password debe tener 2 mayusculas, 2 minusculas, 2 numeros, 2 caracteres especiales no importa el orden');
+                        campo.focus();
+                        if (campo.select)
+                            campo.select();
+
+                        return campo;
+                    }
+                }
+
                 console.log('uno');
                 if(campo.type == 'text' || campo.type == 'number' || campo.type == 'password'){
                     if(campo.value && campo.getAttribute('maxlength') && parseInt(campo.value.length) > parseInt(campo.getAttribute('maxlength'))){
@@ -151,16 +221,17 @@ export default {
                     }
                 }
                 console.log('tres');
-                /*console.log(campo.validity.valid, campo.checkValidity(), (!(campo.validity.valid && campo.checkValidity())));
-                if (!(campo.validity.valid && campo.checkValidity())) {
-                    console.log(campo.validationMessage, 'error', campo.value);
-                    campo.setCustomValidity(campo.validationMessage);
-                    campo.focus();
-                    if (campo.select)
+
+                if (ref.textarroba) {
+                    if (!campo.value.includes('@')) {
+                        campo.setCustomValidity('debe tener minimo un @');
+                        campo.focus();
+                        if (campo.select)
                             campo.select();
 
-                    return campo;
-                }*/
+                        return campo;
+                    }
+                }
 
                 console.log('cuatro');
             }
