@@ -1,14 +1,25 @@
 <?php
 namespace App\DB;
+
 use App\DB\Database;
 
-class ConsultasDB extends Database
+class ConsultasDB
 {
+    private $cn;
     public function __construct()
     {
-        date_default_timezone_set("America/Bogota");
-        parent::__construct(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
+        //date_default_timezone_set("America/Bogota");
+        //parent::__construct(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
+        $this->cn = new Database(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
     }
+
+    public function test()// definitivo
+    {
+
+        return $this->cn->test();
+        //return 'hola mundo'.env('DB_HOST').''.env('DB_USERNAME').''.env('DB_PASSWORD').''.env('DB_DATABASE');
+    }
+
 
     public function obtenerHorasLigasPorId(string $id)
     {
@@ -690,12 +701,12 @@ class ConsultasDB extends Database
         );
     }
 
-    public function obtenerTrabajadorNickname(string $trabajador)
+    public function obtenerTrabajadorNickname(string $trabajador)// definitivo
     {
         //$sms = new EnvioSMSLM(USERSMS, KEY);
         //$sms->saldo()->credits;
         //return $sms->preciosXPais();
-        return $this->read(
+        return $this->cn->read(
             'trabajador',
             ['nickname' => $trabajador],
             'nickname=:nickname',
@@ -717,9 +728,9 @@ class ConsultasDB extends Database
         return $this->read('trabajador', $array, $consulta, 'id, nombresYapellidos, nickname, correo, telefono, documento, claveCaja');
     }
 
-    public function obtenerAdminNickname(string $nickname)
+    public function obtenerAdminNickname(string $nickname)// definitivo
     {
-        return $this->read(
+        return $this->cn->read(
             'gimnasio',
             ['nickname' => $nickname],
             'nickname=:nickname',

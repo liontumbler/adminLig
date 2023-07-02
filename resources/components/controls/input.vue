@@ -80,6 +80,8 @@ export default {
                 console.log(campo.value, e, this.value);
                 if (!campo.value && campo.required) {
                     this.showError = true;
+                    campo.setCustomValidity('');
+                    console.log(campo.validationMessage);
                     this.errorInput = campo.validationMessage;
                     return;
                 }

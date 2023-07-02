@@ -1,6 +1,9 @@
 <?php
 namespace App\DB;
 
+use PDO;
+use PDOException;
+
 class Database {
     private $host;
     private $username;
@@ -12,12 +15,6 @@ class Database {
 
     public function __construct($host, $username, $password, $database)
     {
-        if (file_exists('../logs')) {
-            $this->logger = new Logger('../logs/gimnacioDb.log');
-        } else {
-            $this->logger = new Logger('logs/gimnacioDb.log');
-        }
-
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
@@ -31,10 +28,14 @@ class Database {
             ];
             $this->cn = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
-            $this->logger->log('Error: '."Error al conectar a la base de datos: " . $e->getMessage());
-            ServerResponse::getResponse(500);
+            echo $e->getMessage().$this->host.''.$this->username.''.$this->password.''.$this->database;
             die();
         }
+    }
+
+    public function test()
+    {
+        return 'hola mundo'.$this->host.''.$this->username.''.$this->password.''.$this->database;
     }
 
     private function insertStr($table, $data)
@@ -89,10 +90,8 @@ class Database {
             $sql = "SELECT $campos FROM $table ". ((count($data) > 0) ? "WHERE $where" : '');
 
             $statement = $this->cn->prepare($sql);
+
             $statement->execute($data);
-
-            ServerResponse::getResponse(200);
-
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), '1062') !== false) {//datos duplicados
@@ -100,8 +99,7 @@ class Database {
             } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
                 return -2;
             } else {
-                $this->logger->log('Error: '."Failed to read record from $table with ".implode(',', $data).": " . $e->getMessage());
-                ServerResponse::getResponse(500);
+                echo 'error';
             }
         }
     }

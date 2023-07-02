@@ -19,7 +19,7 @@
                         :placeholder="'Digite la nickname del trabajador'"
                     ></input-component>
                 </div>
-                <div class="col-lg-6 mb-1">
+                <div :class="cajaSize">
                     <label for="clave" class="form-label">Clave *</label>
                     <input-component
                         ref="clave"
@@ -78,10 +78,15 @@ export default {
     mounted() {
         let div = document.getElementById('recaptcha');
         this.recapchav2 = new RecaptchaV2(div, '6LffswQmAAAAADb0opnrrlP95wkElZdk5jGmvg2V');
+        if (this.login == 'trabajador') {
+            console.log(this.login, 'puta');
+            this.cajaSize = 'col-lg-6 mb-1'
+        }
     },
     data() {
         return {
             recapchav2: null,
+            cajaSize: 'col-lg-12 mb-1'
         }
     },
     methods: {
@@ -89,17 +94,17 @@ export default {
             this.recapchav2.validarRV2S(async (valid) => {
                 console.log(this.$refs.nickname.$refs, 'ref');
                 let validCampos = false;
-                let urlLogin = 'loginAdmin';
+                let urlLogin = 'loginAdm';
                 if (this.login == 'trabajador') {
-                    urlLogin = 'loginTrabajador';
+                    urlLogin = 'loginTra';
                     validCampos = this.validarCampos([this.$refs.nickname, this.$refs.clave, this.$refs.caja])
                 }else{
                     validCampos = this.validarCampos([this.$refs.nickname, this.$refs.clave])
                 }
 
                 console.log(validCampos, valid);
-                if (valid && validCampos ) {//== true
-                    let data = this.armardatos([this.$refs.nickname, this.$refs.clave]);
+                if (valid && validCampos) {
+                    let data = this.armardatos([this.$refs.nickname.$refs.nickname, this.$refs.clave.$refs.clave]);
                     console.log('b', data);
 
                     let rdta = await ApiService.post(urlLogin, data)
@@ -133,7 +138,7 @@ export default {
                     if (campo.select)
                         campo.select();
 
-                    return campo;
+                    return false;
                 }
 
                 if(campo.type == 'number'){
@@ -147,14 +152,14 @@ export default {
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }else if(campo.min && numerovalue < numeroMin){
                         campo.setCustomValidity(campo.validationMessage);
                         campo.focus();
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }
                 }
 
@@ -165,7 +170,7 @@ export default {
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }
 
                     const lowercaseCount = (campo.value.match(/[a-z]/g) || []).length;
@@ -183,7 +188,7 @@ export default {
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }
                 }
 
@@ -195,14 +200,14 @@ export default {
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     } else if(campo.value && campo.getAttribute('minlength') && parseInt(campo.value.length) < parseInt(campo.getAttribute('minlength'))){
                         campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Error en minimo de caracteres'));
                         campo.focus();
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }
                 }
                 console.log('dos');
@@ -217,7 +222,7 @@ export default {
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }
                 }
                 console.log('tres');
@@ -229,7 +234,7 @@ export default {
                         if (campo.select)
                             campo.select();
 
-                        return campo;
+                        return false;
                     }
                 }
 

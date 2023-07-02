@@ -51,7 +51,7 @@ class LoginController extends Controller
         }
 
         $gimnasio = new Gimnasio();
-        return $gimnasio->login($request->all());;
+        return $gimnasio->loginAdmin($request->all());
     }
 
     public function loginAdmOut(Request $request) {
