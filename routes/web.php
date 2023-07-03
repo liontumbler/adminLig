@@ -24,8 +24,10 @@ Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->nam
 Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');
 Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');
 
-Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
+Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');
 
+
+Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
 Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm');
 Route::post('/loginTra', [LoginController::class, 'loginTra'])->name('loginTra');
 
