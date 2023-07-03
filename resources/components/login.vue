@@ -58,21 +58,43 @@
             </div>
         </div>
     </div>
+    <modal-component
+        ref="modalConfirmar"
+        :titulo="'confirmacion'"
+        :visibleBtnCerrar="true"
+        :visibleBtnContinuar="true"
+        @cerrar="cerrarModalConfirmacion"
+        @continuar="continuarModalConfirmacion"
+    >
+        {{ msgConfirmacion }}
+    </modal-component>
+    <modal-component
+        ref="modalError"
+        :titulo="'Error'"
+        :visibleBtnCerrar="true"
+        :visibleBtnContinuar="true"
+        @cerrar="cerrarModalError"
+        @continuar="continuarModalError"
+    >
+        {{ msgError }}
+    </modal-component>
 </template>
 <script>
 import { RecaptchaV2 } from '../js/libs/RecaptchaV2/recaptchaV2.js';
 import { ApiService } from "../services/services.js";
 import inputp from "../components/controls/input.vue";
+import modalp from "../components/controls/modal.vue"
 
 export default {
     name: 'login',
     components: {
         "input-component": inputp,
+        "modal-component": modalp,
     },
     props: {
         login: {
             type: String,
-            default: () => "",
+            default: "",
         },
     },
     mounted() {
@@ -86,10 +108,33 @@ export default {
     data() {
         return {
             recapchav2: null,
-            cajaSize: 'col-lg-12 mb-1'
+            cajaSize: 'col-lg-12 mb-1',
+            msgError: '',
+            msgConfirmacion: ''
         }
     },
     methods: {
+        cerrarModalConfirmacion(){
+            this.$refs.modalConfirmar.hide();
+            if (this.login == 'trabajador') {
+                location.href = 'homeTrabajador';
+            }else{
+                location.href = 'homeAdmin';
+            }
+        },
+        continuarModalConfirmacion(){
+            if (this.login == 'trabajador') {
+                location.href = 'homeTrabajador';
+            }else{
+                location.href = 'homeAdmin';
+            }
+        },
+        cerrarModalError(){
+            this.$refs.modalError.hide();
+        },
+        continuarModalError(){
+            this.$refs.modalError.hide();
+        },
         trabajar(e) {
             this.recapchav2.validarRV2S(async (valid) => {
                 console.log(this.$refs.nickname.$refs, 'ref');
@@ -104,15 +149,33 @@ export default {
 
                 console.log(validCampos, valid);
                 if (valid && validCampos) {
-                    let data = this.armardatos([this.$refs.nickname.$refs.nickname, this.$refs.clave.$refs.clave]);
+                    let data = {}
+                    if (this.login == 'trabajador') {
+                        data = this.armardatos([this.$refs.nickname.$refs.nickname, this.$refs.clave.$refs.clave, this.$refs.caja.$refs.caja]);
+                    }else{
+                        data = this.armardatos([this.$refs.nickname.$refs.nickname, this.$refs.clave.$refs.clave]);
+                    }
                     console.log('b', data);
 
                     let rdta = await ApiService.post(urlLogin, data)
                     console.log(rdta);
 
+                    if (rdta == true) {
+                        this.msgConfirmacion = 'Inicio sesión correctamente';
+                        this.$refs.modalConfirmar.show();
+                    }else{
+                        if (rdta == 600) {
+                            this.msgConfirmacion = 'Ya se inició una sesión anterior, por lo que se inició una caja, pero no sé cerro, por lo que lo llevaremos a la sesión anterior hasta que cierre caja';
+                            this.$refs.modalConfirmar.show();
+                        }else{
+                            this.msgError = 'Hubo un error en los datos';
+                            this.$refs.modalError.show();
+                        }
+                    }
                 }else{
                     //no es valido
-                    console.log('m');
+                    this.msgError = 'Hay campos sin validar';
+                    this.$refs.modalError.show();
                 }
             }, 'recaptcha');
         },

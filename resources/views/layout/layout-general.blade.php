@@ -5,7 +5,7 @@
         <nav-component></nav-component>
         <!--nav-sidebar></nav-sidebar-->
     </div>
-    <div class="container p-68px" id="app">
+    <div class="container p-94px" id="app">
         @yield('contenedor')
     </div>
 @endsection

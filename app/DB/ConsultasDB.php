@@ -268,11 +268,6 @@ class ConsultasDB
         }
     }
 
-    public function obtenerGimnasioPorIdBasic(string $id)
-    {
-        return $this->read('gimnasio', ['id' => $id], $this->ID, 'habilitado, nombre, id, idPlan');
-    }
-
     public function obtenerGimnasioPorId(string $id)
     {
         return $this->read('gimnasio', ['id' => $id], '`id`=:id', 'id, correo, nickname, nombre, color, background, direccion, telefono, descripcion, habilitado, minDeMasLiga, idPlan');
@@ -706,12 +701,92 @@ class ConsultasDB
         //$sms = new EnvioSMSLM(USERSMS, KEY);
         //$sms->saldo()->credits;
         //return $sms->preciosXPais();
-        return $this->cn->read(
+        $res = $this->cn->read(
             'trabajador',
             ['nickname' => $trabajador],
             'nickname=:nickname',
             'clave, id, idGimnasio, nombresYapellidos, nickname, correo, telefono'
         );
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerAdminNickname(string $nickname)// definitivo
+    {
+        $res = $this->cn->read(
+            'gimnasio',
+            ['nickname' => $nickname],
+            'nickname=:nickname',
+            'clave, id, nombre, nickname, correo, telefono, habilitado, idPlan'
+        );
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerGimnasioPorIdBasic(string $id)// definitivo
+    {
+        $res = $this->cn->read('gimnasio', ['id' => $id], 'id=:id', 'habilitado, nombre, idPlan');
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerTrabajadoTrabajador(string $gimnasio, string $trabajador)// definitivo
+    {
+        $res = $this->cn->read(
+            'trabajado',
+            ['idGimnasio' => $gimnasio, 'idTrabajador' => $trabajador],
+            "`idGimnasio`=:idGimnasio
+            AND `idTrabajador`=:idTrabajador
+            AND fechaFin is null;",
+            'id, iniciCaja'
+        );
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function crearTrabajado(string $caja, string $gimnasio, string $trabajador)// definitivo
+    {
+        $trabajado = [
+            'iniciCaja' => $caja,
+            'idGimnasio' => $gimnasio,
+            'idTrabajador' => $trabajador,
+        ];
+        return $this->cn->create('trabajado', $trabajado);
+    }
+
+    public function actualizarCaja(string $trabajador, string $medio)
+    {
+        $claveCajaNueva = rand(1000, 9999);
+        $mj = 'AdminLig: El codigo para ingresar a la su caja el dia hoy '.date('Y-m-d H:i:s').' es '.$claveCajaNueva;
+
+        if (is_numeric($medio)) {
+            return 1;
+            $sms = new EnvioSMSLM(USERSMS, KEY);
+            $smsRes = $sms->enviarSMS($mj, $medio);
+            if ($smsRes->code == '0') {
+                $this->cn->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
+                return 1;
+            }elseif ($smsRes->code == '403') {
+                return 403;
+            }elseif ($smsRes->code == '35') {
+                return 35;
+            }
+        } else {
+            //actualizar clave de caja  claveCaja, enviar codigo por correo
+            return 'correo';
+        }
     }
 
     public function obtenerTrabajadorNombrePorId(string $gimnasio, string $id = null)
@@ -726,28 +801,6 @@ class ConsultasDB
         $array = empty($id) ? ['idGimnasio' => $gimnasio] : ['id' => $id, 'idGimnasio' => $gimnasio];
         $consulta = empty($id) ? '`idGimnasio`=:idGimnasio' : '`idGimnasio`=:idGimnasio '.$this->ID;
         return $this->read('trabajador', $array, $consulta, 'id, nombresYapellidos, nickname, correo, telefono, documento, claveCaja');
-    }
-
-    public function obtenerAdminNickname(string $nickname)// definitivo
-    {
-        return $this->cn->read(
-            'gimnasio',
-            ['nickname' => $nickname],
-            'nickname=:nickname',
-            'clave, id, nombre, nickname, correo, telefono, habilitado, idPlan'
-        );
-    }
-
-    public function obtenerTrabajadoTrabajador(string $gimnasio, string $trabajador)
-    {
-        return $this->read(
-            'trabajado',
-            ['idGimnasio' => $gimnasio, 'idTrabajador' => $trabajador],
-            "`idGimnasio`=:idGimnasio
-            AND `idTrabajador`=:idTrabajador
-            AND fechaFin is null;",
-            'id, iniciCaja'
-        );
     }
 
     public function obtenerLigaHoy(string $trabajador)///
@@ -813,16 +866,6 @@ class ConsultasDB
     public function crearListapagos(array $value)
     {
         return $this->create('listapagos', $value);
-    }
-
-    public function crearTrabajado(string $caja, string $gimnasio, string $trabajador)
-    {
-        $trabajado = [
-            'iniciCaja' => $caja,
-            'idGimnasio' => $gimnasio,
-            'idTrabajador' => $trabajador,
-        ];
-        return $this->create('trabajado', $trabajado);
     }
 
     public function crearProducto(object $data, string $gimnasio)
@@ -1022,29 +1065,6 @@ class ConsultasDB
 
         $traba = $this->update('trabajador', $trabajador, $data->id);
         return ($traba > 0);
-    }
-
-    public function actualizarCaja(string $trabajador, string $medio)
-    {
-        $claveCajaNueva = rand(1000, 9999);
-        $mj = 'AdminLig: El codigo para ingresar a la su caja el dia hoy '.date('Y-m-d H:i:s').' es '.$claveCajaNueva;
-
-        if (is_numeric($medio)) {
-            return 1;
-            $sms = new EnvioSMSLM(USERSMS, KEY);
-            $smsRes = $sms->enviarSMS($mj, $medio);
-            if ($smsRes->code == '0') {
-                $this->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
-                return 1;
-            }elseif ($smsRes->code == '403') {
-                return -1;
-            }elseif ($smsRes->code == '35') {
-                return -2;
-            }
-        } else {
-            //actualizar clave de caja  claveCaja, enviar codigo por correo
-            return 'correo';
-        }
     }
 
     public function actualizarFinCaja($finCaja, $trabajado)

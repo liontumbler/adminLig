@@ -71,7 +71,6 @@ class Database {
             $statement = $this->cn->prepare($sql);
             $statement->execute($data);
 
-            ServerResponse::getResponse(200);
             return $this->cn->lastInsertId();//$statement->rowCount();
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), '1062') !== false) {//datos duplicados
@@ -79,8 +78,7 @@ class Database {
             } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
                 return -2;
             } else {
-                $this->logger->log('Error: '."Failed to create a record in $table: " . $e->getMessage());
-                ServerResponse::getResponse(500);
+                echo 'error';
             }
         }
     }
@@ -111,11 +109,15 @@ class Database {
             $statement = $this->cn->prepare($sql);
             $statement->execute(array_merge($data, ['id' => $id]));
 
-            ServerResponse::getResponse(200);
             return $statement->rowCount();
         } catch (PDOException $e) {
-            $this->logger->log('Error: '."Failed to update record in $table with id=$id: " . $e->getMessage());
-            ServerResponse::getResponse(500);
+            if (strpos($e->getMessage(), '1062') !== false) {//datos duplicados
+                return -1;
+            } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
+                return -2;
+            } else {
+                echo 'error';
+            }
         }
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Gimnasio;
+use App\Models\Trabajador;
 
 class LoginController extends Controller
 {
@@ -38,7 +39,6 @@ class LoginController extends Controller
     }
 
     public function loginAdm(Request $request) {
-
         $validator = Validator::make($request->all(), [
             'nickname' => 'required|string|max:50|min:1',
             'clave' => 'required|string|max:50|min:1',
@@ -51,7 +51,35 @@ class LoginController extends Controller
         }
 
         $gimnasio = new Gimnasio();
-        return $gimnasio->loginAdmin($request->all());
+        $res = $gimnasio->loginAdmin($request->all());
+        if ($res == true) {
+            return $res;
+        }else{
+            return $res;
+        }
+    }
+
+    public function loginTra(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'nickname' => 'required|string|max:50|min:1',
+            'clave' => 'required|string|max:50|min:1',
+            'caja' => 'required|numeric|max:50|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->all()
+            ]);
+        }
+
+        $trabajador = new Trabajador();
+        $res = $trabajador->loginTrabajador($request->all());
+        if ($res == true) {
+            return $res;
+        }else{
+            return json_encode($res);
+        }
     }
 
     public function loginAdmOut(Request $request) {

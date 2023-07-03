@@ -1,14 +1,16 @@
 <template>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="javascript:" @click="abrirCerrarSidebar">{{ logo }}</a>
+            <a class="navbar-brand" href="javascript:" @click="abrirCerrarSidebar">
+                <img :src="logo" class="imgIco" alt="Nocarga" height="52">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-lg-0">
-                    <li :class="btn.class" v-for="(btn, i) in btnsNav" :key="i">
+                    <li :class="btn.class" v-for="(btn, i) in btnsnavReal" :key="i">
                         <div v-if="!Array.isArray(btn.href)">
                             <a class="nav-link active" :href="btn.href">{{ btn.nombre }}</a>
                         </div>
@@ -38,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100 position-fixed p-68px" style="width: 280px;" v-if="sidebar">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100 position-fixed p-94px" style="width: 280px; z-index: 1;" v-if="sidebar">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <i :class="icontitleSide"></i>
             &nbsp;
@@ -46,8 +48,8 @@
         </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item" v-for="(btn, i) in btnsSidebar" :key="i">
-                <a :href="btn.href" class="nav-link text-white active" aria-current="page">
+            <li class="nav-item" v-for="(btn, i) in btnssidebar" :key="i">
+                <a :href="btn.href" class="nav-link text-white btn btn-light" aria-current="page">
                     <i :class="btn.icon"></i>
                     {{ btn.nombre }}
                 </a>
@@ -57,27 +59,46 @@
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                 id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32"
+                <img v-if="imgPerfil" src="imgPerfil" alt="" width="32" height="32"
                     class="rounded-circle me-2">
                 <strong>{{ nombreUser }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li v-for="(btn, i) in footerSidebar" :key="i">
+                <li v-for="(btn, i) in footersidebar" :key="i">
                     <a class="dropdown-item" :href="btn.href">{{ btn.nombre }}</a>
                 </li>
-                <li v-if="footerSidebar.length > 0">
+                <li v-if="footersidebar.length > 0">
                     <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" :href="cerrarSesion">Cerrar Sesión</a></li>
+                <li><a class="dropdown-item" :href="cerrarsesion">Cerrar Sesión</a></li>
             </ul>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'navSidebar',
+    name: 'sidebar',
+    props: {
+        btnssidebar: {
+            type: Array,
+            default: [],
+        },
+        footersidebar: {
+            type: Array,
+            default: [],
+        },
+        btnsnav: {
+            type: Array,
+            default: [],
+        },
+        cerrarsesion: {
+            type: String,
+            default: '/',
+        },
+    },
     mounted() {
-        this.btnsNav = this.btnsNav.map(function(btn) {
+        console.log('esto es', this.btnssidebar, this.footersidebar, this.btnsnav);
+        this.btnsnavReal = this.btnsnav.map(function(btn) {
             if (!Array.isArray(btn.href)) {
                 return {nombre: btn.nombre, href: btn.href, class: 'nav-item'};
             }else if (Array.isArray(btn.href)) {
@@ -87,22 +108,23 @@ export default {
     },
     data() {
         return {
+            imgPerfil: null,
             icontitleSide: 'bi bi-bootstrap',
             titleSide: 'SideBar',
             nombreUser: 'Default',
-            cerrarSesion: '',
             sidebar: false,
-            btnsSidebar: [
+            logo: 'img/adminLig.svg',
+            searchNav: false,
+            btnsnavReal: [],
+            /*btnssidebar: [
                 {nombre: 'home3', href: 'home3', icon: 'bi bi-house-door'},
                 {nombre: 'home4', href: 'home4', icon: 'bi bi-house-door'},
             ],
-            footerSidebar: [
+            footersidebar: [
                 {nombre: 'home', href: 'home'},
                 {nombre: 'home2', href: 'home2'},
-            ],
-            logo: 'Navbar',
-            searchNav: false,
-            btnsNav: [
+            ],*/
+            /*btnsnav: [
                 {nombre: 'home', href: 'home'},
                 {nombre: 'home2', href: 'home2'},
                 {nombre: 'dorp', href: [
@@ -110,7 +132,7 @@ export default {
                     {nombre: 'divider'},
                     {nombre: 'dos', href: 'dos'}
                 ]},
-            ],
+            ],*/
         }
     },
     methods: {

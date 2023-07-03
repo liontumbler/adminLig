@@ -14,8 +14,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
-            .p-68px{
-                padding-top: 68px !important;
+            .p-94px{
+                padding-top: 94px !important;
             }
         </style>
     </head>

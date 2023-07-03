@@ -8,7 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-lg-0">
-                    <li :class="btn.class" v-for="(btn, i) in btnsNav" :key="i">
+                    <li :class="btn.class" v-for="(btn, i) in btnsnav" :key="i">
                         <div v-if="!Array.isArray(btn.href)">
                             <a class="nav-link active" :href="btn.href">{{ btn.nombre }}</a>
                         </div>
@@ -40,9 +40,9 @@
 </template>
 <script>
 export default {
-    name: 'navSidebar',
+    name: 'nav',
     mounted() {
-        this.btnsNav = this.btnsNav.map(function(btn) {
+        this.btnsnav = this.btnsnav.map(function(btn) {
             if (!Array.isArray(btn.href)) {
                 return {nombre: btn.nombre, href: btn.href, class: 'nav-item'};
             }else if (Array.isArray(btn.href)) {
@@ -54,7 +54,7 @@ export default {
         return {
             logo: 'Navbar',
             searchNav: false,
-            btnsNav: [
+            btnsnav: [
                 {nombre: 'home', href: 'home'},
                 {nombre: 'home2', href: 'home2'},
                 {nombre: 'dorp', href: [

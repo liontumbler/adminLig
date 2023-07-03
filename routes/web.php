@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaginaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TrabajadorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,9 @@ use App\Http\Controllers\LoginController;
 Route::get('/', [PaginaController::class, 'index'])->name('principal');
 Route::get('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginAdmin');
 Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->name('loginTrabajador');
+
+Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');
+Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');
 
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
 
