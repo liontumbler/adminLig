@@ -82,8 +82,8 @@ class LoginController extends Controller
         }
     }
 
-    public function loginAdmOut(Request $request) {
-
+    public function loginTraOut(Request $request) {
+        //falata
         $variableValid = $request->validate([
             'nickname' => 'required|string|max:50|min:1',
             'clave' => 'required|string|max:50|min:1',
@@ -91,5 +91,9 @@ class LoginController extends Controller
 
         return $variableValid;
     }
-
+    public function loginAdmOut()
+    {
+        session()->flush();
+        return redirect('loginAdmin');
+    }
 }

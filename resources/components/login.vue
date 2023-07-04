@@ -8,43 +8,40 @@
                 <div class="col-lg-12 mb-1">
                     <label for="nickname" class="form-label">Nickname *</label>
                     <input-component
-                        ref="nickname"
-                        :id="'nickname'"
                         :type="'text'"
-                        :value="''"
                         :minlength="1"
                         :maxlength="50"
                         :required="true"
                         :textarroba="true"
                         :placeholder="'Digite la nickname del trabajador'"
+                        :value="nickname"
+                        @model="updateNickname"
                     ></input-component>
                 </div>
                 <div :class="cajaSize">
                     <label for="clave" class="form-label">Clave *</label>
                     <input-component
-                        ref="clave"
-                        :id="'clave'"
                         :type="'password'"
-                        :value="''"
                         :minlength="1"
                         :maxlength="50"
                         :required="true"
                         :placeholder="'Digite la clave del trabajador'"
+                        :value="clave"
+                        @model="updateClave"
                     ></input-component>
                 </div>
                 <div class="col-lg-6 mb-2" v-if="login == 'trabajador'">
                     <label for="caja" class="form-label">Caja *</label>
                     <input-component
-                        ref="caja"
-                        :id="'caja'"
                         :type="'number'"
-                        :value="'0'"
                         :minlength="1"
                         :maxlength="50"
-                        :min="0"
-                        :max="1000000"
+                        :min="'0'"
+                        :max="'1000000'"
                         :required="true"
                         :placeholder="'Digite el monto del efectivo'"
+                        :value="caja"
+                        @model="updateCaja"
                     ></input-component>
                 </div>
                 <div class="col-lg-12 mb-1">
@@ -110,10 +107,22 @@ export default {
             recapchav2: null,
             cajaSize: 'col-lg-12 mb-1',
             msgError: '',
-            msgConfirmacion: ''
+            msgConfirmacion: '',
+            nickname: '',
+            clave: '',
+            caja: '0',
         }
     },
     methods: {
+        updateNickname(value) {
+            this.nickname = value;
+        },
+        updateClave(value) {
+            this.clave = value;
+        },
+        updateCaja(value) {
+            this.caja = value;
+        },
         cerrarModalConfirmacion(){
             this.$refs.modalConfirmar.hide();
             if (this.login == 'trabajador') {
