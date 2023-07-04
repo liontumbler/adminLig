@@ -1,5 +1,7 @@
 <template>
-    <input class="form-control" :aria-describedby="'error'"
+    <input class="form-control"
+    ref="input"
+    :id="id"
     :value="value"
     :type="type"
     :placeholder="placeholder"
@@ -11,7 +13,7 @@
     :required="required"
     :textarroba="textarroba"
     @input="updateValue">
-    <div :id="'error'" class="form-text text-danger" v-if="showError">{{ errorInput }}</div>
+    <div class="form-text text-danger" v-if="showError">{{ errorInput }}</div>
 </template>
 <script>
 export default {
@@ -56,10 +58,9 @@ export default {
     },
     mounted() {
         if (this.textarroba) {
-            this.$refs[this.id].addEventListener('input', function() {
+            this.$refs['input'].addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9A-Za-zñÑ@]/g, '').replace(/[@]{2,}/g, '@');
             });
-            console.log(this, this.value, this.$refs);
         }
     },
     data() {
@@ -70,8 +71,6 @@ export default {
     },
     methods:{
         updateValue(e) {
-            console.log(this.value, e.target, 'rrr');
-
             this.$emit('model', e.target.value);
 
             let campo = e.target;
@@ -79,12 +78,11 @@ export default {
         },
         validarError(campo){
             //if (!e.altKey && !e.ctrlKey) {
-
-            console.log(campo.value, this.value);
+            //console.log(campo.value);
             if (!campo.value && campo.required) {
                 this.showError = true;
                 campo.setCustomValidity('');
-                console.log(campo.validationMessage);
+                //console.log(campo.validationMessage);
                 this.errorInput = campo.validationMessage;
                 return;
             }
@@ -158,7 +156,6 @@ export default {
 
             if (this.textarroba) {
                 if (!campo.value.includes('@')) {
-                    console.log(campo.value, '@');
                     this.showError = true;
                     this.errorInput = 'debe tener minimo un @';
                     return;

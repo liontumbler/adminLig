@@ -82,13 +82,11 @@ class LoginController extends Controller
         }
     }
 
-    public function loginTraOut(Request $request) {
+    public function loginTraOut() {
         //falata
-        $variableValid = $request->validate([
-            'nickname' => 'required|string|max:50|min:1',
-            'clave' => 'required|string|max:50|min:1',
-        ]);
 
+        session()->flush();
+        return redirect('loginTrabajador');
         return $variableValid;
     }
     public function loginAdmOut()

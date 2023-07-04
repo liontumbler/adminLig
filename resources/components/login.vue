@@ -1,6 +1,6 @@
 <template>
     <div class="m-4">
-        <div class="container shadow">
+        <div class="shadow d-block m-auto w-75">
             <div class="row p-5">
                 <div class="col-lg-12 mb-1">
                     <img src="img/adminLig.svg" alt="Nocarga" class="w-50 d-block m-auto">
@@ -14,6 +14,7 @@
                         :required="true"
                         :textarroba="true"
                         :placeholder="'Digite la nickname del trabajador'"
+                        ref="nickname"
                         :value="nickname"
                         @model="updateNickname"
                     ></input-component>
@@ -26,6 +27,7 @@
                         :maxlength="50"
                         :required="true"
                         :placeholder="'Digite la clave del trabajador'"
+                        ref="clave"
                         :value="clave"
                         @model="updateClave"
                     ></input-component>
@@ -40,6 +42,7 @@
                         :max="'1000000'"
                         :required="true"
                         :placeholder="'Digite el monto del efectivo'"
+                        ref="caja"
                         :value="caja"
                         @model="updateCaja"
                     ></input-component>
@@ -146,24 +149,23 @@ export default {
         },
         trabajar(e) {
             this.recapchav2.validarRV2S(async (valid) => {
-                console.log(this.$refs.nickname.$refs, 'ref');
-                let validCampos = false;
+                console.log(this.nickname, 'ref');
+
+                let array = []
                 let urlLogin = 'loginAdm';
                 if (this.login == 'trabajador') {
                     urlLogin = 'loginTra';
-                    validCampos = this.validarCampos([this.$refs.nickname, this.$refs.clave, this.$refs.caja])
+                    array = ['nickname', 'clave', 'caja']
                 }else{
-                    validCampos = this.validarCampos([this.$refs.nickname, this.$refs.clave])
+                    array = ['nickname', 'clave']
                 }
+
+                let validCampos = this.validarCampos(array)
 
                 console.log(validCampos, valid);
                 if (valid && validCampos) {
-                    let data = {}
-                    if (this.login == 'trabajador') {
-                        data = this.armardatos([this.$refs.nickname.$refs.nickname, this.$refs.clave.$refs.clave, this.$refs.caja.$refs.caja]);
-                    }else{
-                        data = this.armardatos([this.$refs.nickname.$refs.nickname, this.$refs.clave.$refs.clave]);
-                    }
+                    let data = this.armardatos(array);
+
                     console.log('b', data);
 
                     let rdta = await ApiService.post(urlLogin, data)
@@ -189,43 +191,21 @@ export default {
             }, 'recaptcha');
         },
         armardatos(arrayCampos) {
-            let dataReturn = {};
+            let data = {}
             arrayCampos.forEach(campo => {
-                dataReturn[campo.id] = campo.value
+                data[campo] = this[campo]
             });
-            return dataReturn;
+            return data;
         },
         validarCampos(arrayCampos) {
+            console.log('validarCampos', arrayCampos);
             for (let i = 0; i < arrayCampos.length; i++) {
-                let ref = arrayCampos[i]
-                let campo = ''
-                for (const e in arrayCampos[i].$refs) {
-                    campo = arrayCampos[i].$refs[e];
-                }
-                console.log(campo, ref.textarroba);
+                console.log('campo', typeof this.$refs[arrayCampos[i]], this.$refs[arrayCampos[i]].$refs.input);
+                if (this.$refs[arrayCampos[i]].$refs.input) {
+                    let ref = this.$refs[arrayCampos[i]];
+                    let campo = this.$refs[arrayCampos[i]].$refs.input
 
-                if (!campo.value && campo.required) {
-                    campo.setCustomValidity(campo.validationMessage);
-                    campo.focus();
-                    if (campo.select)
-                        campo.select();
-
-                    return false;
-                }
-
-                if(campo.type == 'number'){
-                    const numeroMax = campo.max.indexOf(',') >= 0 ? parseFloat(campo.max) : parseInt(campo.max);
-                    const numeroMin = campo.min.indexOf(',') >= 0 ? parseFloat(campo.min) : parseInt(campo.min);
-                    const numerovalue = campo.value.indexOf(',') >= 0 ? parseFloat(campo.value) : parseInt(campo.value);
-
-                    if(campo.max && numerovalue > numeroMax){
-                        campo.setCustomValidity(campo.validationMessage);
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
-
-                        return false;
-                    }else if(campo.min && numerovalue < numeroMin){
+                    if (!campo.value && campo.required) {
                         campo.setCustomValidity(campo.validationMessage);
                         campo.focus();
                         if (campo.select)
@@ -233,84 +213,112 @@ export default {
 
                         return false;
                     }
-                }
 
-                if (campo.type == 'password') {
-                    if (campo.value.length < 8) {
-                        campo.setCustomValidity('la password es menor a 8 caracteres');
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
+                    if(campo.type == 'select-one'){
 
-                        return false;
                     }
 
-                    const lowercaseCount = (campo.value.match(/[a-z]/g) || []).length;
-                    const uppercaseCount = (campo.value.match(/[A-Z]/g) || []).length;
-                    const numberCount = (campo.value.match(/[0-9]/g) || []).length;
-                    const specialCharCount = (campo.value.match(/[^a-zA-Z0-9 ]/g) || []).length;
-                    if (
-                        lowercaseCount < 2 ||
-                        uppercaseCount < 2 ||
-                        numberCount < 2 ||
-                        specialCharCount < 2
-                    ) {
-                        campo.setCustomValidity('la password debe tener 2 mayusculas, 2 minusculas, 2 numeros, 2 caracteres especiales no importa el orden');
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
+                    if(campo.type == 'number'){
+                        const numeroMax = campo.max.indexOf(',') >= 0 ? parseFloat(campo.max) : parseInt(campo.max);
+                        const numeroMin = campo.min.indexOf(',') >= 0 ? parseFloat(campo.min) : parseInt(campo.min);
+                        const numerovalue = campo.value.indexOf(',') >= 0 ? parseFloat(campo.value) : parseInt(campo.value);
 
+                        if(campo.max && numerovalue > numeroMax){
+                            campo.setCustomValidity(campo.validationMessage);
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }else if(campo.min && numerovalue < numeroMin){
+                            campo.setCustomValidity(campo.validationMessage);
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }
+                    }
+
+                    if (campo.type == 'password') {
+                        if (campo.value.length < 8) {
+                            campo.setCustomValidity('la password es menor a 8 caracteres');
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }
+
+                        const lowercaseCount = (campo.value.match(/[a-z]/g) || []).length;
+                        const uppercaseCount = (campo.value.match(/[A-Z]/g) || []).length;
+                        const numberCount = (campo.value.match(/[0-9]/g) || []).length;
+                        const specialCharCount = (campo.value.match(/[^a-zA-Z0-9 ]/g) || []).length;
+                        if (
+                            lowercaseCount < 2 ||
+                            uppercaseCount < 2 ||
+                            numberCount < 2 ||
+                            specialCharCount < 2
+                        ) {
+                            campo.setCustomValidity('la password debe tener 2 mayusculas, 2 minusculas, 2 numeros, 2 caracteres especiales no importa el orden');
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }
+                    }
+
+                    if(campo.type == 'text' || campo.type == 'number' || campo.type == 'password'){
+                        if(campo.value && campo.getAttribute('maxlength') && parseInt(campo.value.length) > parseInt(campo.getAttribute('maxlength'))){
+                            campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Error en maximo de caracteres'));
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        } else if(campo.value && campo.getAttribute('minlength') && parseInt(campo.value.length) < parseInt(campo.getAttribute('minlength'))){
+                            campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Error en minimo de caracteres'));
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }
+                    }
+
+                    if (campo.type == 'email' && campo.value) {
+                        let validacion1 = '([a-zA-Z0-9]{1,50}[\\_\\-\\.]?[a-zA-Z0-9]{1,50}){1,100}';
+                        let validacion2 = '[a-zA-Z]{2,5}$';
+                        let cadena = '^'+ validacion1 +'@'+ validacion1 +'\\.'+ validacion2 +'';
+                        let expreg = new RegExp(cadena);
+                        if(!expreg.test(campo.value)){
+                            campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Correo invalido'));
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }
+                    }
+
+                    if (ref.textarroba) {
+                        if (!campo.value.includes('@')) {
+                            campo.setCustomValidity('debe tener minimo un @');
+                            campo.focus();
+                            if (campo.select)
+                                campo.select();
+
+                            return false;
+                        }
+                    }
+                }else{
+                    console.log('no tiene type');
+                    console.log(arrayCampos[i]);
+                    if (!this[arrayCampos[i]]) {
                         return false;
                     }
                 }
-
-                console.log('uno');
-                if(campo.type == 'text' || campo.type == 'number' || campo.type == 'password'){
-                    if(campo.value && campo.getAttribute('maxlength') && parseInt(campo.value.length) > parseInt(campo.getAttribute('maxlength'))){
-                        campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Error en maximo de caracteres'));
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
-
-                        return false;
-                    } else if(campo.value && campo.getAttribute('minlength') && parseInt(campo.value.length) < parseInt(campo.getAttribute('minlength'))){
-                        campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Error en minimo de caracteres'));
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
-
-                        return false;
-                    }
-                }
-                console.log('dos');
-                if (campo.type == 'email' && campo.value) {
-                    let validacion1 = '([a-zA-Z0-9]{1,50}[\\_\\-\\.]?[a-zA-Z0-9]{1,50}){1,100}';
-                    let validacion2 = '[a-zA-Z]{2,5}$';
-                    let cadena = '^'+ validacion1 +'@'+ validacion1 +'\\.'+ validacion2 +'';
-                    let expreg = new RegExp(cadena);
-                    if(!expreg.test(campo.value)){
-                        campo.setCustomValidity((campo.validationMessage ? campo.validationMessage : 'Correo invalido'));
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
-
-                        return false;
-                    }
-                }
-                console.log('tres');
-
-                if (ref.textarroba) {
-                    if (!campo.value.includes('@')) {
-                        campo.setCustomValidity('debe tener minimo un @');
-                        campo.focus();
-                        if (campo.select)
-                            campo.select();
-
-                        return false;
-                    }
-                }
-
-                console.log('cuatro');
             }
 
             return true;

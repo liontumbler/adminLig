@@ -1,6 +1,6 @@
 <template>
-    <select class="form-select" :aria-describedby="'error'+id"
-        :ref="id"
+    <select class="form-select"
+        ref="input"
         :id="id"
         :title="predeterminado.text"
         :required="required"
@@ -12,7 +12,7 @@
             {{ option.text }}
         </option>
     </select>
-    <div :id="'error'+id" class="form-text text-danger" v-if="showError">{{ errorInput }}</div>
+    <div class="form-text text-danger" v-if="showError">{{ errorInput }}</div>
 </template>
 <script>
 export default {

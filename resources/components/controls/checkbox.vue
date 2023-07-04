@@ -1,14 +1,20 @@
 <template>
-    <input class="form-check-input" :aria-describedby="'error'" type="checkbox"
+    <input class="form-check-input" type="checkbox"
+        ref="input"
+        :id="id"
         :required="required"
         :checked="value"
         @input="updateValue">
-    <div :id="'error'" class="form-text text-danger" v-if="showError">{{ errorInput }}</div>
+    <div class="form-text text-danger" v-if="showError">{{ errorInput }}</div>
 </template>
 <script>
 export default {
     name:'inputp',
     props :{
+        id:{
+            type: String,
+            default: ''
+        },
         value:{
             type: String,
             default: ''
