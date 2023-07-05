@@ -31,7 +31,7 @@ export default {
         },
         msjBtnContinuar:{
             type: String,
-            default: 'continuar'
+            default: 'Continuar'
         },
         visibleBtnCerrar:{
             type: Boolean,

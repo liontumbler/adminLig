@@ -8,13 +8,6 @@ use App\Models\Ligas;
 
 class ligaController extends Controller
 {
-    /*protected ILoginService $loginService;
-
-    public function __construct(ILoginService $loginService)
-    {
-        $this->loginService=$loginService;
-    }*/
-
     public function crearLiga(Request $request)
     {
         $validator = Validator::make($request->all(), [

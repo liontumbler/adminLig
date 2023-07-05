@@ -4,7 +4,7 @@
 
 @section('contenedor')
 
-    <liga-component class="m-4">
+    <liga-component>
     </liga-component>
 
 @endsection

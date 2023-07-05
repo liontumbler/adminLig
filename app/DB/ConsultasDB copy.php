@@ -285,10 +285,7 @@ class ConsultasDB
         return $this->read('equipo', $array, $consulta, 'id, nombre');
     }
 
-    public function minDeMasLiga(string $gimnasio)
-    {
-        return $this->read('gimnasio', ['id' => $gimnasio], '`id`=:id', 'minDeMasLiga')[0];
-    }
+
 
     public function obtenerClienteId(array $arr, string $cadena)
     {
@@ -750,22 +747,7 @@ class ConsultasDB
         return ($producto > 0);
     }
 
-    public function crearLigas(object $data, string $idCliente, string $total, string $gimnasio, string $trabajado, string $trabajador)
-    {
-        $ligas = [
-            'total' => $total,
-            'tipoPago' => (empty($data->tipoPago) ? 'debe': $data->tipoPago),
-            'fechaInicio' => !empty($data->fechaInicio)? $data->fechaInicio : null,
-            'fechaFin' => !empty($data->fechaFin)? $data->fechaFin : null,
-            'idGimnasio' => $gimnasio,
-            'idTrabajado' => $trabajado,
-            'idTrabajador' => $trabajador,
-            'idCliente' => $idCliente
-        ];
 
-        $resTienda = $this->create('ligas', $ligas);
-        return ($resTienda > 0);
-    }
 
     public function crearDescuento(object $data, string $gimnasio, string $trabajado, string $trabajador)
     {

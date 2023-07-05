@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\LigaController;
+use App\Http\Controllers\GeneralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,9 @@ Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm')
 Route::post('/loginTra', [LoginController::class, 'loginTra'])->name('loginTra');
 
 Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga')->middleware('sesion.trabajador');
+
+Route::post('/cargarClientesSelect', [GeneralController::class, 'cargarClientesSelect'])->name('cargarClientesSelect');
+Route::post('/cargarEquiposSelect', [GeneralController::class, 'cargarEquiposSelect'])->name('cargarEquiposSelect');
+Route::post('/cargarSelectHora', [GeneralController::class, 'cargarSelectHora'])->name('cargarSelectHora');
+
 

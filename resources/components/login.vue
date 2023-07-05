@@ -1,5 +1,5 @@
 <template>
-    <div class="container p-94px m-4">
+    <div class="m-4">
         <div class="shadow d-block m-auto w-75">
             <div class="row p-5">
                 <div class="col-lg-12 mb-1">
@@ -87,7 +87,7 @@ import { RecaptchaV2 } from '../js/libs/RecaptchaV2/recaptchaV2.js';
 import { ApiService } from "../services/services.js";
 import { Methods } from "../services/methods.js";
 import inputp from "../components/controls/input.vue";
-import modalp from "../components/controls/modal.vue"
+import modalp from "../components/controls/modal.vue";
 
 export default {
     name: 'login',

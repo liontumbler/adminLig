@@ -33,15 +33,13 @@ class ConsultasDB
         $queryliga = $this->cn->read(
             'ligas',
             ['idGimnasio' => $gimnasio],
-            '`idGimnasio`=:idGimnasio AND `fechaInicio` >= '.date('Y-m-01').' 00:00:00 AND `fechaInicio` <= '.date('Y-m-t').' 23:59:59',
+            '`idGimnasio`=:idGimnasio AND `fechaInicio` >= "'.date('Y-m-01').' 00:00:00" AND `fechaInicio` <= "'.date('Y-m-t').' 23:59:59"',
             'COUNT(idGimnasio) AS Total'
         );
-        return $queryliga;
         $countliga = 0;
         if (!empty($queryliga)) {
             $countliga = (int) $queryliga[0]['Total'];
         }
-
 
         $countPlanliga = $this->cn->read(
             'plan',
@@ -53,6 +51,69 @@ class ConsultasDB
         if ($countliga <= $countPlanliga) {
             return true;
         }else{
+            return false;
+        }
+    }
+
+    public function crearLigas(array $data, string $idCliente, string $total, string $gimnasio, string $trabajado, string $trabajador)
+    {
+        $ligas = [
+            'total' => $total,
+            'tipoPago' => (empty($data['tipoPago']) ? 'debe': $data['tipoPago']),
+            'fechaInicio' => !empty($data['fechaInicio']) ? $data['fechaInicio'] : null,
+            'fechaFin' => !empty($data['fechaFin']) ? $data['fechaFin'] : null,
+            'idGimnasio' => $gimnasio,
+            'idTrabajado' => $trabajado,
+            'idTrabajador' => $trabajador,
+            'idCliente' => $idCliente
+        ];
+
+        $resTienda = $this->cn->create('ligas', $ligas);
+        return ($resTienda > 0);
+    }
+
+    public function minDeMasLiga(string $gimnasio)
+    {
+        $petition = $this->cn->read('gimnasio', ['id' => $gimnasio], '`id`=:id', 'minDeMasLiga');
+        if (!empty($petition)) {
+            return $petition[0]['minDeMasLiga'];
+        } else {
+            return false;
+        }
+    }
+
+    public function obtenerAllClienteNombre(string $gimnasio)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        $petition = $this->cn->read('cliente', $array, $consulta, 'id, nombresYapellidos');
+        if (!empty($petition)) {
+            return $petition;
+        } else {
+            return false;
+        }
+    }
+
+    public function obtenerAllEquipoNombre(string $gimnasio)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        $petition = $this->cn->read('equipo', $array, $consulta, 'id, nombre');
+        if (!empty($petition)) {
+            return $petition;
+        } else {
+            return false;
+        }
+    }
+
+    public function obtenerAllHoraligaNombre(string $gimnasio)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        $petition = $this->cn->read('horaliga', $array, $consulta, 'id, nombre');
+        if (!empty($petition)) {
+            return $petition;
+        } else {
             return false;
         }
     }

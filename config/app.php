@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',//America/Bogota
+    'timezone' => 'America/Bogota',//'UTC',
 
     /*
     |--------------------------------------------------------------------------

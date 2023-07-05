@@ -16,15 +16,13 @@ class Ligas
         if ($vencimiento) {
             $hl = $this->db->obtenerHorasLigasPorId($data['selectHora']);
             if (empty($data['cliente'])) {
-                //verificar primero si existe para crearlo
                 $idCliente = $this->db->crearCliente($data, $sesionTrabajador['gimnasioId']);
             } else {
                 $idCliente = $data['cliente'];
             }
-            return $idCliente;
 
             $horas = $hl['horas'];
-            $minutos = $this->minDemas()['minDeMasLiga'];
+            $minutos = $this->db->minDeMasLiga($sesionTrabajador['gimnasioId']);
             if (strpos($horas, '.') !== false) {
                 $partes = explode('.', $horas);
                 $horas = $partes[0];
@@ -32,17 +30,14 @@ class Ligas
             }
 
             if (empty($data['fechaInicio'] )) {
-                $fechaInicio = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' +' . $minutos . ' minutes'));
-                $fechaFin = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' +' . $horas . ' hours +' . $minutos . ' minutes'));
-                $data['fechaInicio'] = $fechaInicio;
-                $data['fechaFin'] = $fechaFin;
+                $data['fechaInicio'] = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' +' . $minutos . ' minutes'));
+                $data['fechaFin'] = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' +' . $horas . ' hours +' . $minutos . ' minutes'));
             } else {
-                $fechaFin = date('Y-m-d H:i:s', strtotime($data['fechaInicio'] . ' +' . $horas . ' hours'));
-                $data['fechaFin'] = $fechaFin;
+                $data['fechaFin'] = date('Y-m-d H:i:s', strtotime($data['fechaInicio'] . ' +' . $horas . ' hours'));
             }
 
             if ($idCliente > 0) {
-                return $this->crearLigas($data, $idCliente, $hl['precio'], $sesionTrabajador['gimnasioId'], $sesionTrabajador['trabajadoId'], $sesionTrabajador['trabajadorId']);
+                return $this->db->crearLigas($data, $idCliente, $hl['precio'], $sesionTrabajador['gimnasioId'], $sesionTrabajador['trabajadoId'], $sesionTrabajador['trabajadorId']);
             } elseif ($idCliente == -1) {
                 return $idCliente;
             }
