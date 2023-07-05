@@ -1,5 +1,5 @@
 <template>
-    <div class="m-4">
+    <div class="container p-94px m-4">
         <div class="container anchoStandar">
             <div class="row">
                 <div class="col-lg-12 mb-1">
@@ -17,11 +17,12 @@
                 <div class="col-lg-12 mb-1" v-if="exiteCliente">
                     <label for="cliente" class="form-label">Clientes *</label>
                     <select-component
+                        :id="'cliente'"
                         :required="true"
                         :predeterminado="{ text: 'Seleccione una opción', value: '' }"
                         :options="[
-                            { text: 'Cedula de ciudadania', value: 'CC' },
-                            { text: 'Tarjeta de identidad', value: 'TI' },
+                            { text: 'Cedula de ciudadania', value: '1' },
+                            { text: 'Tarjeta de identidad', value: '2' },
                         ]"
                         ref="cliente"
                         :value="cliente"
@@ -80,8 +81,8 @@
                         :required="true"
                         :predeterminado="{ text: 'Seleccione una opción', value: '' }"
                         :options="[
-                            { text: 'Cedula de ciudadania', value: 'CC' },
-                            { text: 'Tarjeta de identidad', value: 'TI' },
+                            { text: 'Cedula de ciudadania', value: '1' },
+                            { text: 'Tarjeta de identidad', value: '2' },
                         ]"
                         ref="selectHora"
                         :value="selectHora"
@@ -154,7 +155,7 @@
                 </div>
                 <div class="col-lg-12 mb-1">
                     <div class="d-grid gap-2">
-                        <button @click="agregarLiga" class="btn btn-primary" type="button">
+                        <button @click="agregarLiga" :disabled="btnDisabledAgregarLiga" class="btn btn-primary" type="button">
                             <i class="bi bi-alarm"></i>&nbsp;Agregar Liga
                         </button>
                     </div>
@@ -165,6 +166,7 @@
 </template>
 <script>
 import { ApiService } from "../services/services.js";
+import { Methods } from "../services/methods.js";
 import inputp from "../components/controls/input.vue";
 import selectp from "../components/controls/select.vue";
 import checkboxp from "../components/controls/checkbox.vue";
@@ -182,6 +184,7 @@ export default {
             exiteCliente: true,
             fechaDefault: true,
             pago: true,
+            btnDisabledAgregarLiga: false,
             total: 0,
             nombreYapellido: '',
             documento: '',
@@ -201,7 +204,7 @@ export default {
             });
             return data;
         },
-        agregarLiga() {
+        async agregarLiga() {
             console.log('agregarLiga', [
                 this.exiteCliente,
                 this.fechaDefault,
@@ -235,17 +238,22 @@ export default {
                 array = ['cliente', 'selectHora', 'tipoPago', 'fechaInicio']
             }
 
-            let validCampos = this.validarCampos(array)
+            let validCampos = await Methods.validarCampos(this, array);
 
             if (validCampos) {
-                let data = this.armardatos(array);
+                let data = await Methods.armardatos(this, array);
 
                 console.log('b', data);
-
-                /*let rdta = await ApiService.post(urlLogin, data)
+                this.btnDisabledAgregarLiga = true
+                let rdta = await ApiService.post('crearLiga', data)
+                this.btnDisabledAgregarLiga = false
                 console.log(rdta);
 
-                if (rdta == true) {
+                if (rdta == './loginTrabajador') {
+                    location.href = rdta
+                }
+
+                /*if (rdta == true) {
                     this.msgConfirmacion = 'Inicio sesión correctamente';
                     this.$refs.modalConfirmar.show();
                 }else{
@@ -258,12 +266,13 @@ export default {
                     }
                 }*/
             }else{
+                console.log(validCampos, 'resedwin');
                 //no es valido
                 //this.msgError = 'Hay campos sin validar';
                 //this.$refs.modalError.show();
             }
 
-            console.log(validCampos, 'resedwin');
+
 
         },
         updateExiteCliente(value) {

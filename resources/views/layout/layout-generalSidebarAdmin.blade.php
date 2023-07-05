@@ -1,7 +1,7 @@
 @extends('layout.layout')
 
 @section('content')
-    <div id="nav">
+    <div id="app">
         <nav-sidebar
             :btnssidebar="[
                 {nombre: 'home3', href: 'home3', icon: 'bi bi-house-door'},
@@ -21,8 +21,8 @@
                 ]},
             ]"
         ></nav-sidebar>
-    </div>
-    <div class="container p-94px" id="app">
-        @yield('contenedor')
+        <div class="container p-94px">
+            @yield('contenedor')
+        </div>
     </div>
 @endsection

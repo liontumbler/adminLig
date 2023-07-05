@@ -11,10 +11,6 @@ import nav from '../components/nav.vue';
 const app = createApp({});
 app.component('login-component', login);
 app.component('liga-component', ligas);
+app.component('nav-sidebar', navSidebar);
+app.component('nav-component', nav);
 app.mount('#app');
-
-const appNav = createApp({});
-appNav.component('nav-sidebar', navSidebar);
-appNav.component('nav-component', nav);
-appNav.mount('#nav');
-

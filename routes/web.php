@@ -5,6 +5,7 @@ use App\Http\Controllers\PaginaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TrabajadorController;
+use App\Http\Controllers\LigaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,4 +34,6 @@ Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
 Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm');
 Route::post('/loginTra', [LoginController::class, 'loginTra'])->name('loginTra');
+
+Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga')->middleware('sesion.trabajador');
 

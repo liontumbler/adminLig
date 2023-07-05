@@ -12,6 +12,8 @@ class ApiService {
                 console.log(res);
                 if (res.status == 200) {
                     return res.json();
+                }else{
+                    return res.text();
                 }
             }).catch((res) => {
                 console.error('aca entro', res);

@@ -78,7 +78,7 @@ class Database {
             } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
                 return -2;
             } else {
-                echo 'error';
+                return 'error:'.$e->getMessage();
             }
         }
     }
@@ -97,7 +97,7 @@ class Database {
             } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
                 return -2;
             } else {
-                echo 'error';
+                return 'error:'.$e->getMessage();
             }
         }
     }
@@ -116,7 +116,7 @@ class Database {
             } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
                 return -2;
             } else {
-                echo 'error';
+                return 'error:'.$e->getMessage();
             }
         }
     }

@@ -91,7 +91,8 @@ class LoginController extends Controller
     }
     public function loginAdmOut()
     {
-        session()->flush();
+        //session()->flush();//elimina todo
+        session()->forget('SesionAdmin');
         return redirect('loginAdmin');
     }
 }
