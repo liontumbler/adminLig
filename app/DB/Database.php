@@ -27,9 +27,6 @@ class Database {
             //DB_CONNECTION
             //$dsn = "oci:dbname=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$host)(PORT=$port))) (CONNECT_DATA=(SERVICE_NAME=$database)));charset=UTF8"
             //$dsn = "sqlite:$database";
-            //$dsn = "pgsql:host=$host;port=3366;dbname=$database";
-            //$dsn = "mysql:host=$host;port=3366;dbname=$database";
-            //$dsn = "sqlsrv:Server=$host,3366;Database=$database";
 
             $dsn = '';
             if ($this->tipo == 'pgsql' || $this->tipo == 'mysql') {
