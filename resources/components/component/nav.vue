@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand">{{ logo }}</a>
+            <a class="navbar-brand">
+                <img :src="logo" class="imgIco" alt="Nocarga" height="52">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -52,7 +54,7 @@ export default {
     },
     data() {
         return {
-            logo: 'Navbar',
+            logo: 'img/adminLig.svg',
             searchNav: false,
             btnsnav: [
                 {nombre: 'home', href: 'home'},

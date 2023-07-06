@@ -2,8 +2,8 @@
 
 @section('content')
     <div id="app">
-        <!--nav-component></nav-component-->
-        <nav-sidebar></nav-sidebar>
+        <nav-component></nav-component>
+        <!--nav-sidebar></nav-sidebar-->
         <div class="container p-94px">
             @yield('contenedor')
         </div>
