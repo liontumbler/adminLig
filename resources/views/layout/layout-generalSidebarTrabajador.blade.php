@@ -3,6 +3,10 @@
 @section('content')
     <div id="app">
         <nav-sidebar
+            :color="{{ json_encode($arrayConfig['color']) }}"
+            :background="{{ json_encode($arrayConfig['background']) }}"
+            :nombregimnasio="{{ json_encode($arrayConfig['nombreGimnasio']) }}"
+            :nombreperfil="{{ json_encode($arrayConfig['nombrePerfil']) }}"
             :btnssidebar="[
                 {nombre: 'home3', href: 'home3', icon: 'bi bi-house-door'},
 
@@ -20,7 +24,7 @@
                 ]},
             ]"
         ></nav-sidebar>
-        <div class="container p-94px">
+        <div class="container pt-94px">
             @yield('contenedor')
         </div>
     </div>

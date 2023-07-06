@@ -21,7 +21,7 @@
                 ]},
             ]"
         ></nav-sidebar>
-        <div class="container p-94px">
+        <div class="container pt-94px">
             @yield('contenedor')
         </div>
     </div>

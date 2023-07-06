@@ -83,6 +83,11 @@ class Trabajador
         }
     }
 
+    public function cargadeVista() {
+        $sesionTrabajador = session()->get('SesionTrabajador');
+        return $this->db->obtenerDatosMuestraTrabajador($sesionTrabajador['trabajadorId']);
+    }
+
 
 
 }

@@ -51,4 +51,9 @@ class Gimnasio
 
         return 'no entro a nada';
     }
+
+    public function cargadeVista() {
+        $sesionTrabajador = session()->get('SesionTrabajador');
+        return $this->db->obtenerDatosMuestraGimnasio($sesionTrabajador['gimnasioId']);
+    }
 }

@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100 position-fixed p-94px" style="width: 280px; z-index: 1;" v-if="sidebar">
+    <div ref="sidebar" class="d-flex flex-column flex-shrink-0 ps-3 pe-3 pb-3 text-white bg-dark h-100 position-fixed pt-94px w-280px index-1" v-if="sidebar">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <i :class="icontitleSide"></i>
             &nbsp;
@@ -79,6 +79,22 @@
 export default {
     name: 'sidebar',
     props: {
+        color: {
+            type: String,
+            default: '',
+        },
+        background: {
+            type: String,
+            default: '',
+        },
+        nombregimnasio: {
+            type: String,
+            default: '',
+        },
+        nombreperfil: {
+            type: String,
+            default: '',
+        },
         btnssidebar: {
             type: Array,
             default: [],
@@ -97,7 +113,6 @@ export default {
         },
     },
     mounted() {
-        console.log('esto es', this.btnssidebar, this.footersidebar, this.btnsnav);
         this.btnsnavReal = this.btnsnav.map(function(btn) {
             if (!Array.isArray(btn.href)) {
                 return {nombre: btn.nombre, href: btn.href, class: 'nav-item'};
@@ -105,6 +120,21 @@ export default {
                 return {nombre: btn.nombre, href: btn.href, class: 'nav-item dropdown'};
             }
         });
+        console.log(this.color, this.background);
+        if (this.color) {
+            this.cadenaStyle = 'color:'+ this.color + ' !important;';
+        }
+        if (this.background) {
+            this.cadenaStyle += 'background-color:'+ this.background + ' !important;';
+        }
+        if (this.nombregimnasio) {
+            this.titleSide = this.nombregimnasio
+        }
+        if (this.nombreperfil) {
+            this.nombreUser = this.nombreperfil;
+        }
+        var element = document.querySelector('.bg-dark');
+        element.style.cssText = this.cadenaStyle;
     },
     data() {
         return {
@@ -116,28 +146,19 @@ export default {
             logo: 'img/adminLig.svg',
             searchNav: false,
             btnsnavReal: [],
-            /*btnssidebar: [
-                {nombre: 'home3', href: 'home3', icon: 'bi bi-house-door'},
-                {nombre: 'home4', href: 'home4', icon: 'bi bi-house-door'},
-            ],
-            footersidebar: [
-                {nombre: 'home', href: 'home'},
-                {nombre: 'home2', href: 'home2'},
-            ],*/
-            /*btnsnav: [
-                {nombre: 'home', href: 'home'},
-                {nombre: 'home2', href: 'home2'},
-                {nombre: 'dorp', href: [
-                    {nombre: 'uno', href: 'uno'},
-                    {nombre: 'divider'},
-                    {nombre: 'dos', href: 'dos'}
-                ]},
-            ],*/
+            cadenaStyle: '',
         }
     },
     methods: {
         abrirCerrarSidebar(e) {
             this.sidebar = !this.sidebar;
+
+            this.$nextTick(() => {
+                const elemento = this.$refs.sidebar;
+                if (elemento) {
+                    elemento.style.cssText = this.cadenaStyle;
+                }
+            });
         }
     },
 };
@@ -145,6 +166,13 @@ export default {
 <style>
 .btn:hover {
     color: var(--bs-btn-hover-color) !important;
+}
+.text-white{
+    --bs-text-opacity: none;
+}
+.navbar-dark, .navbar[data-bs-theme=dark]{
+    --bs-navbar-color: none;
+    --bs-navbar-active-color: none;
 }
 </style>
 

@@ -5,19 +5,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Gimnasio;
+use App\Models\Trabajador;
 
 class TrabajadorController extends Controller
 {
-    /*protected ILoginService $loginService;
-
-    public function __construct(ILoginService $loginService)
-    {
-        $this->loginService=$loginService;
-    }*/
-
     public function homeTrabajador()
     {
-        return view('worker.homeTrabajador');
+        $gimnasio = new Gimnasio();
+        $resGim = $gimnasio->cargadeVista();
+
+        $trabajador = new Trabajador();
+        $resTra = $trabajador->cargadeVista();
+
+        $color = $resGim['color'];
+        $background = $resGim['background'];
+        $nombreGimnasio = $resGim['nombre'];
+        $nombrePerfil = $resTra['nombresYapellidos'];
+        $arrayConfig= [
+            'color' => $color,
+            'background' => $background,
+            'nombreGimnasio' => $nombreGimnasio,
+            'nombrePerfil' => $nombrePerfil,
+        ];
+
+        return view('worker.homeTrabajador', compact('arrayConfig'));
     }
 
     public function ligas()

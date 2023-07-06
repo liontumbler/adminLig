@@ -48,6 +48,26 @@ class ConsultasDB
         }
     }
 
+    public function obtenerDatosMuestraGimnasio($gimnasio) {
+        $petition = $this->cn->read('gimnasio', ['id' => $gimnasio], '`id`=:id', 'nombre, background, color');
+        if (!empty($petition)) {
+            return $petition[0];
+        } else {
+            return false;
+        }
+    }
+
+    public function obtenerDatosMuestraTrabajador($trabajador) {
+        $petition = $this->cn->read('trabajador', ['id' => $trabajador], '`id`=:id', 'nombresYapellidos');
+        if (!empty($petition)) {
+            return $petition[0];
+        } else {
+            return false;
+        }
+    }
+
+
+
     public function crearLigas(array $data, string $idCliente, string $total, string $gimnasio, string $trabajado, string $trabajador)
     {
         $ligas = [

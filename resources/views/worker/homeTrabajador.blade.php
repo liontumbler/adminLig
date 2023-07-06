@@ -1,4 +1,4 @@
-@extends('layout.layout-generalSidebarTrabajador')
+@extends('layout.layout-generalSidebarTrabajador', $arrayConfig)
 
 @section('title', 'Bienvenido Trabajador')
 
@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-1">
                     <div class="d-grid gap-2">
-                        <a class="btn btn-light" >
+                        <a class="btn btn-light">
                             <i class="bi bi-alarm"></i>&nbsp;Ligassssss
                         </a>
                     </div>
