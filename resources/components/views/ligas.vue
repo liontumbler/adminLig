@@ -142,7 +142,7 @@
                 </div>
                 <hr>
                 <div class="col-lg-12 mb-1">
-                    <label class="form-label">Total: {{ total }}</label>
+                    <span class="form-label p-2">Total: {{ total }}</span>
                 </div>
                 <div class="col-lg-12 mb-1">
                     <div class="d-grid gap-2">

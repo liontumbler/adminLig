@@ -8,7 +8,7 @@ class ConsultasDB
     private $cn;
     public function __construct()
     {
-        $this->cn = new Database(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
+        $this->cn = new Database();
     }
 
     public function obtenerHorasLigasPorId(string $id)

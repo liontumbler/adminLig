@@ -9,24 +9,41 @@ class Database {
     private $username;
     private $password;
     private $database;
+    private $tipo;
+    private $puerto;
     protected $cn;
     protected $logger;
     protected $ID = 'id=:id';
 
-    public function __construct($host, $username, $password, $database)
+    public function __construct()
     {
-        $this->host = $host;
-        $this->username = $username;
-        $this->password = $password;
-        $this->database = $database;
+        $this->host = env('DB_HOST');
+        $this->username = env('DB_USERNAME');
+        $this->password = env('DB_PASSWORD');
+        $this->database = env('DB_DATABASE');
+        $this->tipo = env('DB_CONNECTION');
+        $this->puerto = env('DB_PORT');
         try {
-            $dsn = "mysql:host=$host;dbname=$database";
+            //DB_CONNECTION
+            //$dsn = "oci:dbname=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$host)(PORT=$port))) (CONNECT_DATA=(SERVICE_NAME=$database)));charset=UTF8"
+            //$dsn = "sqlite:$database";
+            //$dsn = "pgsql:host=$host;port=3366;dbname=$database";
+            //$dsn = "mysql:host=$host;port=3366;dbname=$database";
+            //$dsn = "sqlsrv:Server=$host,3366;Database=$database";
+
+            $dsn = '';
+            if ($this->tipo == 'pgsql' || $this->tipo == 'mysql') {
+                $dsn = "$this->tipo:host=$this->host;port=$this->puerto;dbname=$this->database";
+            }elseif ($this->tipo == 'sqlsrv') {
+                $dsn = "$this->tipo:Server=$this->host,$this->puerto;Database=$this->database";
+            }
+
             $options = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => 0,
             ];
-            $this->cn = new PDO($dsn, $username, $password, $options);
+            $this->cn = new PDO($dsn, $this->username, $this->password, $options);
         } catch (PDOException $e) {
             echo $e->getMessage().$this->host.''.$this->username.''.$this->password.''.$this->database;
             die();
