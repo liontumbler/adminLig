@@ -33,7 +33,7 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Acerca de Laravel
+## Acerca De Laravel
 
 Laravel es un marco de aplicación web con una sintaxis expresiva y elegante. Creemos que el desarrollo debe ser una experiencia placentera y creativa para ser realmente satisfactorio. Laravel elimina el dolor del desarrollo al facilitar las tareas comunes utilizadas en muchos proyectos web, como:
 
@@ -59,23 +59,23 @@ If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Lar
 
 We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-## Patrocinadores de Laravel
+## Patrocinadores De Laravel
 
-Nos gustaría extender nuestro agradecimiento a los siguientes patrocinadores por financiar el desarrollo de Laravel. Si está interesado en convertirse en patrocinador, visite Laravel[Patreon page](https://patreon.com/taylorotwell).
+Nos gustaría extender nuestro agradecimiento a los siguientes patrocinadores por financiar el desarrollo de Laravel. Si está interesado en convertirse en patrocinador, visite Laravel [Patreon page](https://patreon.com/taylorotwell).
 
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## contribuyendo
+## Contribuyendo
 
 ¡Gracias por considerar contribuir al marco de Laravel! La guía de contribuciones se encuentra en el [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Code Of Conduct
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Código de conducta
+## Código De Conducta
 
 Para garantizar que la comunidad de Laravel les dé la bienvenida a todos, revise y respete las [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
@@ -83,7 +83,7 @@ Para garantizar que la comunidad de Laravel les dé la bienvenida a todos, revis
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## Vulnerabilidades de seguridad
+## Vulnerabilidades De Seguridad
 
 Si descubre una vulnerabilidad de seguridad dentro de Laravel, envíe un correo electrónico a Taylor Otwell a través de [taylor@laravel.com](mailto:taylor@laravel.com). Todas las vulnerabilidades de seguridad se abordarán de inmediato.
 
