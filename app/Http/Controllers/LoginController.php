@@ -19,12 +19,12 @@ class LoginController extends Controller
 
     public function loginAdmin()
     {
-        return view('loginAdmin');
+        return view('admin.loginAdmin');
     }
 
     public function loginTrabajador()
     {
-        return view('loginTrabajador');
+        return view('worker.loginTrabajador');
     }
 
     public function recaptcha(Request $request) {

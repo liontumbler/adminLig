@@ -17,12 +17,12 @@ class TrabajadorController extends Controller
 
     public function homeTrabajador()
     {
-        return view('homeTrabajador');
+        return view('worker.homeTrabajador');
     }
 
     public function ligas()
     {
-        return view('ligas');
+        return view('worker.ligas');
     }
 
 }
