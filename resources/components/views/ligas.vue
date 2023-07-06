@@ -176,13 +176,13 @@
     </modal-component>
 </template>
 <script>
-import { ApiService } from "../services/services.js";
-import { Methods } from "../services/methods.js";
-import inputp from "../components/controls/input.vue";
-import selectp from "../components/controls/select.vue";
-import checkboxp from "../components/controls/checkbox.vue";
-import radiop from "../components/controls/radio.vue";
-import modalp from "../components/controls/modal.vue";
+import { ApiService } from "../../services/services.js";
+import { Methods } from "../../services/methods.js";
+import inputp from "../../components/controls/input.vue";
+import selectp from "../../components/controls/select.vue";
+import checkboxp from "../../components/controls/checkbox.vue";
+import radiop from "../../components/controls/radio.vue";
+import modalp from "../../components/controls/modal.vue";
 export default {
     name: 'ligas',
     components: {

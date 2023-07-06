@@ -83,11 +83,11 @@
     </modal-component>
 </template>
 <script>
-import { RecaptchaV2 } from '../js/libs/RecaptchaV2/recaptchaV2.js';
-import { ApiService } from "../services/services.js";
-import { Methods } from "../services/methods.js";
-import inputp from "../components/controls/input.vue";
-import modalp from "../components/controls/modal.vue";
+import { RecaptchaV2 } from '../../js/libs/RecaptchaV2/recaptchaV2.js';
+import { ApiService } from "../../services/services.js";
+import { Methods } from "../../services/methods.js";
+import inputp from "../../components/controls/input.vue";
+import modalp from "../../components/controls/modal.vue";
 
 export default {
     name: 'login',

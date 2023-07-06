@@ -142,4 +142,9 @@ export default {
     },
 };
 </script>
+<style>
+.btn:hover {
+    color: var(--bs-btn-hover-color) !important;
+}
+</style>
 
