@@ -10,12 +10,10 @@ use App\Models\Trabajador;
 
 class LoginController extends Controller
 {
-    /*protected ILoginService $loginService;
-
-    public function __construct(ILoginService $loginService)
+    public function errorSesionCerrada()
     {
-        $this->loginService=$loginService;
-    }*/
+        return view('errors.errorSesionCerrada');
+    }
 
     public function loginAdmin()
     {

@@ -28,7 +28,10 @@ Route::get('/loginTraOut', [LoginController::class, 'loginTraOut'])->name('login
 Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin')->middleware('sesion.admin');
 Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador')->middleware('sesion.trabajador');
 
-Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');
+Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');//->middleware('sesion.trabajador');
+
+Route::get('/errorSesionCerrada', [LoginController::class, 'errorSesionCerrada'])->name('errorSesionCerrada');
+
 
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
