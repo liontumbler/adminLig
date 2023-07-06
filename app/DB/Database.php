@@ -33,11 +33,6 @@ class Database {
         }
     }
 
-    public function test()
-    {
-        return 'hola mundo'.$this->host.''.$this->username.''.$this->password.''.$this->database;
-    }
-
     private function insertStr($table, $data)
     {
         $fields = implode(", ", array_keys($data));

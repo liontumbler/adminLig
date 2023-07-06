@@ -8,14 +8,7 @@ class ConsultasDB
     private $cn;
     public function __construct()
     {
-        //date_default_timezone_set("America/Bogota");
         $this->cn = new Database(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
-    }
-
-    public function test()
-    {
-        return $this->cn->test();
-        //return 'hola mundo'.env('DB_HOST').''.env('DB_USERNAME').''.env('DB_PASSWORD').''.env('DB_DATABASE');
     }
 
     public function obtenerHorasLigasPorId(string $id)
