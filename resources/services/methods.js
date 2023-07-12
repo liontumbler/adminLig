@@ -132,5 +132,204 @@ class Methods {
         });
         return data;
     };
+
+    //optiene el valor que se va a fitrar en raiz EJ: persona.nombre
+    getValue(data, raiz){
+        if (raiz.indexOf('.') != -1) {
+            let rutas = raiz.split('.');
+            let aux = data;
+            for (const index in rutas) {
+                let ruta = rutas[index];
+                if (aux[ruta]) {
+                    aux = aux[ruta];
+                } else {
+                    let auxArray = [];
+                    let arrayString = '';
+                    for (const e in aux) {
+                        if (aux[e][ruta] && typeof aux[e][ruta] === 'object') {
+                            auxArray.push(aux[e][ruta]);
+                        }else{
+                            arrayString += aux[e][ruta] + ', ';
+                        }
+                    }
+
+                    if (arrayString != '') {
+                        aux = arrayString.slice(0, -2);
+                    } else {
+                        aux = auxArray;
+                    }
+                }
+            }
+
+            return aux;
+        } else {
+            if (datos[key][i] || datos[key][i] == 0 || datos[key][i] === false) {
+                return datos[key][i];
+            } else {
+                console.log('error' + i, datos[key], cabecera[i]);
+            }
+        }
+    }
+
+    getData(datos, cabecera) {
+        let array = [];
+        if (typeof datos === 'object' || Array.isArray(datos)) {
+            for (const key in datos) {
+                let dataReturn = {};
+                if (datos.hasOwnProperty(key)) {
+                    for (const i in cabecera) {
+                        if (key == 0) {
+                            dataReturn[cabecera[i]] = null;
+                        }
+
+                        if (i.indexOf('.') != -1) {
+                            let rutas = i.split('.');
+                            let aux = datos[key]
+                            for (const index in rutas) {
+                                let ruta = rutas[index];
+                                if (aux[ruta]) {
+                                    aux = aux[ruta];
+                                } else {
+                                    let auxArray = [];
+                                    let arrayString = '';
+                                    for (const e in aux) {
+                                        if (aux[e][ruta] && typeof aux[e][ruta] === 'object') {
+                                            auxArray.push(aux[e][ruta]);
+                                        }else{
+                                            arrayString += aux[e][ruta] + ', ';
+                                        }
+                                    }
+
+                                    if (arrayString != '') {
+                                        aux = arrayString.slice(0, -2);
+                                    } else {
+                                        aux = auxArray;
+                                    }
+                                }
+                            }
+
+                            dataReturn[cabecera[i]] = aux;
+                        } else {
+                            if (datos[key][i] || datos[key][i] == 0 || datos[key][i] === false) {
+                                dataReturn[cabecera[i]] = datos[key][i];
+                            } else {
+                                console.log('error' + i, datos[key], cabecera[i]);
+                            }
+                        }
+                    }
+
+                    array.push(dataReturn);
+                }
+            }
+        }
+
+        //console.log(array);
+        return array;
+    }
+
+    obtenerFechaActual() {
+        let fecha = new Date();
+
+        let dia = fecha.getDate();
+        let mes = fecha.getMonth() + 1; // Los meses van de 0 a 11
+        let anio = fecha.getFullYear();
+
+        let horas = fecha.getHours();
+        let minutos = fecha.getMinutes();
+        let segundos = fecha.getSeconds();
+
+        dia = (dia < 10) ? '0' + dia : dia;
+        mes = (mes < 10) ? '0' + mes : mes;
+        horas = (horas < 10) ? '0' + horas : horas;
+        minutos = (minutos < 10) ? '0' + minutos : minutos;
+        segundos = (segundos < 10) ? '0' + segundos : segundos;
+
+        const formatoFecha = dia + '/' + mes + '/' + anio;
+        const formatoHora = horas + ':' + minutos + ':' + segundos;
+
+        return formatoFecha + ' ' + formatoHora;
+    }
+
+    getTableHtml(datos, cabecera) {
+        if (!cabecera || !datos) {
+            return 'Error: Los argumentos no son válidos.';
+        }
+
+        if (typeof datos === 'object' || Array.isArray(datos)) {
+            let tableHeaderContent = '';
+            let tableContent = '';
+            let title = 'titulo';
+            let date = this.obtenerFechaActual();
+            for (const key in datos) {
+                tableContent += '<tr>';
+
+                if (datos.hasOwnProperty(key)) {
+                    for (const i in cabecera) {
+                        if (key == 0) {
+                            tableHeaderContent += '<th><h4>'+ cabecera[i] +'</h4></th>';
+                        }
+
+                        if (i.indexOf('.') != -1) {
+                            let rutas = i.split('.');
+                            let aux = datos[key]
+                            for (const index in rutas) {
+                                let ruta = rutas[index];
+                                if (aux[ruta]) {
+                                    aux = aux[ruta];
+                                } else {
+                                    let auxArray = [];
+                                    let arrayString = '';
+                                    for (const e in aux) {
+                                        if (aux[e][ruta] && typeof aux[e][ruta] === 'object') {
+                                            auxArray.push(aux[e][ruta]);
+                                        }else{
+                                            arrayString += aux[e][ruta] + ', ';
+                                        }
+                                    }
+
+                                    if (arrayString != '') {
+                                        aux = arrayString.slice(0, -2);
+                                    } else {
+                                        aux = auxArray;
+                                    }
+                                }
+                            }
+
+                            tableContent += '<td>'+ aux +'</td>';
+                        } else {
+                            if (datos[key][i] || datos[key][i] == 0 || datos[key][i] === false) {
+                                tableContent += '<td>'+ datos[key][i] +'</td>';
+                            } else {
+                                console.log('error' + i, datos[key], cabecera[i]);
+                            }
+                        }
+                    }
+                }
+
+                tableContent += '</tr>';
+            }
+
+            if (tableContent == '') {
+                tableContent = '<td colspan="7">No se encontraron datos</td>';
+            }
+
+            return `<h3>`+ title +`</h3>
+                    <table border="0" align="left" id="descuento">
+                        <thead>
+                            <tr>
+                                `+ tableHeaderContent +`
+                            </tr>
+                        </thead>
+                        <tbody>
+                            `+ tableContent +`
+                        </tbody>
+                    </table>
+                    <footer>
+                        <p>generado: `+ date +`</p>
+                    </footer>`;
+        } else {
+            return 'Error: Los datos no son un objeto o una matriz.';
+        }
+    }
 }
 export { Methods };
