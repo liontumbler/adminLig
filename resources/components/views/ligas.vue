@@ -313,7 +313,13 @@ export default {
                         //su plan llego al limite
                         this.msgError = 'Su plan llegó al límite';
                         this.$refs.modalError.show();
-                    }else {
+                    }else if (rdta.error) {
+                        this.msgError = 'Errores encontrados:\n';
+                        rdta.error.forEach(e => {
+                            this.msgError += e + '\n';
+                        });
+                        this.$refs.modalError.show();
+                    } else {
                         this.msgError = 'Error desconocido';
                         this.$refs.modalError.show();
                     }
