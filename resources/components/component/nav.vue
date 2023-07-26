@@ -67,11 +67,6 @@ export default {
             ],
         }
     },
-    methods: {
-        abrirCerrarSidebar(e) {
-            this.sidebar = !this.sidebar;
-        }
-    },
 };
 </script>
 

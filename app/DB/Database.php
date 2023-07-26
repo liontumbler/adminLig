@@ -12,8 +12,6 @@ class Database {
     private $tipo;
     private $puerto;
     protected $cn;
-    protected $logger;
-    protected $ID = 'id=:id';
 
     public function __construct()
     {
@@ -24,10 +22,6 @@ class Database {
         $this->tipo = env('DB_CONNECTION');
         $this->puerto = env('DB_PORT');
         try {
-            //DB_CONNECTION
-            //$dsn = "oci:dbname=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$host)(PORT=$port))) (CONNECT_DATA=(SERVICE_NAME=$database)));charset=UTF8"
-            //$dsn = "sqlite:$database";
-
             $dsn = '';
             if ($this->tipo == 'pgsql' || $this->tipo == 'mysql') {
                 $dsn = "$this->tipo:host=$this->host;port=$this->puerto;dbname=$this->database";
@@ -137,8 +131,7 @@ class Database {
             $statement = $this->cn->prepare($sql);
             $statement->execute(['id' => $id]);
         } catch (PDOException $e) {
-            $this->logger->log('Error: '."Failed to delete record from $table with id=$id: " . $e->getMessage());
-            ServerResponse::getResponse(500);
+            return 'error:'.$e->getMessage();
         }
     }
 

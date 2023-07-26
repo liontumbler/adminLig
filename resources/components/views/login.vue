@@ -152,50 +152,50 @@ export default {
         continuarModalError(){
             this.$refs.modalError.hide();
         },
-        trabajar(e) {
-            this.recapchav2.validarRV2S(async (valid) => {
-                console.log(this.nickname, 'ref');
+        async trabajar(e) {
+            let array = []
+            let urlLogin = 'loginAdm';
+            if (this.login == 'trabajador') {
+                urlLogin = 'loginTra';
+                array = ['nickname', 'clave', 'caja']
+            }else{
+                array = ['nickname', 'clave']
+            }
 
-                let array = []
-                let urlLogin = 'loginAdm';
-                if (this.login == 'trabajador') {
-                    urlLogin = 'loginTra';
-                    array = ['nickname', 'clave', 'caja']
-                }else{
-                    array = ['nickname', 'clave']
-                }
+            let validCampos = await Methods.validarCampos(this, array);
+            if(validCampos){
+                this.recapchav2.validarRV2S(async (valid) => {
+                    if (valid) {
+                        let data = await Methods.armardatos(this, array);
 
-                let validCampos = await Methods.validarCampos(this, array);
-                if (valid && validCampos) {
-                    let data = await Methods.armardatos(this, array);
+                        console.log('b', data);
+                        this.btnDisabledTrabajar = true;
+                        let rdta = await ApiService.post(urlLogin, data);
+                        this.btnDisabledTrabajar = false;
+                        console.log(rdta);
 
-                    console.log('b', data);
-                    this.btnDisabledTrabajar = true;
-                    let rdta = await ApiService.post(urlLogin, data);
-                    this.btnDisabledTrabajar = false;
-                    console.log(rdta);
-
-                    if (rdta == true) {
-                        this.msgConfirmacion = 'Inicio sesión correctamente';
-                        this.$refs.modalConfirmar.show();
-                    }else{
-                        if (rdta == 600) {
-                            this.msgConfirmacion = 'Ya se inició una sesión anterior, por lo que se inició una caja, pero no sé cerro, por lo que lo llevaremos a la sesión anterior hasta que cierre caja';
+                        if (rdta == true) {
+                            this.msgConfirmacion = 'Inicio sesión correctamente';
                             this.$refs.modalConfirmar.show();
                         }else{
-                            this.msgError = 'Hubo un error en los datos';
+                            if (rdta == 600) {
+                                this.msgConfirmacion = 'Ya se inició una sesión anterior, por lo que se inició una caja, pero no sé cerro, por lo que lo llevaremos a la sesión anterior hasta que cierre caja';
+                                this.$refs.modalConfirmar.show();
+                            }else{
+                                this.msgError = 'Hubo un error en los datos';
+                                this.$refs.modalError.show();
+                            }
+                        }
+                    }else{
+                        console.log(validCampos, valid, 'valor valido');
+                        //no es valido
+                        if (!valid) {
+                            this.msgError = 'Validar reCAPTCHA';
                             this.$refs.modalError.show();
                         }
                     }
-                }else{
-                    console.log(validCampos, valid, 'valor valido');
-                    //no es valido
-                    if (!valid) {
-                        this.msgError = 'Validar reCAPTCHA';
-                        this.$refs.modalError.show();
-                    }
-                }
-            }, 'recaptcha');
+                }, 'recaptcha');
+            }
         },
     },
 };

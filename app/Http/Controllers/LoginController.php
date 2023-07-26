@@ -83,9 +83,9 @@ class LoginController extends Controller
     public function loginTraOut() {
         //falata
 
-        session()->flush();
+        //session()->flush();
+        session()->forget('SesionTrabajador');
         return redirect('loginTrabajador');
-        return $variableValid;
     }
     public function loginAdmOut()
     {

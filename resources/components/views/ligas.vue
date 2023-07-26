@@ -255,20 +255,6 @@ export default {
             return year + '-' + month + '-' + day + 'T00:00';
         },
         async agregarLiga() {
-            console.log('agregarLiga', [
-                this.exiteCliente,
-                this.fechaDefault,
-                this.pago,
-                this.total,
-                this.nombreYapellido,
-                this.documento,
-                this.fechaInicio,
-                this.cliente,
-                this.equipo,
-                this.tipoPago,
-                this.selectHora,
-            ]);
-
             let array = []
             if(this.exiteCliente && this.pago && this.fechaDefault){
                 array = ['cliente', 'selectHora', 'tipoPago']
@@ -289,7 +275,6 @@ export default {
             }
 
             let validCampos = await Methods.validarCampos(this, array);
-
             if (validCampos) {
                 let data = await Methods.armardatos(this, array);
 

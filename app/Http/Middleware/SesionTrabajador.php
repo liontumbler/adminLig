@@ -23,6 +23,7 @@ class SesionTrabajador
             $res = $db->obtenerTrabajadoTrabajador($sesionTrabajador['gimnasioId'], $sesionTrabajador['trabajadorId']);
             if(empty($res)){
                 if ($request->isMethod('get')) {
+                    session()->forget('SesionTrabajador');
                     return redirect('errorSesionCerrada');
                 }elseif ($request->isMethod('post')) {
                     return new Response("./errorSesionCerrada", 500);

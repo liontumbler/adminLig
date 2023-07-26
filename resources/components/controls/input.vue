@@ -107,10 +107,6 @@ export default {
                 }
             }
 
-            if (campo.type == 'number') {
-
-            }
-
             if (campo.type == 'password') {
                 if (campo.value.length < 8) {
                     this.showError = true;

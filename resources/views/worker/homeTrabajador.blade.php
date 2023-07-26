@@ -10,7 +10,7 @@
                 <div class="col-lg-12 mb-1">
                     <div class="d-grid gap-2">
                         <a class="btn btn-light">
-                            <i class="bi bi-alarm"></i>&nbsp;Ligassssss
+                            <i class="bi bi-alarm"></i>&nbsp;Ligas
                         </a>
                     </div>
                 </div>

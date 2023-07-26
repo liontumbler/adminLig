@@ -11,7 +11,6 @@ class Trabajador
     }
 
     public function loginTrabajador($data) {
-
         $res = $this->db->obtenerTrabajadorNickname($data['nickname']);
         if (empty($res)) {
             return $res;
@@ -86,6 +85,15 @@ class Trabajador
     public function cargadeVista() {
         $sesionTrabajador = session()->get('SesionTrabajador');
         return $this->db->obtenerDatosMuestraTrabajador($sesionTrabajador['trabajadorId']);
+    }
+
+    public function getTrabajadores($id = null) {
+        $sesionAdmin = session()->get('SesionAdmin');
+        if (!empty($sesionAdmin)) {
+            return $this->db->obtenerTrabajadores($sesionAdmin['gimnasioId'], $id);
+        } else {
+            return 602;
+        }
     }
 
 

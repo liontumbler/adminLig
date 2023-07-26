@@ -14,4 +14,9 @@ class Equipo
         $sesionTrabajador = session()->get('SesionTrabajador');
         return $this->db->obtenerAllEquipoNombre($sesionTrabajador['gimnasioId']);
     }
+
+    public function crearEquipo($data) {
+        $this->db->crearEquipo($data, $sesionTrabajador['gimnasioId']);
+    }
+
 }

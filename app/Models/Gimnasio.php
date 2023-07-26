@@ -11,9 +11,7 @@ class Gimnasio
     }
 
     public function loginAdmin($data) {
-
         $res = $this->db->obtenerAdminNickname($data['nickname']);
-        //return 'bien'.print_r($res).'$res';
         if (empty($res)) {
             return $res;
         } else {
@@ -55,5 +53,14 @@ class Gimnasio
     public function cargadeVista() {
         $sesionTrabajador = session()->get('SesionTrabajador');
         return $this->db->obtenerDatosMuestraGimnasio($sesionTrabajador['gimnasioId']);
+    }
+
+    public function getGimnasios($id = null) {
+        $sesionAdmin = session()->get('SesionAdmin');
+        if (!empty($sesionAdmin)) {
+            return $this->db->obtenerGimnasios($id);
+        } else {
+            return 602;
+        }
     }
 }
