@@ -1,6 +1,6 @@
 <template>
     <div class="m-4">
-        <div class="shadow d-block m-auto w-75">
+        <div class="shadow d-block m-auto w-75 bg-white rounded">
             <div class="row p-5">
                 <div class="col-lg-12 mb-1">
                     <img src="img/adminLig.svg" alt="Nocarga" class="w-50 d-block m-auto">
