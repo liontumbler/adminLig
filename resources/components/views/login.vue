@@ -1,9 +1,9 @@
 <template>
     <div class="m-4">
-        <div class="shadow d-block m-auto w-75 bg-white rounded">
+        <div class="shadow-lg d-block m-auto w-75 bg-white rounded">
             <div class="row p-5">
                 <div class="col-lg-12 mb-1">
-                    <img src="img/adminLig.svg" alt="Nocarga" class="w-50 d-block m-auto">
+                    <img :src="imglogo" alt="Nocarga" class="w-50 d-block m-auto">
                 </div>
                 <div class="col-lg-12 mb-1">
                     <label for="nickname" class="form-label">Nickname *</label>
@@ -100,6 +100,7 @@ export default {
             type: String,
             default: "",
         },
+        imglogo: String,
     },
     mounted() {
         let div = document.getElementById('recaptcha');

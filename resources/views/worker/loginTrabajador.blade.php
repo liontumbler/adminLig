@@ -1,13 +1,18 @@
 @extends('layout.layout')
 
-@section('title', 'inicio')
+@section('title', 'login del trabajador')
 
 @section('content')
+
     @php
         //echo print_r(session()->all());
         //echo print_r(session()->get('SesionTrabajador'));
     @endphp
     <div id="app">
-        <login-component :login="'trabajador'"></login-component>
+        @vite(['resources/css/login.css'])
+        <login-component
+        :login="'trabajador'"
+        :imglogo="'{{ Vite::asset('resources/img/adminLig.svg') }}'"
+        ></login-component>
     </div>
 @endsection
