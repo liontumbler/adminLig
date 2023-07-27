@@ -2,6 +2,9 @@
 namespace App\DB;
 
 use App\DB\Database;
+use App\Mail\ClaveCajaMail;
+
+use Illuminate\Support\Facades\Mail;
 
 class ConsultasDB
 {
@@ -584,8 +587,15 @@ class ConsultasDB
                 return 35;
             }
         } else {
-            //actualizar clave de caja  claveCaja, enviar codigo por correo
-            return 'correo';
+            try {
+                Mail::to($medio)
+                ->send(new ClaveCajaMail($claveCajaNueva));
+                $this->cn->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
+                return 1;
+            } catch (\Exception $e) {
+                \Log::error('Error al enviar el correo: ' . $e->getMessage());
+                return 500;
+            }
         }
     }
 }
