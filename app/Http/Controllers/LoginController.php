@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Gimnasio;
 use App\Models\Trabajador;
 
+use App\Mail\ClaveCajaMail;
+use Illuminate\Support\Facades\Mail;
+
 class LoginController extends Controller
 {
     public function errorSesionCerrada()
@@ -92,5 +95,16 @@ class LoginController extends Controller
         //session()->flush();//elimina todo
         session()->forget('SesionAdmin');
         return redirect('loginAdmin');
+    }
+
+    public function mail(Request $request) {
+        try {
+            Mail::to('lion_3214@hotmail.com')
+            ->send(new ClaveCajaMail('xxxx'));
+            return 'bien';
+        } catch (\Exception $e) {
+            \Log::error('Error al enviar el correo: ' . $e->getMessage());
+            return 'mal';
+        }
     }
 }

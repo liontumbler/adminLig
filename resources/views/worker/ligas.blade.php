@@ -1,6 +1,6 @@
-@extends('layout.layout-generalSidebarAdmin')
+@extends('layout.layout-generalSidebarTrabajador')
 
-@section('title', 'Bienvenido administrador')
+@section('title', 'Bienvenido trabajador')
 
 @section('contenedor')
 

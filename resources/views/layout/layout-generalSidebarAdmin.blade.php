@@ -3,6 +3,9 @@
 @section('content')
     <div id="app">
         <nav-sidebar
+            :logo="'{{ Vite::asset('resources/img/adminLig.svg') }}'"
+            :color="'#ff00ff'"
+            :background="'#fff000'"
             :btnssidebar="[
                 {nombre: 'home3', href: 'home3', icon: 'bi bi-house-door'},
                 {nombre: 'home4', href: 'home4', icon: 'bi bi-house-door'},
@@ -24,5 +27,7 @@
         <div class="container pt-94px">
             @yield('contenedor')
         </div>
+
+        @include('layout.footer')
     </div>
 @endsection

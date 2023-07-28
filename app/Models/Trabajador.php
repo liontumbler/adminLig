@@ -70,6 +70,8 @@ class Trabajador
                         $ini = $updateTrabajador;
                     }elseif ($updateTrabajador == 35) {
                         $ini = $updateTrabajador;
+                    }elseif ($updateTrabajador == 500) {
+                        $ini = $updateTrabajador;
                     }
 
                     return $ini;

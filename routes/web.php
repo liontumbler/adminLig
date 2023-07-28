@@ -32,6 +32,7 @@ Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');//->
 
 Route::get('/errorSesionCerrada', [LoginController::class, 'errorSesionCerrada'])->name('errorSesionCerrada');
 
+Route::get('/mail', [LoginController::class, 'mail'])->name('mail');
 
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');

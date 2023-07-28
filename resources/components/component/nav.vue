@@ -12,10 +12,10 @@
                 <ul class="navbar-nav me-auto mb-lg-0">
                     <li :class="btn.class" v-for="(btn, i) in btnsnav" :key="i">
                         <div v-if="!Array.isArray(btn.href)">
-                            <a class="nav-link active" :href="btn.href">{{ btn.nombre }}</a>
+                            <a class="nav-link active text-blanco" :href="btn.href">{{ btn.nombre }}</a>
                         </div>
                         <div v-else-if="Array.isArray(btn.href)">
-                            <a class="nav-link dropdown-toggle" href="javascript:" :id="'navbarDropdown'+ i" role="button"
+                            <a class="nav-link dropdown-toggle text-blanco" href="javascript:" :id="'navbarDropdown'+ i" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ btn.nombre }}
                             </a>
@@ -43,6 +43,12 @@
 <script>
 export default {
     name: 'nav',
+    props: {
+        logo: {
+            type: String,
+            default: '',
+        },
+    },
     mounted() {
         this.btnsnav = this.btnsnav.map(function(btn) {
             if (!Array.isArray(btn.href)) {
@@ -54,15 +60,15 @@ export default {
     },
     data() {
         return {
-            logo: 'img/adminLig.svg',
             searchNav: false,
             btnsnav: [
                 {nombre: 'home', href: 'home'},
                 {nombre: 'home2', href: 'home2'},
-                {nombre: 'dorp', href: [
-                    {nombre: 'uno', href: 'uno'},
+                {nombre: 'Opciones', href: [
+                    {nombre: 'Administradores', href: '/loginAdmin'},
+                    {nombre: 'Trabajadores', href: '/loginTrabajador'},
                     {nombre: 'divider'},
-                    {nombre: 'dos', href: 'dos'}
+                    {nombre: 'PQRs', href: 'dos'}
                 ]},
             ],
         }

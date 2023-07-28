@@ -13,12 +13,13 @@ class ClaveCajaMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $claveCajaNueva;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($claveCajaNueva)
     {
-        //
+        $this->claveCajaNueva = $claveCajaNueva;
     }
 
     /**
@@ -39,8 +40,7 @@ class ClaveCajaMail extends Mailable
         return new Content(
             view: 'mails.cambioClave',
             with: [
-                'valor1' => 1000,
-                'valor2' => '2000',
+                'claveCajaNueva' => $this->claveCajaNueva,
             ],
         );
     }

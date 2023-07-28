@@ -8,6 +8,8 @@
         //echo print_r(session()->get('SesionAdmin'));
     @endphp
     <div id="app">
-        <login-component></login-component>
+        <login-component
+        :imglogo="'{{ Vite::asset('resources/img/adminLig.svg') }}'"
+        ></login-component>
     </div>
 @endsection

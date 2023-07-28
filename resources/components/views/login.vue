@@ -201,3 +201,46 @@ export default {
     },
 };
 </script>
+<style>
+@media (max-width: 576px) {
+    .w-75 {
+        width: 100% !important;
+    }
+
+    .g-recaptcha {
+        transform: scale(0.81);
+        transform-origin: 0 0;
+    }
+}
+
+@media (min-width: 576px) {
+    .w-75 {
+        width: 100% !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .w-75 {
+        width: 75% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .w-75 {
+        width: 75% !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .w-75 {
+        width: 75% !important;
+    }
+
+}
+
+@media (min-width: 1400px) {
+    .w-75 {
+        width: 75% !important;
+    }
+}
+</style>

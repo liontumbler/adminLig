@@ -12,10 +12,10 @@
                 <ul class="navbar-nav me-auto mb-lg-0">
                     <li :class="btn.class" v-for="(btn, i) in btnsnavReal" :key="i">
                         <div v-if="!Array.isArray(btn.href)">
-                            <a class="nav-link active" :href="btn.href">{{ btn.nombre }}</a>
+                            <a class="nav-link active text-blanco" :href="btn.href">{{ btn.nombre }}</a>
                         </div>
                         <div v-else-if="Array.isArray(btn.href)">
-                            <a class="nav-link dropdown-toggle" href="javascript:" :id="'navbarDropdown'+ i" role="button"
+                            <a class="nav-link dropdown-toggle text-blanco" href="javascript:" :id="'navbarDropdown'+ i" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ btn.nombre }}
                             </a>
@@ -40,8 +40,8 @@
         </div>
     </nav>
 
-    <div ref="sidebar" class="d-flex flex-column flex-shrink-0 ps-3 pe-3 pb-3 text-white bg-dark h-100 position-fixed pt-94px w-280px index-1" v-if="sidebar">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <div id="sidebar" class="d-none shadow-lg d-flex flex-column flex-shrink-0 ps-3 pe-3 pb-3 bg-dark h-100 position-fixed pt-94px w-280px index-1">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-blanco text-decoration-none">
             <i :class="icontitleSide"></i>
             &nbsp;
             <span class="fs-4">{{ titleSide }}</span>
@@ -49,7 +49,7 @@
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item" v-for="(btn, i) in btnssidebar" :key="i">
-                <a :href="btn.href" class="nav-link text-white btn btn-light" aria-current="page">
+                <a :href="btn.href" class="nav-link btn btn-light text-blanco" aria-current="page">
                     <i :class="btn.icon"></i>
                     {{ btn.nombre }}
                 </a>
@@ -57,7 +57,7 @@
         </ul>
         <hr>
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+            <a href="#" class="d-flex align-items-center text-blanco text-decoration-none dropdown-toggle"
                 id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img v-if="imgPerfil" src="imgPerfil" alt="" width="32" height="32"
                     class="rounded-circle me-2">
@@ -79,6 +79,10 @@
 export default {
     name: 'sidebar',
     props: {
+        logo: {
+            type: String,
+            default: '',
+        },
         color: {
             type: String,
             default: '',
@@ -120,21 +124,29 @@ export default {
                 return {nombre: btn.nombre, href: btn.href, class: 'nav-item dropdown'};
             }
         });
-        console.log(this.color, this.background);
-        if (this.color) {
-            this.cadenaStyle = 'color:'+ this.color + ' !important;';
-        }
-        if (this.background) {
-            this.cadenaStyle += 'background-color:'+ this.background + ' !important;';
-        }
+
         if (this.nombregimnasio) {
             this.titleSide = this.nombregimnasio
         }
         if (this.nombreperfil) {
             this.nombreUser = this.nombreperfil;
         }
-        var element = document.querySelector('.bg-dark');
-        element.style.cssText = this.cadenaStyle;
+    },
+    updated() {
+        if (this.color) {
+            let elementosTex = document.querySelectorAll('.text-blanco');
+            console.log(elementosTex, 'carga color');
+            elementosTex.forEach(element => {
+                element.style.cssText = 'color:'+ this.color + ' !important;';
+            });
+        }
+
+        if (this.background) {
+            let elementosBg = document.querySelectorAll('.bg-dark');
+            elementosBg.forEach(element => {
+                element.style.cssText = 'background-color:'+ this.background + ' !important;';
+            });
+        }
     },
     data() {
         return {
@@ -143,7 +155,6 @@ export default {
             titleSide: 'SideBar',
             nombreUser: 'Default',
             sidebar: false,
-            logo: 'img/adminLig.svg',
             searchNav: false,
             btnsnavReal: [],
             cadenaStyle: '',
@@ -151,14 +162,13 @@ export default {
     },
     methods: {
         abrirCerrarSidebar(e) {
-            this.sidebar = !this.sidebar;
-
-            this.$nextTick(() => {
-                const elemento = this.$refs.sidebar;
-                if (elemento) {
-                    elemento.style.cssText = this.cadenaStyle;
-                }
-            });
+            if (document.getElementById('sidebar').classList.contains('d-none')) {
+                document.getElementById('sidebar').classList.remove('d-none')
+                document.getElementById('sidebar').classList.add('d-block')
+            }else{
+                document.getElementById('sidebar').classList.remove('d-block')
+                document.getElementById('sidebar').classList.add('d-none')
+            }
         }
     },
 };
