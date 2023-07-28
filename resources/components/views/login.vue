@@ -1,6 +1,6 @@
 <template>
     <div class="m-4">
-        <div class="shadow-lg d-block m-auto w-75 bg-white rounded">
+        <div class="shadow-lg d-block m-auto w-50 bg-white rounded">
             <div class="row p-5">
                 <div class="col-lg-12 mb-1">
                     <img :src="imglogo" alt="Nocarga" class="w-50 d-block m-auto">
@@ -101,6 +101,7 @@ export default {
             default: "",
         },
         imglogo: String,
+        fondo: String,
     },
     mounted() {
         let div = document.getElementById('recaptcha');
@@ -108,6 +109,10 @@ export default {
         if (this.login == 'trabajador') {
             console.log(this.login, 'puta');
             this.cajaSize = 'col-lg-6 mb-1'
+        }
+
+        if (this.fondo) {
+            document.querySelector('body').style.cssText = "background-image: linear-gradient(#000000, #00000047, #000000), url('"+this.fondo+"');"
         }
     },
     data() {
@@ -203,7 +208,7 @@ export default {
 </script>
 <style>
 @media (max-width: 576px) {
-    .w-75 {
+    .w-50 {
         width: 100% !important;
     }
 
@@ -214,33 +219,41 @@ export default {
 }
 
 @media (min-width: 576px) {
-    .w-75 {
+    .w-50 {
         width: 100% !important;
     }
 }
 
 @media (min-width: 768px) {
-    .w-75 {
+    .w-50 {
         width: 75% !important;
     }
 }
 
 @media (min-width: 992px) {
-    .w-75 {
-        width: 75% !important;
+    .w-50 {
+        width: 50% !important;
     }
 }
 
 @media (min-width: 1200px) {
-    .w-75 {
-        width: 75% !important;
+    .w-50 {
+        width: 50% !important;
     }
 
 }
 
 @media (min-width: 1400px) {
-    .w-75 {
-        width: 75% !important;
+    .w-50 {
+        width: 50% !important;
     }
+}
+
+body {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #bbac75;
 }
 </style>
