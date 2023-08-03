@@ -25,8 +25,8 @@ Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->nam
 Route::get('/loginAdmOut', [LoginController::class, 'loginAdmOut'])->name('loginAdmOut');
 Route::get('/loginTraOut', [LoginController::class, 'loginTraOut'])->name('loginTraOut');
 
-Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin')->middleware('sesion.admin');
-Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador')->middleware('sesion.trabajador');
+Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');//->middleware('sesion.admin');
+Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');//->middleware('sesion.trabajador');
 
 Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');//->middleware('sesion.trabajador');
 

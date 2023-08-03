@@ -5,13 +5,9 @@
 @endsection
 
 @section('content')
+
 @vite(['resources/css/error.css'])
-<style>
-.text-white {
-    --bs-text-opacity: 1;
-    color: rgba(var(--bs-white-rgb),var(--bs-text-opacity))!important;
-}
-</style>
+
 <div class="container container p-4 bg-dark rounded-bottom-3">
     <div class="row">
         <div class="col-lg-12">

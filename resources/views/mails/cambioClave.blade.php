@@ -2,14 +2,6 @@
 
 @section('title', 'Código de caja')
 
-@section('importar')
-<style>
-.text-white {
-    --bs-text-opacity: 1;
-}
-</style>
-@endsection
-
 @section('content')
 <div class="container">
     @vite(['resources/css/login.css'])

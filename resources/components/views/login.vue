@@ -1,9 +1,9 @@
 <template>
     <div class="m-4">
         <div class="shadow-lg d-block m-auto w-50 bg-white rounded">
-            <div class="row p-5">
+            <div class="row px-5 py-3">
                 <div class="col-lg-12 mb-1">
-                    <img :src="imglogo" alt="Nocarga" class="w-50 d-block m-auto">
+                    <img :src="imglogo" alt="Nocarga" class="w-49 d-block m-auto">
                 </div>
                 <div class="col-lg-12 mb-1">
                     <label for="nickname" class="form-label">Nickname *</label>
@@ -111,9 +111,11 @@ export default {
             this.cajaSize = 'col-lg-6 mb-1'
         }
 
+        let cssFondo = "background-color: "+ this.colorFondo +" !important;";
         if (this.fondo) {
-            document.querySelector('body').style.cssText = "background-image: linear-gradient(#000000, #00000047, #000000), url('"+this.fondo+"');"
+            cssFondo = "background-image: linear-gradient(#000000, #00000047, #000000), url('"+this.fondo+"'); background-color: "+ this.colorFondo +" !important;"
         }
+        document.querySelector('.bg-body').style.cssText = cssFondo;
     },
     data() {
         return {
@@ -125,6 +127,7 @@ export default {
             clave: '',
             caja: '0',
             btnDisabledTrabajar: false,
+            colorFondo: '#bbac75',
         }
     },
     methods: {
@@ -206,15 +209,10 @@ export default {
     },
 };
 </script>
-<style>
+<style scoped>
 @media (max-width: 576px) {
     .w-50 {
         width: 100% !important;
-    }
-
-    .g-recaptcha {
-        transform: scale(0.81);
-        transform-origin: 0 0;
     }
 }
 
@@ -249,11 +247,15 @@ export default {
     }
 }
 
-body {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-color: #bbac75;
+.w-49 {
+    width: 49% !important;
+}
+</style>
+<style>
+@media (max-width: 576px) {
+    .g-recaptcha {
+        transform: scale(0.81);
+        transform-origin: 0 0;
+    }
 }
 </style>

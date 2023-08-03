@@ -4,9 +4,9 @@
             <a class="navbar-brand" href="javascript:" @click="abrirCerrarSidebar">
                 <img :src="logo" class="imgIco" alt="Nocarga" height="52">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            <button class="navbar-toggler p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="bi bi-list text-blanco"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-lg-0">
@@ -173,7 +173,7 @@ export default {
     },
 };
 </script>
-<style>
+<style scoped>
 .btn:hover {
     color: var(--bs-btn-hover-color) !important;
 }
@@ -183,6 +183,9 @@ export default {
 .navbar-dark, .navbar[data-bs-theme=dark]{
     --bs-navbar-color: none;
     --bs-navbar-active-color: none;
+}
+.bi-list {
+    font-size: xx-large;
 }
 </style>
 

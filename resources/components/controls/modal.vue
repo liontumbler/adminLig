@@ -57,7 +57,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .modal__general{
     display: block;
     background: #00000091;

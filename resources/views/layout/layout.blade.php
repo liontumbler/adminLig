@@ -22,7 +22,7 @@
 
         @yield('importar')
     </head>
-    <body>
+    <body class="bg-body">
         @yield('content')
     </body>
 </html>

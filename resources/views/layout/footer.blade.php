@@ -4,5 +4,6 @@
         <li class="nav-item"><a href="{{ asset('/loginTrabajador') }}" class="nav-link px-2 text-blanco">Login Trabajador</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 text-blanco">PQRs</a></li>
     </ul>
-    <p class="text-center text-blanco mb-0">© 2023 Edwin Velasquez Jimenez, AdminLig</p>
+    <p class="text-center text-blanco mb-0">Versión {{ env('APP_VERSION') }}</p>
+    <p class="text-center text-blanco mb-0"><strong>© 2023 Edwin Velasquez Jimenez,</strong> AdminLig</p>
 </footer>
