@@ -20,15 +20,15 @@ use App\Http\Controllers\GeneralController;
 */
 //views
 Route::get('/', [PaginaController::class, 'index'])->name('principal');
-Route::get('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginAdmin')->middleware('sesion.admin.login');
-Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->name('loginTrabajador')->middleware('sesion.trabajador.login');
+Route::get('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginAdmin');//->middleware('sesion.admin.login');
+Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->name('loginTrabajador');
 Route::get('/loginAdmOut', [LoginController::class, 'loginAdmOut'])->name('loginAdmOut');
 Route::get('/loginTraOut', [LoginController::class, 'loginTraOut'])->name('loginTraOut');
 
-Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');//->middleware('sesion.admin');
-Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');//->middleware('sesion.trabajador');
+Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');
+Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');
 
-Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');//->middleware('sesion.trabajador');
+Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');
 
 Route::get('/errorSesionCerrada', [LoginController::class, 'errorSesionCerrada'])->name('errorSesionCerrada');
 
@@ -39,7 +39,7 @@ Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptch
 Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm');
 Route::post('/loginTra', [LoginController::class, 'loginTra'])->name('loginTra');
 
-Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga')->middleware('sesion.trabajador');
+Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga');
 
 Route::post('/cargarClientesSelect', [GeneralController::class, 'cargarClientesSelect'])->name('cargarClientesSelect');
 Route::post('/cargarEquiposSelect', [GeneralController::class, 'cargarEquiposSelect'])->name('cargarEquiposSelect');
