@@ -8,8 +8,10 @@ import ligas from '../components/views/ligas.vue';
 import navSidebar from '../components/component/navSidebar.vue';
 import nav from '../components/component/nav.vue';
 import cliente from '../components/views/cliente.vue';
+
 import equipo from '../components/views/equipo.vue';
 
+import descuento from '../components/views/descuento.vue';
 
 const app = createApp({});
 app.component('login-component', login);
@@ -18,4 +20,5 @@ app.component('nav-sidebar', navSidebar);
 app.component('nav-component', nav);
 app.component('cliente-component', cliente);
 app.component('equipo-component', equipo);
+app.component('descuento-component', descuento);
 app.mount('#app');
