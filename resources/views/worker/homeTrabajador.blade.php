@@ -1,9 +1,8 @@
-@extends('layout.layout-generalSidebarTrabajador', $arrayConfig)
+@extends('layout.layout-generalSidebarTrabajador')
 
 @section('title', 'Bienvenido Trabajador')
 
 @section('contenedor')
-
     <div class="m-4">
         <div class="container">
             <div class="row">

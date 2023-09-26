@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\LigaController;
 use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\ClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,10 @@ Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');
 Route::get('/errorSesionCerrada', [LoginController::class, 'errorSesionCerrada'])->name('errorSesionCerrada');
 
 Route::get('/mail', [LoginController::class, 'mail'])->name('mail');
+
+Route::get('/clientes', [ClienteController::class, 'index'])->name('index');
+
+
 
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');

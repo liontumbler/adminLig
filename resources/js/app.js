@@ -7,10 +7,13 @@ import login from '../components/views/login.vue';
 import ligas from '../components/views/ligas.vue';
 import navSidebar from '../components/component/navSidebar.vue';
 import nav from '../components/component/nav.vue';
+import cliente from '../components/views/cliente.vue';
+
 
 const app = createApp({});
 app.component('login-component', login);
 app.component('liga-component', ligas);
 app.component('nav-sidebar', navSidebar);
 app.component('nav-component', nav);
+app.component('cliente-component', cliente);
 app.mount('#app');

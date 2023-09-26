@@ -43,7 +43,15 @@ class Methods {
                 }
 
                 if (campo.type == 'password') {
-                    if (campo.value.length < 8) {
+                    if (!campo.value) {
+                        campo.setCustomValidity('error en password');
+                        campo.focus();
+                        if (campo.select)
+                            campo.select();
+
+                        return false;
+                    }
+                    /*if (campo.value.length < 8) {
                         campo.setCustomValidity('la password es menor a 8 caracteres');
                         campo.focus();
                         if (campo.select)
@@ -68,7 +76,7 @@ class Methods {
                             campo.select();
 
                         return false;
-                    }
+                    }*/
                 }
 
                 if(campo.type == 'text' || campo.type == 'number' || campo.type == 'password'){

@@ -65,7 +65,7 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'nickname' => 'required|string|max:50|min:1',
             'clave' => 'required|string|max:50|min:1',
-            'caja' => 'required|numeric|max:50|min:0',
+            'caja' => 'required|numeric|max:1000000|min:0',
         ]);
 
         if ($validator->fails()) {

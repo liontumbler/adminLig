@@ -108,7 +108,13 @@ export default {
             }
 
             if (campo.type == 'password') {
-                if (campo.value.length < 8) {
+                if (!campo.value) {
+                    this.showError = true;
+                    this.errorInput = 'error en password';
+                    return;
+                }
+
+                /*if (campo.value.length < 8) {
                     this.showError = true;
                     this.errorInput = 'la password es menor a 8 caracteres';
                     return;
@@ -127,7 +133,7 @@ export default {
                     this.showError = true;
                     this.errorInput = 'la password debe tener 2 mayusculas, 2 minusculas, 2 numeros, 2 caracteres especiales no importa el orden';
                     return;
-                }
+                }*/
             }
 
             if(campo.type == 'text' || campo.type == 'number' || campo.type == 'password'){

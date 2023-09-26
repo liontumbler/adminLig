@@ -2,6 +2,28 @@
 
 @section('content')
     <div id="app">
+        @php
+            use App\Models\Gimnasio;
+            use App\Models\Trabajador;
+
+            $gimnasio = new Gimnasio();
+            $resGim = $gimnasio->cargadeVista();
+
+            $trabajador = new Trabajador();
+            $resTra = $trabajador->cargadeVista();
+
+            $color = $resGim['color'];
+            $background = $resGim['background'];
+            $nombreGimnasio = $resGim['nombre'];
+            $nombrePerfil = $resTra['nombresYapellidos'];
+            $arrayConfig= [
+                'color' => $color,
+                'background' => $background,
+                'nombreGimnasio' => $nombreGimnasio,
+                'nombrePerfil' => $nombrePerfil,
+            ];
+        @endphp
+
         <nav-sidebar
             :logo="'{{ Vite::asset('resources/img/adminLig.svg') }}'"
             :color="'{{ json_encode($arrayConfig['color']) }}'"

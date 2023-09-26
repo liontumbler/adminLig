@@ -11,24 +11,7 @@ class TrabajadorController extends Controller
 {
     public function homeTrabajador()
     {
-        $gimnasio = new Gimnasio();
-        $resGim = $gimnasio->cargadeVista();
-
-        $trabajador = new Trabajador();
-        $resTra = $trabajador->cargadeVista();
-
-        $color = $resGim['color'];
-        $background = $resGim['background'];
-        $nombreGimnasio = $resGim['nombre'];
-        $nombrePerfil = $resTra['nombresYapellidos'];
-        $arrayConfig= [
-            'color' => $color,
-            'background' => $background,
-            'nombreGimnasio' => $nombreGimnasio,
-            'nombrePerfil' => $nombrePerfil,
-        ];
-
-        return view('worker.homeTrabajador', compact('arrayConfig'));
+        return view('worker.homeTrabajador');
     }
 
     public function ligas()
