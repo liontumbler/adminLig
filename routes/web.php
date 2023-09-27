@@ -9,6 +9,8 @@ use App\Http\Controllers\LigaController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\GimnasioController;
+use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\DescuentoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,10 @@ Route::get('/clientes', [ClienteController::class, 'index'])->name('index');
 
 Route::get('/gimnasios', [GimnasioController::class, 'index'])->name('index');
 
+Route::get('/equipos', [EquipoController::class, 'index'])->name('index');
+
+Route::get('/descuentos', [DescuentoController::class, 'index'])->name('index');
+
 
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
@@ -51,5 +57,12 @@ Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga
 Route::post('/cargarClientesSelect', [GeneralController::class, 'cargarClientesSelect'])->name('cargarClientesSelect');
 Route::post('/cargarEquiposSelect', [GeneralController::class, 'cargarEquiposSelect'])->name('cargarEquiposSelect');
 Route::post('/cargarSelectHora', [GeneralController::class, 'cargarSelectHora'])->name('cargarSelectHora');
+Route::post('/cargarGimnasiosSelect', [GeneralController::class, 'cargarGimnasiosSelect'])->name('cargarGimnasiosSelect');
+Route::post('/cargarTrabajadoSelect', [GeneralController::class, 'cargarTrabajadoSelect'])->name('cargarTrabajadoSelect');
+Route::post('/cargarTrabajadorSelect', [GeneralController::class, 'cargarTrabajadorSelect'])->name('cargarTrabajadorSelect');
+
+Route::post('/cargarDescuentos', [DescuentoController::class, 'cargarDatos'])->name('cargarDatos');
+
+
 
 

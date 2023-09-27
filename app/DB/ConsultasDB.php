@@ -463,6 +463,92 @@ class ConsultasDB
         }
     }
 
+    public function obtenerSelectTrabajador(string $trabajador = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($trabajador)) {
+            $array = ['id' => $trabajador];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'trabajador',
+            $array,
+            $consulta,
+            'id, nickname'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerSelectTrabajado(string $trabajado = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($trabajado)) {
+            $array = ['id' => $trabajado];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'trabajado',
+            $array,
+            $consulta,
+            'id, iniciCaja'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerGimnasiosSelect(string $gimnasio = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($gimnasio)) {
+            $array = ['id' => $gimnasio];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'gimnasio',
+            $array,
+            $consulta,
+            'id, nombre'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    //
+
+    public function obtenerDescuentos(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'descuento',
+            $array,
+            $consulta,
+            'id, titulo, descripcion, total, fecha, estado, idGimnasio, idTrabajado, idTrabajador'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
     public function obtenerLigas(string $gimnasio, string $id = null)
     {
         $array = ['idGimnasio' => $gimnasio];

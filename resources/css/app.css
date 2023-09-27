@@ -17,3 +17,14 @@
     background-size: cover;
     background-color: #ffffff;
 }
+
+.text-lage {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
+}
+
+.campo-disabled {
+    color: #818181;
+}

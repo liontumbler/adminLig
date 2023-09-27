@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="d-grid gap-2 col-lg-3 mb-1">
-                    <button type="button" class="btn btn-primary" @click="agregarUsuario">Agregar</button>
+                    <button type="button" class="btn btn-primary" @click="agregarEquipo">Agregar</button>
                 </div>
                 <div class="col-lg-3 mb-1">
                     <select class="form-select" id="mostrar" v-model="mostrar" @change="mostrarChange">
@@ -21,34 +21,34 @@
                     exportar
                 </div>
             </div>
-            <div class="tableUsuario">
+            <div class="tableEquipo">
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">correo</th>
-                            <th scope="col">telefono</th>
-                            <th scope="col">nombre y apellido</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Estado</th>
                             <th scope="col">accion</th>
                         </tr>
                     </thead>
-                    <tbody id="contenidoUsuario">
+                    <tbody id="contenidoEquipo">
                         <tr>
                             <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
                             <td>
-                                <i class="bi bi-eye-fill ms-1" @click="verUsuario"></i>
-                                <i class="bi bi-pencil-fill ms-1" @click="editatUsuario"></i>
-                                <i class="bi bi-x-lg ms-1" @click="eliminarUsuario"></i>
+                                <i class="bi bi-eye-fill ms-1" @click="verEquipo"></i>
+                                <i class="bi bi-pencil-fill ms-1" @click="editatEquipo"></i>
+                                <i class="bi bi-x-lg ms-1" @click="eliminarEquipo"></i>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <modal-component
-                ref="modalUsuario"
+                ref="modalEquipo"
                 :titulo="tutiloModal"
                 :visibleBtnCerrar="true"
                 :visibleBtnContinuar="btnContinuar"
@@ -57,9 +57,29 @@
             >
                 <div class="row">
                     <div class="col-lg-6 mb-1">
-                        <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="correo" v-model="correo" :disabled="correoDisabled">
-                        <div id="correoError" v-show="correoError" class="form-text text-danger">{{ msgErrorCorreo }}</div>
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" v-model="nombre" :disabled="nombreDisabled">
+                        <div id="nombreError" v-show="nombreError" class="form-text text-danger">{{ msgErrorNombre }}</div>
+                    </div>
+                    <div class="col-lg-6 mb-1">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="datetime-local" class="form-control" id="fecha" v-model="fecha" :disabled="fechaDisabled">
+                        <div id="fechaError" v-show="fechaError" class="form-text text-danger">{{ msgErrorFecha }}</div>
+                    </div>
+                    <div class="col-lg-6 mb-1">
+                        <label for="idGimnasio" class="form-label">idGimnasio</label>
+                        <select class="form-select" id="idGimnasio" v-model="idGimnasio" :disabled="idGimnasioDisabled">
+                            <option value="" selected>{{ textSelectGeneral }}</option>
+                            <option v-for="(option, index) in optionsIdGimnasio" :value="option.value" :key="index">
+                                {{ option.text }}
+                            </option>
+                        </select>
+                        <div id="idGimnasioError" v-show="idGimnasioError" class="form-text text-danger">{{ msgErrorIdGimnasio }}</div>
+                    </div>
+                    <div class="col-lg-12 mt-2">
+                        <input type="checkbox" class="form-check-input" id="estado" v-model="estado" :disabled="estadoDisabled">
+                        <label class="form-check-label" for="estado">Estado</label>
+                        <div id="estadoError" v-show="estadoError" class="form-text text-danger">{{ msgErrorestado }}</div>
                     </div>
                 </div>
             </modal-component>
@@ -71,7 +91,7 @@
 import modal from "../../components/controls/modal.vue";
 
 export default {
-    name: 'Usuarios',
+    name: 'equipos',
     components: {
         "modal-component": modal,
     },
@@ -94,30 +114,20 @@ export default {
             viendo: false,
             btnContinuar: true,
 
-            correo: '',
-            correoError: false,
-            msgErrorCorreo: '',
-            correoDisabled: false,
+            nombre: '',
+            nombreError: false,
+            msgErrorNombre: '',
+            nombreDisabled: false,
 
-            telefono: '',
-            telefonoError: false,
-            msgErrorTelefono: '',
-            telefonoDisabled: false,
-
-            nombresYapellidos: '',
-            nombresYapellidosError: false,
-            msgErrorNombresYapellidos: '',
-            nombresYapellidosDisabled: false,
+            fecha: '',
+            fechaError: false,
+            msgErrorFecha: '',
+            fechaDisabled: false,
 
             estado: false,
             estadoError: false,
             msgErrorEstado: '',
             estadoDisabled: false,
-
-            documento: '',
-            documentoError: false,
-            msgErrorDocumento: '',
-            documentoDisabled: false,
 
             optionsIdGimnasio:[
                 {text: 'text', value: 1}
@@ -127,26 +137,19 @@ export default {
             msgErrorIdGimnasio: '',
             idGimnasioDisabled: false,
 
-            optionsIdEquipo:[
-                {text: 'text', value: 1}
-            ],
-            idEquipo: '',
-            idEquipoError: false,
-            msgErrorIdEquipo: '',
-            idEquipoDisabled: false,
         }
     },
     methods: {
         modalCerrar() {
-            this.$refs.modalUsuario.hide();
+            this.$refs.modalEquipo.hide();
         },
         modalContinuar() {
-            this.$refs.modalUsuario.hide();
+            this.$refs.modalEquipo.hide();
         },
         buscar(e) {
             console.log(e, 'escucho');
         },
-        agregarUsuario() {
+        agregarEquipo() {
             this.desbloquearCampos()
             this.btnContinuar = true;
 
@@ -154,10 +157,10 @@ export default {
             this.creando = true;
             this.viendo = false;
 
-            this.tutiloModal = 'Agregar Usuario'
-            this.$refs.modalUsuario.show();
+            this.tutiloModal = 'Agregar equipo'
+            this.$refs.modalEquipo.show();
         },
-        editatUsuario() {
+        editatEquipo() {
             this.desbloquearCampos()
             this.btnContinuar = true;
 
@@ -165,10 +168,10 @@ export default {
             this.creando = false;
             this.viendo = false;
 
-            this.tutiloModal = 'Actualizar Usuario'
-            this.$refs.modalUsuario.show();
+            this.tutiloModal = 'Actualizar equipo'
+            this.$refs.modalEquipo.show();
         },
-        verUsuario() {
+        verEquipo() {
             this.bloquearCampos()
             this.btnContinuar = false;
 
@@ -176,28 +179,22 @@ export default {
             this.creando = false;
             this.viendo = true;
 
-            this.tutiloModal = 'ver Usuario'
-            this.$refs.modalUsuario.show();
+            this.tutiloModal = 'ver equipo'
+            this.$refs.modalEquipo.show();
         },
-        eliminarUsuario() {
+        eliminarEquipo() {
             console.log('eliminar');
         },
         bloquearCampos() {
-            this.correoDisabled = true;
-            this.telefonoDisabled = true;
-            this.nombresYapellidosDisabled = true;
-            this.documentoDisabled = true;
+            this.nombreDisabled = true;
+            this.fechaDisabled = true;
             this.idGimnasioDisabled = true;
-            this.idEquipoDisabled = true;
             this.estadoDisabled = true;
         },
         desbloquearCampos() {
-            this.correoDisabled = false;
-            this.telefonoDisabled = false;
-            this.nombresYapellidosDisabled = false;
-            this.documentoDisabled = false;
+            this.nombreDisabled = false;
+            this.fechaDisabled = false;
             this.idGimnasioDisabled = false;
-            this.idEquipoDisabled = false;
             this.estadoDisabled = false;
         },
         mostrarChange() {

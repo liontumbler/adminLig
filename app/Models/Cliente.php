@@ -11,7 +11,11 @@ class Cliente
     }
 
     public function selectClientes() {
-        $sesionTrabajador = session()->get('SesionTrabajador');
-        return $this->db->obtenerAllClienteNombre($sesionTrabajador['gimnasioId']);
+        if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerAllClienteNombre($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }
     }
 }
