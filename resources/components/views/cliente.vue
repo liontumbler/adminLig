@@ -26,10 +26,10 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">correo</th>
-                            <th scope="col">telefono</th>
-                            <th scope="col">nombre y apellido</th>
-                            <th scope="col">accion</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Teléfono</th>
+                            <th scope="col">Nombre y apellido</th>
+                            <th scope="col">Acción</th>
                         </tr>
                     </thead>
                     <tbody id="contenidoCliente">
@@ -58,48 +58,48 @@
                 <div class="row">
                     <div class="col-lg-6 mb-1">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="correo" v-model="correo" :disabled="correoDisabled">
-                        <div id="correoError" v-show="correoError" class="form-text text-danger">{{ msgErrorCorreo }}</div>
+                        <input type="email" class="form-control" id="correo" ref="correo" v-model="campos.correo" :disabled="disabled.correo">
+                        <div id="correoError" v-show="msgError.correo" class="form-text text-danger">{{ msgError.correo }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="telefono" class="form-label">Telefono</label>
-                        <input type="number" class="form-control" id="telefono" v-model="telefono" :disabled="telefonoDisabled">
-                        <div id="telefonoError" v-show="telefonoError" class="form-text text-danger">{{ msgErrorTelefono }}</div>
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="number" class="form-control" id="telefono" ref="telefono" v-model="campos.telefono" :disabled="disabled.telefono">
+                        <div id="telefonoError" v-show="msgError.telefono" class="form-text text-danger">{{ msgError.telefono }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="nombresYapellidos" class="form-label">Nombres Y Apellidos</label>
-                        <input type="text" class="form-control" id="nombresYapellidos" v-model="nombresYapellidos" :disabled="nombresYapellidosDisabled">
-                        <div id="nombresYapellidosError" v-show="nombresYapellidosError" class="form-text text-danger">{{ msgErrorNombresYapellidos }}</div>
+                        <input type="text" class="form-control" id="nombresYapellidos" ref="nombresYapellidos" v-model="campos.nombresYapellidos" :disabled="disabled.nombresYapellidos">
+                        <div id="nombresYapellidosError" v-show="msgError.nombresYapellidos" class="form-text text-danger">{{ msgError.nombresYapellidos }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="documento" class="form-label">Documento</label>
-                        <input type="number" class="form-control" id="documento" v-model="documento" :disabled="documentoDisabled">
-                        <div id="documentoError" v-show="documentoError" class="form-text text-danger">{{ msgErrorDocumento }}</div>
+                        <input type="number" class="form-control" id="documento" ref="documento" v-model="campos.documento" :disabled="disabled.documento">
+                        <div id="documentoError" v-show="msgError.documento" class="form-text text-danger">{{ msgError.Documento }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="idGimnasio" class="form-label">idGimnasio</label>
-                        <select class="form-select" id="idGimnasio" v-model="idGimnasio" :disabled="idGimnasioDisabled">
+                        <label for="idGimnasio" class="form-label">IdGimnasio</label>
+                        <select class="form-select" id="idGimnasio" ref="idGimnasio" v-model="campos.idGimnasio" :disabled="disabled.idGimnasio">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdGimnasio" :value="option.value" :key="index">
                                 {{ option.text }}
                             </option>
                         </select>
-                        <div id="idGimnasioError" v-show="idGimnasioError" class="form-text text-danger">{{ msgErrorIdGimnasio }}</div>
+                        <div id="idGimnasioError" v-show="msgError.idGimnasio" class="form-text text-danger">{{ msgError.idGimnasio }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="idEquipo" class="form-label">idEquipo</label>
-                        <select class="form-select" id="idEquipo" v-model="idEquipo" :disabled="idEquipoDisabled">
+                        <label for="idEquipo" class="form-label">IdEquipo</label>
+                        <select class="form-select" id="idEquipo" ref="idEquipo" v-model="campos.idEquipo" :disabled="disabled.idEquipo">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdEquipo" :value="option.value" :key="index">
                                 {{ option.text }}
                             </option>
                         </select>
-                        <div id="idEquipoError" v-show="idEquipoError" class="form-text text-danger">{{ msgErrorIdEquipo }}</div>
+                        <div id="idEquipoError" v-show="msgError.idEquipo" class="form-text text-danger">{{ msgError.idEquipo }}</div>
                     </div>
                     <div class="col-lg-6 mt-2">
-                        <input type="checkbox" class="form-check-input" id="estado" v-model="estado" :disabled="estadoDisabled">
+                        <input type="checkbox" class="form-check-input" id="estado" ref="estado" v-model="campos.estado" :disabled="disabled.estado">
                         <label class="form-check-label" for="estado">Estado</label>
-                        <div id="estadoError" v-show="estadoError" class="form-text text-danger">{{ msgErrorestado }}</div>
+                        <div id="estadoError" v-show="msgError.estado" class="form-text text-danger">{{ msgError.estado }}</div>
                     </div>
                 </div>
             </modal-component>
@@ -134,46 +134,43 @@ export default {
             viendo: false,
             btnContinuar: true,
 
-            correo: '',
-            correoError: false,
-            msgErrorCorreo: '',
-            correoDisabled: false,
+            campos: {
+                correo: '',
+                telefono: '',
+                nombresYapellidos: '',
+                estado: '',
+                documento: '',
+                idGimnasio: '',
+                idEquipo: '',
+            },
 
-            telefono: '',
-            telefonoError: false,
-            msgErrorTelefono: '',
-            telefonoDisabled: false,
+            disabled: {
+                correo: false,
+                telefono: false,
+                nombresYapellidos: false,
+                estado: false,
+                documento: false,
+                idGimnasio: false,
+                idEquipo: false,
+            },
 
-            nombresYapellidos: '',
-            nombresYapellidosError: false,
-            msgErrorNombresYapellidos: '',
-            nombresYapellidosDisabled: false,
-
-            estado: false,
-            estadoError: false,
-            msgErrorEstado: '',
-            estadoDisabled: false,
-
-            documento: '',
-            documentoError: false,
-            msgErrorDocumento: '',
-            documentoDisabled: false,
+            msgError: {
+                correo: '',
+                telefono: '',
+                nombresYapellidos: '',
+                estado: '',
+                documento: '',
+                idGimnasio: '',
+                idEquipo: '',
+            },
 
             optionsIdGimnasio:[
                 {text: 'text', value: 1}
             ],
-            idGimnasio: '',
-            idGimnasioError: false,
-            msgErrorIdGimnasio: '',
-            idGimnasioDisabled: false,
 
             optionsIdEquipo:[
                 {text: 'text', value: 1}
             ],
-            idEquipo: '',
-            idEquipoError: false,
-            msgErrorIdEquipo: '',
-            idEquipoDisabled: false,
         }
     },
     methods: {
@@ -223,22 +220,22 @@ export default {
             console.log('eliminar');
         },
         bloquearCampos() {
-            this.correoDisabled = true;
-            this.telefonoDisabled = true;
-            this.nombresYapellidosDisabled = true;
-            this.documentoDisabled = true;
-            this.idGimnasioDisabled = true;
-            this.idEquipoDisabled = true;
-            this.estadoDisabled = true;
+            this.disabled.correo = true;
+            this.disabled.telefono = true;
+            this.disabled.nombresYapellidos = true;
+            this.disabled.documento = true;
+            this.disabled.idGimnasio = true;
+            this.disabled.idEquipo = true;
+            this.disabled.estado = true;
         },
         desbloquearCampos() {
-            this.correoDisabled = false;
-            this.telefonoDisabled = false;
-            this.nombresYapellidosDisabled = false;
-            this.documentoDisabled = false;
-            this.idGimnasioDisabled = false;
-            this.idEquipoDisabled = false;
-            this.estadoDisabled = false;
+            this.disabled.correo = false;
+            this.disabled.telefono = false;
+            this.disabled.nombresYapellidos = false;
+            this.disabled.documento = false;
+            this.disabled.idGimnasio = false;
+            this.disabled.idEquipo = false;
+            this.disabled.estado = false;
         },
         mostrarChange() {
             console.log('escucho');
