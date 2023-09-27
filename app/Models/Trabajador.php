@@ -85,8 +85,12 @@ class Trabajador
     }
 
     public function cargadeVista() {
-        $sesionTrabajador = session()->get('SesionTrabajador');
-        return $this->db->obtenerDatosMuestraTrabajador($sesionTrabajador['trabajadorId']);
+        if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerDatosMuestraTrabajador($sesionTrabajador['trabajadorId']);
+        }else {
+            return 602;
+        }
     }
 
     public function getTrabajadores($id = null) {

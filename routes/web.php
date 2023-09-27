@@ -55,5 +55,10 @@ Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga
 Route::post('/cargarClientesSelect', [GeneralController::class, 'cargarClientesSelect'])->name('cargarClientesSelect');
 Route::post('/cargarEquiposSelect', [GeneralController::class, 'cargarEquiposSelect'])->name('cargarEquiposSelect');
 Route::post('/cargarSelectHora', [GeneralController::class, 'cargarSelectHora'])->name('cargarSelectHora');
+Route::post('/cargarGimnasiosSelect', [GeneralController::class, 'cargarGimnasiosSelect'])->name('cargarGimnasiosSelect');
+
+Route::post('/cargarDescuentos', [DescuentoController::class, 'cargarDatos'])->name('cargarDatos');
+
+
 
 

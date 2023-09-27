@@ -463,6 +463,48 @@ class ConsultasDB
         }
     }
 
+    public function obtenerDescuentosSelect(string $gimnasio = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($gimnasio)) {
+            $array = ['id' => $gimnasio];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'gimnasio',
+            $array,
+            $consulta,
+            'id, nombre'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerDescuentos(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'descuento',
+            $array,
+            $consulta,
+            'id, titulo, descripcion, total, fecha, estado, idGimnasio, idTrabajado, idTrabajador'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
     public function obtenerLigas(string $gimnasio, string $id = null)
     {
         $array = ['idGimnasio' => $gimnasio];

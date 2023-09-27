@@ -51,8 +51,12 @@ class Gimnasio
     }
 
     public function cargadeVista() {
-        $sesionTrabajador = session()->get('SesionTrabajador');
-        return $this->db->obtenerDatosMuestraGimnasio($sesionTrabajador['gimnasioId']);
+        if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerDatosMuestraGimnasio($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }
     }
 
     public function getGimnasios($id = null) {
@@ -63,4 +67,10 @@ class Gimnasio
             return 602;
         }
     }
+
+    public function selectGimnasios() {
+        return $this->db->obtenerDescuentosSelect();
+    }
+
+
 }
