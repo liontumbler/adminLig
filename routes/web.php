@@ -8,6 +8,7 @@ use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\LigaController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\GimnasioController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\DescuentoController;
 
@@ -39,10 +40,11 @@ Route::get('/mail', [LoginController::class, 'mail'])->name('mail');
 
 Route::get('/clientes', [ClienteController::class, 'index'])->name('index');
 
+Route::get('/gimnasios', [GimnasioController::class, 'index'])->name('index');
+
 Route::get('/equipos', [EquipoController::class, 'index'])->name('index');
 
 Route::get('/descuentos', [DescuentoController::class, 'index'])->name('index');
-
 
 
 //accciones
