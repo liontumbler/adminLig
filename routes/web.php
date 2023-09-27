@@ -8,6 +8,7 @@ use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\LigaController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\GimnasioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::get('/mail', [LoginController::class, 'mail'])->name('mail');
 
 Route::get('/clientes', [ClienteController::class, 'index'])->name('index');
 
+Route::get('/gimnasios', [GimnasioController::class, 'index'])->name('index');
 
 
 //accciones
