@@ -69,7 +69,7 @@ class Gimnasio
     }
 
     public function selectGimnasios() {
-        return $this->db->obtenerDescuentosSelect();
+        return $this->db->obtenerGimnasiosSelect();
     }
 
 

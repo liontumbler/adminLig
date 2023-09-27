@@ -56,6 +56,8 @@ Route::post('/cargarClientesSelect', [GeneralController::class, 'cargarClientesS
 Route::post('/cargarEquiposSelect', [GeneralController::class, 'cargarEquiposSelect'])->name('cargarEquiposSelect');
 Route::post('/cargarSelectHora', [GeneralController::class, 'cargarSelectHora'])->name('cargarSelectHora');
 Route::post('/cargarGimnasiosSelect', [GeneralController::class, 'cargarGimnasiosSelect'])->name('cargarGimnasiosSelect');
+Route::post('/cargarTrabajadoSelect', [GeneralController::class, 'cargarTrabajadoSelect'])->name('cargarTrabajadoSelect');
+Route::post('/cargarTrabajadorSelect', [GeneralController::class, 'cargarTrabajadorSelect'])->name('cargarTrabajadorSelect');
 
 Route::post('/cargarDescuentos', [DescuentoController::class, 'cargarDatos'])->name('cargarDatos');
 

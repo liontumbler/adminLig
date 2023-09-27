@@ -102,6 +102,9 @@ class Trabajador
         }
     }
 
+    public function selectTrabajador() {
+        return $this->db->obtenerSelectTrabajador();
+    }
 
 
 }

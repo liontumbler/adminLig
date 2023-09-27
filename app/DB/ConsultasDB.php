@@ -463,7 +463,49 @@ class ConsultasDB
         }
     }
 
-    public function obtenerDescuentosSelect(string $gimnasio = null)
+    public function obtenerSelectTrabajador(string $trabajador = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($trabajador)) {
+            $array = ['id' => $trabajador];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'trabajador',
+            $array,
+            $consulta,
+            'id, nickname'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerSelectTrabajado(string $trabajado = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($trabajado)) {
+            $array = ['id' => $trabajado];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'trabajado',
+            $array,
+            $consulta,
+            'id, iniciCaja'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerGimnasiosSelect(string $gimnasio = null)
     {
         $array = [];
         $consulta = '';
@@ -483,6 +525,8 @@ class ConsultasDB
             return false;
         }
     }
+
+    //
 
     public function obtenerDescuentos(string $gimnasio, string $id = null)
     {

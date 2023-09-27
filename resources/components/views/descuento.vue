@@ -144,11 +144,6 @@ export default {
         "modal-component": modal,
         "table-component": table,
     },
-    async mounted() {
-        let test = await this.llenarSelectIdGimnasio();
-        console.log(test);
-        //llenarselects
-    },
     data() {
         return {
             textSelectGeneral: 'escoja una opcion',
@@ -187,38 +182,41 @@ export default {
             },
 
             msgError: {
-                titulo: false,
-                total: false,
-                fecha: false,
-                idGimnasio: false,
-                idTrabajado: false,
-                idTrabajador: false,
-                descripcion: false,
-                estado: false,
+                titulo: '',
+                total: '',
+                fecha: '',
+                idGimnasio: '',
+                idTrabajado: '',
+                idTrabajador: '',
+                descripcion: '',
+                estado: '',
             },
 
-            optionsIdGimnasio:[
-                {text: 'text', value: 1}
-            ],
+            optionsIdGimnasio: [],
 
-            optionsIdTrabajado:[
-                {text: 'text', value: 1}
-            ],
+            optionsIdTrabajado:[],
 
-            optionsIdTrabajador:[
-                {text: 'text', value: 1}
-            ],
+            optionsIdTrabajador:[],
         }
     },
     methods: {
         async llenarSelectIdGimnasio() {
-            return await cargarDatos('cargarGimnasiosSelect');
+            let datos =  await cargarDatos('cargarGimnasiosSelect');
+            this.optionsIdGimnasio = datos.map(function(btn) {
+                return {text: btn.nombre, value: btn.id};
+            });
         },
         async llenarSelectIdTrabajado() {
-            return await cargarDatos('');
+            let datos =  await cargarDatos('cargarTrabajadoSelect');
+            this.optionsIdTrabajado = datos.map(function(btn) {
+                return {text: btn.iniciCaja, value: btn.id};
+            });
         },
         async llenarSelectIdTrabajador() {
-            return await cargarDatos('');
+            let datos =  await cargarDatos('cargarTrabajadorSelect');
+            this.optionsIdTrabajador = datos.map(function(btn) {
+                return {text: btn.nickname, value: btn.id};
+            });
         },
         modalCerrar() {
             this.$refs.modalDescuento.hide();
@@ -271,7 +269,13 @@ export default {
             this.tutiloModal = 'Agregar Descuento'
             this.$refs.modalDescuento.show();
         },
-        editatDescuento(index, id) {
+        async editatDescuento(index, id) {
+            this.$refs.tableDescuento.cargando = true;
+
+            await this.llenarSelectIdGimnasio();
+            await this.llenarSelectIdTrabajado();
+            await this.llenarSelectIdTrabajador();
+
             this.desbloquearCampos()
             this.btnContinuar = true;
 
@@ -291,9 +295,15 @@ export default {
 
             this.tutiloModal = 'Actualizar Descuento '+ id
             this.$refs.modalDescuento.show();
+            this.$refs.tableDescuento.cargando = false;
         },
-        verDescuento(index) {
-            console.log(index);
+        async verDescuento(index) {
+            this.$refs.tableDescuento.cargando = true;
+
+            await this.llenarSelectIdGimnasio();
+            await this.llenarSelectIdTrabajado();
+            await this.llenarSelectIdTrabajador();
+
             this.bloquearCampos()
             this.btnContinuar = false;
 
@@ -313,6 +323,7 @@ export default {
 
             this.tutiloModal = 'ver Descuento'
             this.$refs.modalDescuento.show();
+            this.$refs.tableDescuento.cargando = false;
         },
         eliminarDescuento(id) {
             console.log('eliminar', id);
