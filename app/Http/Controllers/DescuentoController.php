@@ -24,19 +24,61 @@ class DescuentoController extends Controller
             return $res;
         }
     }
-    /*
-    $validator = Validator::make($request->all(), [
-            'cliente' => 'string|max:50|min:1',
-            'selectHora' => 'string|max:50|min:1',
-            'tipoPago' => 'string|max:50|min:1',
-            'nombreYapellido' => 'string|max:50|min:1',
-            'documento' => 'string|max:50|min:1',
-            'equipo' => 'string|max:50|min:1',
+
+    public function editarDescuento(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|max:1000000|min:1',
+            'titulo' => 'string|max:50|min:1',
+            'total' => 'integer|max:1000000|min:1',
+            'fecha' => 'string|max:50|min:1',
+            'idGimnasio' => 'integer|max:50|min:1',
+            'idTrabajado' => 'integer|max:50|min:1',
+            'idTrabajador' => 'integer|max:50|min:1',
+            'descripcion' => 'string|max:50|min:0',
+            'estado' => 'boolean',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => $validator->errors()->all()
             ]);
-        } */
+        }
+
+        $ligas = new Descuento();
+        $res = $ligas->editarDescuento($request->all());
+        if ($res == true) {
+            return $res;
+        }else{
+            return $res;
+        }
+    }
+
+    public function crearDescuento(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:50|min:1',
+            'total' => 'required|integer|max:1000000|min:1',
+            'fecha' => 'required|string|max:50|min:1',
+            'idGimnasio' => 'required|integer|max:50|min:1',
+            'idTrabajado' => 'required|integer|max:50|min:1',
+            'idTrabajador' => 'required|integer|max:50|min:1',
+            'descripcion' => 'string|max:50|min:0',
+            'estado' => 'boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->all()
+            ]);
+        }
+
+        $ligas = new Descuento();
+        $res = $ligas->crearDescuento($request->all());
+        if ($res == true) {
+            return $res;
+        }else{
+            return $res;
+        }
+    }
 }

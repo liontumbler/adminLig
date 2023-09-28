@@ -136,7 +136,7 @@
 <script>
 import modal from "../../components/controls/modal.vue";
 import table from "../../components/controls/table.vue";
-import { cargarDatos } from "../../services/servicesApi.js";
+import { cargarDatos, enviarData } from "../../services/servicesApi.js";
 
 export default {
     name: 'Descuentos',
@@ -201,7 +201,7 @@ export default {
     },
     methods: {
         async llenarSelectIdGimnasio() {
-            let datos =  await cargarDatos('cargarGimnasiosSelect');
+            let datos = await cargarDatos('cargarGimnasiosSelect');
             this.optionsIdGimnasio = datos.map(function(btn) {
                 return {text: btn.nombre, value: btn.id};
             });
@@ -218,12 +218,9 @@ export default {
                 return {text: btn.nickname, value: btn.id};
             });
         },
-        modalCerrar() {
-            this.$refs.modalDescuento.hide();
-        },
-        modalContinuar() {
+        async modalContinuar() {
             //this.$refs.modalDescuento.hide();
-            //validar datos
+            //campos que no son requridos
             let noRequired = [
                 'descripcion'
             ];
@@ -236,62 +233,53 @@ export default {
 
                     return;
                 }else {
-                    //validar los parametros de restriccion
+                    //validar los parametros de restriccion que se ponen en los atributos
                     this.msgError[i] = '';
                 }
             }
 
             if (this.editando == true) {
-                console.log('editar');
+                console.log('editardata', this.campos);
+                this.campos
+                let datos = await enviarData('editarDescuento', this.campos);
+                console.log('editar', datos);
             } else if (this.creando == true) {
-                console.log('crear');
+                let datos = await enviarData('crearDescuento', this.campos);
+                console.log('crear', datos);
             }
         },
-        buscar(e) {
-            console.log(e, 'escucho');
-        },
-        agregarDescuento() {
+        async agregarDescuento() {
+            await this.cargarSelects();
+
             this.desbloquearCampos()
             this.btnContinuar = true;
 
             this.editando = false;
             this.creando = true;
 
-            this.campos.titulo = ''
-            this.campos.total = ''
-            this.campos.fecha = ''
-            this.campos.idGimnasio = ''
-            this.campos.idTrabajado = ''
-            this.campos.idTrabajador = ''
-            this.campos.descripcion = ''
-            this.campos.estado = false
+            this.vaciarCampos();
 
             this.tutiloModal = 'Agregar Descuento'
             this.$refs.modalDescuento.show();
         },
-        async editatDescuento(index, id) {
-            this.$refs.tableDescuento.cargando = true;
-
+        async cargarSelects() {
             await this.llenarSelectIdGimnasio();
             await this.llenarSelectIdTrabajado();
             await this.llenarSelectIdTrabajador();
+        },
+        async editatDescuento(index, id) {
+            this.$refs.tableDescuento.cargando = true;
+
+            await this.cargarSelects();
 
             this.desbloquearCampos()
+
             this.btnContinuar = true;
 
             this.editando = true;
             this.creando = false;
 
-            let datos = this.$refs.tableDescuento.datatable[index]
-
-            this.campos.titulo = datos.titulo
-            this.campos.total = datos.total
-            this.campos.fecha = datos.fecha
-            this.campos.idGimnasio = datos.idGimnasio
-            this.campos.idTrabajado = datos.idTrabajado
-            this.campos.idTrabajador = datos.idTrabajador
-            this.campos.descripcion = datos.descripcion
-            this.campos.estado = datos.estado == 1 ? true : false
+            this.llenarCampos();
 
             this.tutiloModal = 'Actualizar Descuento '+ id
             this.$refs.modalDescuento.show();
@@ -300,11 +288,10 @@ export default {
         async verDescuento(index) {
             this.$refs.tableDescuento.cargando = true;
 
-            await this.llenarSelectIdGimnasio();
-            await this.llenarSelectIdTrabajado();
-            await this.llenarSelectIdTrabajador();
+            await this.cargarSelects();
 
-            this.bloquearCampos()
+            this.bloquearCampos();
+
             this.btnContinuar = false;
 
             this.editando = false;
@@ -324,6 +311,36 @@ export default {
             this.tutiloModal = 'ver Descuento'
             this.$refs.modalDescuento.show();
             this.$refs.tableDescuento.cargando = false;
+        },
+        buscar(e) {
+            console.log(e, 'escucho');
+        },
+        modalCerrar() {
+            this.$refs.modalDescuento.hide();
+        },
+        vaciarCampos() {
+            delete this.campos.id
+            this.campos.titulo = ''
+            this.campos.total = ''
+            this.campos.fecha = ''
+            this.campos.idGimnasio = ''
+            this.campos.idTrabajado = ''
+            this.campos.idTrabajador = ''
+            this.campos.descripcion = ''
+            this.campos.estado = ''
+        },
+        llenarCampos(){
+            let datos = this.$refs.tableDescuento.datatable[index]
+
+            this.campos.id = datos.id
+            this.campos.titulo = datos.titulo
+            this.campos.total = datos.total
+            this.campos.fecha = datos.fecha
+            this.campos.idGimnasio = datos.idGimnasio
+            this.campos.idTrabajado = datos.idTrabajado
+            this.campos.idTrabajador = datos.idTrabajador
+            this.campos.descripcion = datos.descripcion
+            this.campos.estado = datos.estado == 1 ? true : false
         },
         eliminarDescuento(id) {
             console.log('eliminar', id);

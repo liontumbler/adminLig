@@ -44,25 +44,6 @@ class ConsultasDB
         return ($res > 0) ? true : $res;
     }
 
-    public function crearDescuento(array $data, string $gimnasio, string $trabajador, string $trabajado)
-    {
-        $descuento = [
-            'titulo' => $data['titulo'],
-            'total' => $data['total'],
-            'fecha' => date('Y-m-d H:i:s'),
-            'idGimnasio' => $gimnasio,
-            'idTrabajado' => $trabajado,
-            'idTrabajador' => $trabajador
-        ];
-
-        if (!empty($data['descripcion'])) {
-            $descuento['descripcion'] = $data['descripcion'];
-        }
-
-        $res = $this->cn->create('descuento', $descuento);
-        return ($res > 0) ? true : $res;
-    }
-
     public function crearGimansio(array $data)
     {
         $gimnasio = [
@@ -526,7 +507,32 @@ class ConsultasDB
         }
     }
 
-    //
+    public function crearDescuento($data)
+    {
+        return $data;
+        /*
+        $descuento = [
+            'titulo' => $data['titulo'],
+            'total' => $data['total'],
+            'fecha' => date('Y-m-d H:i:s'),
+            'idGimnasio' => $gimnasio,
+            'idTrabajado' => $trabajado,
+            'idTrabajador' => $trabajador
+        ];
+
+        if (!empty($data['descripcion'])) {
+            $descuento['descripcion'] = $data['descripcion'];
+        }
+
+        $res = $this->cn->create('descuento', $descuento);
+        return ($res > 0) ? true : $res;
+        */
+    }
+
+    public function editarDescuento($data)
+    {
+        return $data;
+    }
 
     public function obtenerDescuentos(string $gimnasio, string $id = null)
     {
