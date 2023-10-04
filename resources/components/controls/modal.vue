@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalDefaultLabel">{{ titulo }}</h5>
-                    <button type="button" class="btn-close" aria-label="Close" @click="$emit('cerrar')"></button>
+                    <button type="button" class="btn-close" aria-label="Close" v-if="visibleBtnCerrar" @click="$emit('cerrar')"></button>
                 </div>
                 <div class="modal-body">
                     <slot></slot>

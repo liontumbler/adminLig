@@ -127,11 +127,20 @@ class Database {
     public function delete($table, $id) {
         try {
             $sql = $this->deleteStr($table);
-
+            //return $sql;
             $statement = $this->cn->prepare($sql);
             $statement->execute(['id' => $id]);
+            return $statement->rowCount();
         } catch (PDOException $e) {
-            return 'error:'.$e->getMessage();
+            if (strpos($e->getMessage(), '1062') !== false) {//datos duplicados
+                return -1;
+            } else if (strpos($e->getMessage(), '1451') !== false) {//se esta usando en otra tabla
+                return -2;
+            } else if (strpos($e->getMessage(), '1142') !== false) {//permiso denegado
+                return -3;
+            } else {
+                return 'error:'.$e->getMessage();
+            }
         }
     }
 

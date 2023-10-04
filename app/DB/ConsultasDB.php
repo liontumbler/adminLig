@@ -507,31 +507,59 @@ class ConsultasDB
         }
     }
 
+    public function eliminarDescuento($id)
+    {
+        $res = $this->cn->delete('descuento', $id);
+        return ($res == 1) ? true : $res;
+    }
+
     public function crearDescuento($data)
     {
-        return $data;
-        /*
-        $descuento = [
-            'titulo' => $data['titulo'],
-            'total' => $data['total'],
-            'fecha' => date('Y-m-d H:i:s'),
-            'idGimnasio' => $gimnasio,
-            'idTrabajado' => $trabajado,
-            'idTrabajador' => $trabajador
-        ];
+        //return $data;
+        $array = [];
+        $array['titulo'] = $data['titulo'];
+        $array['total'] = $data['total'];
+        $array['fecha'] = $data['fecha'];
+        $array['idGimnasio'] = $data['idGimnasio'];
+        $array['idTrabajado'] = $data['idTrabajado'];
+        $array['idTrabajador'] = $data['idTrabajador'];
+        $array['estado'] = $data['estado'];
+        if (!empty($data['descripcion']))
+            $array['descripcion'] = $data['descripcion'];
 
-        if (!empty($data['descripcion'])) {
-            $descuento['descripcion'] = $data['descripcion'];
-        }
-
-        $res = $this->cn->create('descuento', $descuento);
+        $res = $this->cn->create('descuento', $array);
         return ($res > 0) ? true : $res;
-        */
     }
 
     public function editarDescuento($data)
     {
         return $data;
+        $array = [];
+        if (!empty($data['titulo']))
+            $array['titulo'] = $data['titulo'];
+
+        if (!empty($data['total']))
+            $array['total'] = $data['total'];
+
+        if (!empty($data['fecha']))
+            $array['fecha'] = $data['fecha'];
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        if (!empty($data['idTrabajado']))
+            $array['idTrabajado'] = $data['idTrabajado'];
+
+        if (!empty($data['idTrabajador']))
+            $array['idTrabajador'] = $data['idTrabajador'];
+
+        if (!empty($data['descripcion']))
+            $array['descripcion'] = $data['descripcion'];
+
+        if (!empty($data['estado']))
+            $array['estado'] = $data['estado'];
+
+        $this->cn->update('descuento', $array, $data['id']);
     }
 
     public function obtenerDescuentos(string $gimnasio, string $id = null)

@@ -73,8 +73,19 @@ class DescuentoController extends Controller
             ]);
         }
 
-        $ligas = new Descuento();
-        $res = $ligas->crearDescuento($request->all());
+        $descuento = new Descuento();
+        $res = $descuento->crearDescuento($request->all());
+        if ($res == true) {
+            return $res;
+        }else{
+            return $res;
+        }
+    }
+
+    public function eliminarDescuento(Request $request)
+    {
+        $descuento = new Descuento();
+        $res = $descuento->eliminarDescuento($request->id);
         if ($res == true) {
             return $res;
         }else{

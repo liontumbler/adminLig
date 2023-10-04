@@ -129,6 +129,15 @@
             >
                 Seguro que desea borrar el descuento
             </modal-component>
+            <modal-component
+                ref="modalSuccess"
+                :titulo="titleModalSuccess"
+                :visibleBtnCerrar="false"
+                :visibleBtnContinuar="true"
+                @continuar="continuarModalSuccess"
+            >
+                {{ msgModalSuccess }}
+            </modal-component>
         </div>
     </div>
 
@@ -158,6 +167,8 @@ export default {
             editando: false,
             creando: false,
             btnContinuar: true,
+            titleModalSuccess: '',
+            msgModalSuccess: '',
 
             campos: {
                 titulo: '',
@@ -199,6 +210,9 @@ export default {
             optionsIdTrabajador:[],
         }
     },
+    async mounted() {
+        await this.cargarSelects();
+    },
     methods: {
         async llenarSelectIdGimnasio() {
             let datos = await cargarDatos('cargarGimnasiosSelect');
@@ -237,20 +251,25 @@ export default {
                     this.msgError[i] = '';
                 }
             }
-
+            console.log('campos', this.campos);
             if (this.editando == true) {
-                console.log('editardata', this.campos);
-                this.campos
                 let datos = await enviarData('editarDescuento', this.campos);
                 console.log('editar', datos);
             } else if (this.creando == true) {
                 let datos = await enviarData('crearDescuento', this.campos);
                 console.log('crear', datos);
+                if(datos == true) {
+                    this.titleModalSuccess = 'Exito'
+                    this.msgModalSuccess = 'se creo el descuento con exito'
+                    this.$refs.modalSuccess.show();
+                }else{
+                    this.titleModalSuccess = 'Error'
+                    this.msgModalSuccess = 'error inesperado'
+                    this.$refs.modalSuccess.show();
+                }
             }
         },
         async agregarDescuento() {
-            await this.cargarSelects();
-
             this.desbloquearCampos()
             this.btnContinuar = true;
 
@@ -279,7 +298,7 @@ export default {
             this.editando = true;
             this.creando = false;
 
-            this.llenarCampos();
+            this.llenarCampos(index);
 
             this.tutiloModal = 'Actualizar Descuento '+ id
             this.$refs.modalDescuento.show();
@@ -293,9 +312,6 @@ export default {
             this.bloquearCampos();
 
             this.btnContinuar = false;
-
-            this.editando = false;
-            this.creando = false;
 
             let datos = this.$refs.tableDescuento.datatable[index]
 
@@ -311,6 +327,10 @@ export default {
             this.tutiloModal = 'ver Descuento'
             this.$refs.modalDescuento.show();
             this.$refs.tableDescuento.cargando = false;
+        },
+        continuarModalSuccess() {
+            this.$refs.modalSuccess.hide();
+            location.reload();
         },
         buscar(e) {
             console.log(e, 'escucho');
@@ -329,7 +349,7 @@ export default {
             this.campos.descripcion = ''
             this.campos.estado = ''
         },
-        llenarCampos(){
+        llenarCampos(index){
             let datos = this.$refs.tableDescuento.datatable[index]
 
             this.campos.id = datos.id
@@ -344,13 +364,16 @@ export default {
         },
         eliminarDescuento(id) {
             console.log('eliminar', id);
+            this.campos.id = id
             this.$refs.modalEliminar.show();
         },
         cerrarModalEliminar() {
             this.$refs.modalEliminar.hide();
         },
-        continuarModalEliminar() {
+        async continuarModalEliminar() {
             this.$refs.modalEliminar.hide();
+            let datos = await enviarData('eliminarDescuento', {id: this.campos.id});
+            console.log(datos, 'eliminar');
         },
         bloquearCampos() {
             this.disabled.titulo = true;

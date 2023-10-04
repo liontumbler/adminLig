@@ -69,6 +69,7 @@ Route::post('/cargarTrabajadorSelect', [GeneralController::class, 'cargarTrabaja
 Route::post('/cargarDescuentos', [DescuentoController::class, 'cargarDatos'])->name('cargarDatos');
 Route::post('/editarDescuento', [DescuentoController::class, 'editarDescuento'])->name('editarDescuento');
 Route::post('/crearDescuento', [DescuentoController::class, 'crearDescuento'])->name('crearDescuento');
+Route::post('/eliminarDescuento', [DescuentoController::class, 'eliminarDescuento'])->name('eliminarDescuento');
 
 
 

@@ -41,4 +41,17 @@ class Descuento
         }*/
         return $this->db->editarDescuento($data);
     }
+
+    public function eliminarDescuento($id) {
+
+        /*if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerDescuentos($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }*/
+        return $this->db->eliminarDescuento($id);
+    }
+
+
 }
