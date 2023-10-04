@@ -11,6 +11,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\GimnasioController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\DescuentoController;
+use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,8 @@ Route::get('/gimnasios', [GimnasioController::class, 'index'])->name('index');
 Route::get('/equipos', [EquipoController::class, 'index'])->name('index');
 
 Route::get('/descuentos', [DescuentoController::class, 'index'])->name('index');
+
+Route::get('/plans', [PlanController::class, 'index'])->name('index');
 
 
 //accciones
