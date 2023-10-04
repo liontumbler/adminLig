@@ -13,6 +13,7 @@ import equipo from '../components/views/equipo.vue';
 import descuento from '../components/views/descuento.vue';
 import plan from '../components/views/plan.vue';
 import horaliga from '../components/views/horaliga.vue';
+import producto from '../components/views/producto.vue';
 
 const app = createApp({});
 app.component('login-component', login);
@@ -25,4 +26,5 @@ app.component('equipo-component', equipo);
 app.component('descuento-component', descuento);
 app.component('plan-component', plan);
 app.component('horaliga-component', horaliga);
+app.component('producto-component', producto);
 app.mount('#app');

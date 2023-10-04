@@ -13,6 +13,7 @@ use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\HoraligaController;
+use App\Http\Controllers\ProductoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::get('/descuentos', [DescuentoController::class, 'index'])->name('index');
 Route::get('/plans', [PlanController::class, 'index'])->name('index');
 
 Route::get('/horaligas', [HoraLigaController::class, 'index'])->name('index');
+
+Route::get('/productos', [ProductoController::class, 'index'])->name('index');
 
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
