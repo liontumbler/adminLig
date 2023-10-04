@@ -19,4 +19,8 @@ class TrabajadorController extends Controller
         return view('worker.ligas');
     }
 
+    public function index()
+    {
+        return view('general.trabajador');
+    }
 }
