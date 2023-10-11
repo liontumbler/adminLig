@@ -533,7 +533,6 @@ class ConsultasDB
 
     public function editarDescuento($data)
     {
-        return $data;
         $array = [];
         if (!empty($data['titulo']))
             $array['titulo'] = $data['titulo'];
@@ -559,7 +558,7 @@ class ConsultasDB
         if (!empty($data['estado']))
             $array['estado'] = $data['estado'];
 
-        $this->cn->update('descuento', $array, $data['id']);
+        return $this->cn->update('descuento', $array, $data['id']);
     }
 
     public function obtenerDescuentos(string $gimnasio, string $id = null)

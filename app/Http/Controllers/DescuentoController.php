@@ -35,7 +35,7 @@ class DescuentoController extends Controller
             'idGimnasio' => 'integer|max:50|min:1',
             'idTrabajado' => 'integer|max:50|min:1',
             'idTrabajador' => 'integer|max:50|min:1',
-            'descripcion' => 'string|max:50|min:0',
+            'descripcion' => 'string|max:150|min:0',
             'estado' => 'boolean',
         ]);
 
@@ -63,7 +63,7 @@ class DescuentoController extends Controller
             'idGimnasio' => 'required|integer|max:50|min:1',
             'idTrabajado' => 'required|integer|max:50|min:1',
             'idTrabajador' => 'required|integer|max:50|min:1',
-            'descripcion' => 'string|max:50|min:0',
+            'descripcion' => 'string|max:150|min:0',
             'estado' => 'boolean',
         ]);
 

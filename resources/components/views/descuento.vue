@@ -239,7 +239,6 @@ export default {
                 'descripcion'
             ];
             for (const i in this.campos) {
-                console.log(noRequired.indexOf(i));
                 if (!this.campos[i] && noRequired.indexOf(i) < 0) {
                     console.log('no tiene valor el campo ' + i);
                     this.$refs[i].focus();
@@ -255,17 +254,18 @@ export default {
             if (this.editando == true) {
                 let datos = await enviarData('editarDescuento', this.campos);
                 console.log('editar', datos);
+                if(datos == true) {
+                    this.mostrarMsg('Exito', 'Se actualizo el descuento con exito');
+                }else{
+                    this.mostrarMsg('Error', 'Error inesperado');
+                }
             } else if (this.creando == true) {
                 let datos = await enviarData('crearDescuento', this.campos);
                 console.log('crear', datos);
                 if(datos == true) {
-                    this.titleModalSuccess = 'Exito'
-                    this.msgModalSuccess = 'se creo el descuento con exito'
-                    this.$refs.modalSuccess.show();
+                    this.mostrarMsg('Exito', 'Se creo el descuento con exito');
                 }else{
-                    this.titleModalSuccess = 'Error'
-                    this.msgModalSuccess = 'error inesperado'
-                    this.$refs.modalSuccess.show();
+                    this.mostrarMsg('Error', 'Error inesperado');
                 }
             }
         },
@@ -328,12 +328,24 @@ export default {
             this.$refs.modalDescuento.show();
             this.$refs.tableDescuento.cargando = false;
         },
+        async continuarModalEliminar() {
+            this.$refs.modalEliminar.hide();
+            let datos = await enviarData('eliminarDescuento', {id: this.campos.id});
+            console.log('elimino', datos);
+            if(datos == true) {
+                this.mostrarMsg('Exito', 'Se creo el descuento con exito');
+            }else{
+                this.mostrarMsg('Error', 'Error inesperado');
+            }
+        },
+        mostrarMsg(title, msg) {
+            this.titleModalSuccess = title;
+            this.msgModalSuccess = msg;
+            this.$refs.modalSuccess.show();
+        },
         continuarModalSuccess() {
             this.$refs.modalSuccess.hide();
             location.reload();
-        },
-        buscar(e) {
-            console.log(e, 'escucho');
         },
         modalCerrar() {
             this.$refs.modalDescuento.hide();
@@ -363,17 +375,11 @@ export default {
             this.campos.estado = datos.estado == 1 ? true : false
         },
         eliminarDescuento(id) {
-            console.log('eliminar', id);
             this.campos.id = id
             this.$refs.modalEliminar.show();
         },
         cerrarModalEliminar() {
             this.$refs.modalEliminar.hide();
-        },
-        async continuarModalEliminar() {
-            this.$refs.modalEliminar.hide();
-            let datos = await enviarData('eliminarDescuento', {id: this.campos.id});
-            console.log(datos, 'eliminar');
         },
         bloquearCampos() {
             this.disabled.titulo = true;
@@ -394,6 +400,9 @@ export default {
             this.disabled.idTrabajado = false;
             this.disabled.idTrabajador = false;
             this.disabled.estado = false;
+        },
+        buscar(e) {
+            console.log(e, 'escucho');
         },
         mostrarChange() {
             console.log('escucho');
