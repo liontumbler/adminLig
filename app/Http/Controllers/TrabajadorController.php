@@ -14,7 +14,7 @@ class TrabajadorController extends Controller
         return view('worker.homeTrabajador');
     }
 
-    public function ligas()
+    public function ligasTrabajador()
     {
         return view('worker.ligas');
     }

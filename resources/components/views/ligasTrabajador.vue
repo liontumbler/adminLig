@@ -184,7 +184,7 @@ import checkboxp from "../../components/controls/checkbox.vue";
 import radiop from "../../components/controls/radio.vue";
 import modalp from "../../components/controls/modal.vue";
 export default {
-    name: 'ligas',
+    name: 'ligasTrabajador',
     components: {
         "modal-component": modalp,
         "input-component": inputp,

@@ -35,7 +35,7 @@ Route::get('/loginTraOut', [LoginController::class, 'loginTraOut'])->name('login
 Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');
 Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');
 
-Route::get('/ligas', [TrabajadorController::class, 'ligas'])->name('ligas');
+Route::get('/ligasTrabajador', [TrabajadorController::class, 'ligasTrabajador'])->name('ligasTrabajador');
 
 Route::get('/errorSesionCerrada', [LoginController::class, 'errorSesionCerrada'])->name('errorSesionCerrada');
 

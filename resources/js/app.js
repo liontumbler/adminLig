@@ -4,7 +4,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import { createApp } from 'vue';
 import login from '../components/views/login.vue';
-import ligas from '../components/views/ligas.vue';
+import ligasTrabajador from '../components/views/ligasTrabajador.vue';
 import navSidebar from '../components/component/navSidebar.vue';
 import nav from '../components/component/nav.vue';
 import cliente from '../components/views/cliente.vue';
@@ -18,7 +18,7 @@ import trabajador from '../components/views/trabajador.vue';
 
 const app = createApp({});
 app.component('login-component', login);
-app.component('liga-component', ligas);
+app.component('ligastrabajador-component', ligasTrabajador);
 app.component('nav-sidebar', navSidebar);
 app.component('nav-component', nav);
 app.component('cliente-component', cliente);
