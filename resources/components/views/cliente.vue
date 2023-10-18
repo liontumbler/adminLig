@@ -58,22 +58,22 @@
                 <div class="row">
                     <div class="col-lg-6 mb-1">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="correo" ref="correo" v-model="campos.correo" :disabled="disabled.correo">
+                        <input type="email" class="form-control" id="correo" minlength="1" maxlength="50" ref="correo" v-model="campos.correo" :disabled="disabled.correo">
                         <div id="correoError" v-show="msgError.correo" class="form-text text-danger">{{ msgError.correo }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="number" class="form-control" id="telefono" ref="telefono" v-model="campos.telefono" :disabled="disabled.telefono">
+                        <input type="number" class="form-control" id="telefono" min="1000000" max="9999999999" ref="telefono" v-model="campos.telefono" :disabled="disabled.telefono">
                         <div id="telefonoError" v-show="msgError.telefono" class="form-text text-danger">{{ msgError.telefono }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="nombresYapellidos" class="form-label">Nombres Y Apellidos</label>
-                        <input type="text" class="form-control" id="nombresYapellidos" ref="nombresYapellidos" v-model="campos.nombresYapellidos" :disabled="disabled.nombresYapellidos">
+                        <input type="text" class="form-control" id="nombresYapellidos" minlength="1" maxlength="50" ref="nombresYapellidos" v-model="campos.nombresYapellidos" :disabled="disabled.nombresYapellidos">
                         <div id="nombresYapellidosError" v-show="msgError.nombresYapellidos" class="form-text text-danger">{{ msgError.nombresYapellidos }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="documento" class="form-label">Documento</label>
-                        <input type="number" class="form-control" id="documento" ref="documento" v-model="campos.documento" :disabled="disabled.documento">
+                        <input type="number" class="form-control" id="documento" min="1000" max="99999999999" ref="documento" v-model="campos.documento" :disabled="disabled.documento">
                         <div id="documentoError" v-show="msgError.documento" class="form-text text-danger">{{ msgError.Documento }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">

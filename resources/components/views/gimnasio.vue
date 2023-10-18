@@ -58,22 +58,22 @@
                 <div class="row">
                     <div class="col-lg-6 mb-1">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="correo" ref="correo" v-model="correo" :disabled="correoDisabled">
+                        <input type="email" class="form-control" id="correo" minlength="1" maxlength="50" ref="correo" v-model="correo" :disabled="correoDisabled">
                         <div id="correoError" v-show="correoError" class="form-text text-danger">{{ msgErrorCorreo }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="nickname" class="form-label">Nickname</label>
-                        <input type="text" class="form-control" id="nickname" ref="nickname" v-model="nickname" :disabled="nicknameDisabled">
+                        <input type="text" class="form-control" id="nickname" minlength="1" maxlength="50" ref="nickname" v-model="nickname" :disabled="nicknameDisabled">
                         <div id="nicknameError" v-show="nicknameError" class="form-text text-danger">{{ msgErrorNickname }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" v-model="nombre" :disabled="nombreDisabled">
+                        <input type="text" class="form-control" id="nombre" minlength="1" maxlength="50" v-model="nombre" :disabled="nombreDisabled">
                         <div id="nombreError" v-show="nombreError" class="form-text text-danger">{{ msgErrorNombre }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="clave" class="form-label">Clave</label>
-                        <input type="text" class="form-control" id="clave" fer="clave" v-model="clave" :disabled="claveDisabled">
+                        <label for="clave" class="form-label">Clave (min 8 caracteres)</label>
+                        <input type="password" class="form-control" id="clave" minlength="8" maxlength="10" fer="clave" v-model="clave" :disabled="claveDisabled">
                         <div id="claveError" v-show="claveError" class="form-text text-danger">{{ msgErrorClave }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
@@ -88,12 +88,12 @@
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="direccion" class="form-label">Dirección</label>
-                        <input type="text" class="form-control" id="direccion" ref="direccion" v-model="direccion" :disabled="direccionDisabled">
+                        <input type="text" class="form-control" id="direccion" minlength="1" maxlength="100" ref="direccion" v-model="direccion" :disabled="direccionDisabled">
                         <div id="direccionError" v-show="direccionError" class="form-text text-danger">{{ msgErrorDireccion }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="number" class="form-control" id="telefono" ref="telefono" v-model="telefono" :disabled="telefonoDisabled">
+                        <input type="number" class="form-control" id="telefono" min="1000000" max="9999999999" ref="telefono" v-model="telefono" :disabled="telefonoDisabled">
                         <div id="telefonoError" v-show="telefonoError" class="form-text text-danger">{{ msgErrorTelefono }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
@@ -102,8 +102,8 @@
                         <div id="fechaError" v-show="fechaError" class="form-text text-danger">{{ msgErrorFecha }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="mindemasliga" class="form-label">MinDeMasLiga</label>
-                        <input type="number" class="form-control" id="mindemasliga" ref="mindemasliga" v-model="mindemasliga" :disabled="mindemasligaDisabled">
+                        <label for="mindemasliga" class="form-label">Minutos de mas liga</label>
+                        <input type="number" class="form-control" id="mindemasliga" min="1" max="60" ref="mindemasliga" v-model="mindemasliga" :disabled="mindemasligaDisabled">
                         <div id="mindemasligaError" v-show="mindemasligaError" class="form-text text-danger">{{ msgErrorMinDeMasLiga }}</div>
                     </div>
                     <div class="col-lg-12 mb-1">
@@ -118,7 +118,7 @@
                     </div>
                     <div class="col-lg-12 mb-1">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" ref="descripcion" rows="3" v-model="descripcion" :disabled="descripcionDisabled"></textarea>
+                        <textarea class="form-control" id="descripcion" minlength="0" maxlength="150" ref="descripcion" rows="3" v-model="descripcion" :disabled="descripcionDisabled"></textarea>
                         <div id="descripcionError" v-show="descripcionError" class="form-text text-danger">{{ msgErrorDescripcion }}</div>
                     </div>
                     <div class="col-lg-4 mt-2">
@@ -128,7 +128,7 @@
                     </div>
                     <div class="col-lg-4 mt-2">
                         <input type="checkbox" class="form-check-input" id="superAdmin" ref="superAdmin" v-model="superAdmin" :disabled="superAdminDisabled">
-                        <label class="form-check-label" for="superAdmin">superAdmin</label>
+                        <label class="form-check-label" for="superAdmin">Super Admin</label>
                         <div id="superAdminError" v-show="superAdminError" class="form-text text-danger">{{ msgErrorSuperAdmin }}</div>
                     </div>
                     <div class="col-lg-4 mt-2">
