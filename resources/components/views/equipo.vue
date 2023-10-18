@@ -58,7 +58,7 @@
                 <div class="row">
                     <div class="col-lg-6 mb-1">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" v-model="nombre" :disabled="nombreDisabled">
+                        <input type="text" class="form-control" id="nombre" minlength="1" maxlength="50" v-model="nombre" :disabled="nombreDisabled">
                         <div id="nombreError" v-show="nombreError" class="form-text text-danger">{{ msgErrorNombre }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">

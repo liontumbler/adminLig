@@ -58,52 +58,52 @@
                 <div class="row">
                     <div class="col-lg-6 mb-1">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" ref="nombre" v-model="campos.nombre" :disabled="disabled.nombre">
+                        <input type="text" class="form-control" id="nombre" minlength="1" maxlength="50" ref="nombre" v-model="campos.nombre" :disabled="disabled.nombre">
                         <div id="nombreError" v-show="msgError.nombre" class="form-text text-danger">{{ msgError.nombre }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="trabajadores" class="form-label">Trabajadores</label>
-                        <input type="number" class="form-control" id="trabajadores" ref="trabajadores" v-model="campos.trabajadores" :disabled="disabled.trabajadores">
+                        <input type="number" class="form-control" id="trabajadores" min="1" max="1000" ref="trabajadores" v-model="campos.trabajadores" :disabled="disabled.trabajadores">
                         <div id="trabajadoresError" v-show="msgError.trabajadores" class="form-text text-danger">{{ msgError.trabajadores }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="numcamphora" class="form-label">Numero de filas horaliga</label>
-                        <input type="number" class="form-control" id="numcamphora" ref="numcamphora" v-model="campos.numcamphora" :disabled="disabled.numcamphora">
+                        <input type="number" class="form-control" id="numcamphora" min="1" max="10000" ref="numcamphora" v-model="campos.numcamphora" :disabled="disabled.numcamphora">
                         <div id="numcamphoraError" v-show="msgError.numcamphora" class="form-text text-danger">{{ msgError.numcamphora }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="ligas" class="form-label">Ligas</label>
-                        <input type="number" class="form-control" id="ligas" ref="ligas" v-model="campos.ligas" :disabled="disabled.ligas">
+                        <input type="number" class="form-control" id="ligas" min="1" max="10000" ref="ligas" v-model="campos.ligas" :disabled="disabled.ligas">
                         <div id="ligasError" v-show="msgError.ligas" class="form-text text-danger">{{ msgError.ligas }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="tienda" class="form-label">Tienda</label>
-                        <input type="number" class="form-control" id="tienda" ref="tienda" v-model="campos.tienda" :disabled="disabled.tienda">
+                        <input type="number" class="form-control" id="tienda" min="1" max="10000" ref="tienda" v-model="campos.tienda" :disabled="disabled.tienda">
                         <div id="tiendaError" v-show="msgError.tienda" class="form-text text-danger">{{ msgError.tienda }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="pagos" class="form-label">Pagos</label>
-                        <input type="number" class="form-control" id="pagos" ref="pagos" v-model="campos.pagos" :disabled="disabled.pagos">
+                        <input type="number" class="form-control" id="pagos" min="1" max="1000000" ref="pagos" v-model="campos.pagos" :disabled="disabled.pagos">
                         <div id="pagosError" v-show="msgError.pagos" class="form-text text-danger">{{ msgError.pagos }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="productos" class="form-label">Productos</label>
-                        <input type="number" class="form-control" id="productos" ref="productos" v-model="campos.productos" :disabled="disabled.productos">
+                        <input type="number" class="form-control" id="productos" min="1" max="10000" ref="productos" v-model="campos.productos" :disabled="disabled.productos">
                         <div id="productosError" v-show="msgError.productos" class="form-text text-danger">{{ msgError.productos }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="descuentos" class="form-label">Descuentos</label>
-                        <input type="number" class="form-control" id="descuentos" ref="descuentos" v-model="campos.descuentos" :disabled="disabled.descuentos">
+                        <input type="number" class="form-control" id="descuentos" min="1" max="10000" ref="descuentos" v-model="campos.descuentos" :disabled="disabled.descuentos">
                         <div id="descuentosError" v-show="msgError.descuentos" class="form-text text-danger">{{ msgError.descuentos }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="equipos" class="form-label">Equipos</label>
-                        <input type="number" class="form-control" id="equipos" ref="equipos" v-model="campos.equipos" :disabled="disabled.equipos">
+                        <input type="number" class="form-control" id="equipos" min="1" max="10000" ref="equipos" v-model="campos.equipos" :disabled="disabled.equipos">
                         <div id="equiposError" v-show="msgError.equipos" class="form-text text-danger">{{ msgError.equipos }}</div>
                     </div>
                     <div class="col-lg-12 mb-1">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" rows="3" ref="descripcion" v-model="campos.descripcion" :disabled="disabled.descripcion"></textarea>
+                        <textarea class="form-control" id="descripcion" minlength="0" maxlength="300" rows="5" ref="descripcion" v-model="campos.descripcion" :disabled="disabled.descripcion"></textarea>
                         <div id="descripcionError" v-show="msgError.descripcion" class="form-text text-danger">{{ msgError.descripcion }}</div>
                     </div>
                     <div class="col-lg-6 mt-2">
