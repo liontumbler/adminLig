@@ -57,6 +57,8 @@ Route::get('/productos', [ProductoController::class, 'index'])->name('index');
 
 Route::get('/trabajadors', [TrabajadorController::class, 'index'])->name('index');
 
+Route::get('/ligas', [LigaController::class, 'index'])->name('index');
+
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');
 Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm');
