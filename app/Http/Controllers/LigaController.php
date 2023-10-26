@@ -33,5 +33,8 @@ class ligaController extends Controller
             return $res;
         }
     }
-
+        public function index()
+        {
+            return view('general.liga');
+        }
 }

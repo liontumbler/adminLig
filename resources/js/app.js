@@ -15,6 +15,7 @@ import plan from '../components/views/plan.vue';
 import horaliga from '../components/views/horaliga.vue';
 import producto from '../components/views/producto.vue';
 import trabajador from '../components/views/trabajador.vue';
+import liga from '../components/views/liga.vue';
 
 const app = createApp({});
 app.component('login-component', login);
@@ -29,4 +30,5 @@ app.component('plan-component', plan);
 app.component('horaliga-component', horaliga);
 app.component('producto-component', producto);
 app.component('trabajador-component', trabajador);
+app.component('liga-component', liga);
 app.mount('#app');
