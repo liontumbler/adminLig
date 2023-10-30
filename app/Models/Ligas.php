@@ -17,7 +17,7 @@ class Ligas
             if ($vencimiento) {
                 $hl = $this->db->obtenerHorasLigasPorId($data['selectHora']);
                 if (empty($data['cliente'])) {
-                    $idCliente = $this->db->crearCliente($data, $sesionTrabajador['gimnasioId']);
+                    $idCliente = $this->db->crearClientef($data, $sesionTrabajador['gimnasioId']);
                 } else {
                     $idCliente = $data['cliente'];
                 }

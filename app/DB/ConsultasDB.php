@@ -14,6 +14,221 @@ class ConsultasDB
         $this->cn = new Database();
     }
 
+    /*CRUD*/
+    public function eliminarDescuento($id)
+    {
+        $res = $this->cn->delete('descuento', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearDescuento($data)
+    {
+        //return $data;
+        $array = [];
+        $array['titulo'] = $data['titulo'];
+        $array['total'] = $data['total'];
+        $array['fecha'] = date('Y-m-d H:i:s');
+        $array['idGimnasio'] = $data['idGimnasio'];
+        $array['idTrabajado'] = $data['idTrabajado'];
+        $array['idTrabajador'] = $data['idTrabajador'];
+        $array['estado'] = $data['estado'];
+        if (!empty($data['descripcion']))
+            $array['descripcion'] = $data['descripcion'];
+
+        $res = $this->cn->create('descuento', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarDescuento($data)
+    {
+        $array = [];
+        if (!empty($data['titulo']))
+            $array['titulo'] = $data['titulo'];
+
+        if (!empty($data['total']))
+            $array['total'] = $data['total'];
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        if (!empty($data['idTrabajado']))
+            $array['idTrabajado'] = $data['idTrabajado'];
+
+        if (!empty($data['idTrabajador']))
+            $array['idTrabajador'] = $data['idTrabajador'];
+
+        if (!empty($data['descripcion']))
+            $array['descripcion'] = $data['descripcion'];
+
+        if (!empty($data['estado']))
+            $array['estado'] = $data['estado'];
+
+        return $this->cn->update('descuento', $array, $data['id']);
+    }
+
+    public function obtenerDescuentos(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'descuento',
+            $array,
+            $consulta,
+            'id, titulo, descripcion, total, fecha, estado, idGimnasio, idTrabajado, idTrabajador'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function eliminarCliente($id)
+    {
+        $res = $this->cn->delete('cliente', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearCliente($data)//original
+    {
+        //return $data;
+        $array = [];
+        $array['nombresYapellidos'] = $data['nombresYapellidos'];
+        $array['estado'] = $data['estado'];
+        $array['idGimnasio'] = $data['idGimnasio'];
+
+        if (!empty($data['correo']))
+            $array['descripcion'] = $data['descripcion'];
+
+        if (!empty($data['telefono']))
+            $array['descripcion'] = $data['descripcion'];
+
+        if (!empty($data['documento']))
+            $array['descripcion'] = $data['descripcion'];
+
+        if (!empty($data['idEquipo']))
+            $array['descripcion'] = $data['descripcion'];
+
+        $res = $this->cn->create('cliente', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarCliente($data)
+    {
+        $array = [];
+        if (!empty($data['correo']))
+            $array['correo'] = $data['correo'];
+
+        if (!empty($data['telefono']))
+            $array['telefono'] = $data['telefono'];
+
+        if (!empty($data['nombresYapellidos']))
+            $array['nombresYapellidos'] = $data['nombresYapellidos'];
+
+        if (!empty($data['documento']))
+            $array['documento'] = $data['documento'];
+
+        if (!empty($data['estado']))
+            $array['estado'] = $data['estado'];
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        if (!empty($data['idEquipo']))
+            $array['idEquipo'] = $data['idEquipo'];
+
+        return $this->cn->update('cliente', $array, $data['id']);
+    }
+
+    public function obtenerClientes(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'cliente',
+            $array,
+            $consulta,
+            'id, correo, telefono, nombresYapellidos, documento, estado, idGimnasio, idEquipo'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function eliminarEquipo($id)
+    {
+        $res = $this->cn->delete('equipo', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearEquipo($data)//original
+    {
+        //return $data;
+        $array = [];
+        $array['nombre'] = $data['nombre'];
+        $array['fecha'] = date('Y-m-d H:i:s');
+        $array['estado'] = $data['estado'];
+        $array['idGimnasio'] = $data['idGimnasio'];
+
+        $res = $this->cn->create('equipo', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarEquipo($data)
+    {
+        $array = [];
+        if (!empty($data['nombre']))
+            $array['nombre'] = $data['nombre'];
+
+        if (!empty($data['estado']))
+            $array['estado'] = $data['estado'];
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        return $this->cn->update('equipo', $array, $data['id']);
+    }
+
+    public function obtenerEquipos(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'equipo',
+            $array,
+            $consulta,
+            'id, nombre, fecha, estado, idGimnasio'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+    /*CRUD*/
+
+
+
+
+
+
+
+
+
     /*CREAR*/
     public function crearLigas(array $data, string $gimnasio, string $trabajado, string $trabajador)
     {
@@ -32,7 +247,7 @@ class ConsultasDB
         return ($res > 0) ? true : $res;
     }
 
-    public function crearEquipo(array $data, string $gimnasio)
+    public function crearEquipoF(array $data, string $gimnasio)
     {
         $equipo = [
             'nombre' => $data['nombre'],
@@ -248,7 +463,7 @@ class ConsultasDB
         return $this->cn->create('trabajado', $trabajado);
     }
 
-    public function crearCliente(array $data, string $gimnasio)
+    public function crearClienteF(array $data, string $gimnasio)
     {
         $cliente = [
             'nombresYapellidos' => $data['nombreYapellido'],
@@ -499,81 +714,6 @@ class ConsultasDB
             $array,
             $consulta,
             'id, nombre'
-        );
-        if (!empty($res)) {
-            return $res;
-        }else{
-            return false;
-        }
-    }
-
-    public function eliminarDescuento($id)
-    {
-        $res = $this->cn->delete('descuento', $id);
-        return ($res == 1) ? true : $res;
-    }
-
-    public function crearDescuento($data)
-    {
-        //return $data;
-        $array = [];
-        $array['titulo'] = $data['titulo'];
-        $array['total'] = $data['total'];
-        $array['fecha'] = $data['fecha'];
-        $array['idGimnasio'] = $data['idGimnasio'];
-        $array['idTrabajado'] = $data['idTrabajado'];
-        $array['idTrabajador'] = $data['idTrabajador'];
-        $array['estado'] = $data['estado'];
-        if (!empty($data['descripcion']))
-            $array['descripcion'] = $data['descripcion'];
-
-        $res = $this->cn->create('descuento', $array);
-        return ($res > 0) ? true : $res;
-    }
-
-    public function editarDescuento($data)
-    {
-        $array = [];
-        if (!empty($data['titulo']))
-            $array['titulo'] = $data['titulo'];
-
-        if (!empty($data['total']))
-            $array['total'] = $data['total'];
-
-        if (!empty($data['fecha']))
-            $array['fecha'] = $data['fecha'];
-
-        if (!empty($data['idGimnasio']))
-            $array['idGimnasio'] = $data['idGimnasio'];
-
-        if (!empty($data['idTrabajado']))
-            $array['idTrabajado'] = $data['idTrabajado'];
-
-        if (!empty($data['idTrabajador']))
-            $array['idTrabajador'] = $data['idTrabajador'];
-
-        if (!empty($data['descripcion']))
-            $array['descripcion'] = $data['descripcion'];
-
-        if (!empty($data['estado']))
-            $array['estado'] = $data['estado'];
-
-        return $this->cn->update('descuento', $array, $data['id']);
-    }
-
-    public function obtenerDescuentos(string $gimnasio, string $id = null)
-    {
-        $array = ['idGimnasio' => $gimnasio];
-        $consulta = '`idGimnasio`=:idGimnasio';
-        if (!empty($id)) {
-            $array = ['id' => $id];
-            $consulta = 'id=:id';
-        }
-        $res = $this->cn->read(
-            'descuento',
-            $array,
-            $consulta,
-            'id, titulo, descripcion, total, fecha, estado, idGimnasio, idTrabajado, idTrabajador'
         );
         if (!empty($res)) {
             return $res;

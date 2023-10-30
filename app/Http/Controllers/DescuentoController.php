@@ -28,13 +28,12 @@ class DescuentoController extends Controller
     public function editarDescuento(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|max:1000000|min:1',
+            'id' => 'required|integer|min:1',
             'titulo' => 'string|max:50|min:1',
             'total' => 'integer|max:1000000|min:1',
-            'fecha' => 'string|max:50|min:1',
-            'idGimnasio' => 'integer|max:50|min:1',
-            'idTrabajado' => 'integer|max:50|min:1',
-            'idTrabajador' => 'integer|max:50|min:1',
+            'idGimnasio' => 'integer|min:1',
+            'idTrabajado' => 'integer|min:1',
+            'idTrabajador' => 'integer|min:1',
             'descripcion' => 'string|max:150|min:0',
             'estado' => 'boolean',
         ]);
@@ -59,12 +58,11 @@ class DescuentoController extends Controller
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|max:50|min:1',
             'total' => 'required|integer|max:1000000|min:1',
-            'fecha' => 'required|string|max:50|min:1',
-            'idGimnasio' => 'required|integer|max:50|min:1',
-            'idTrabajado' => 'required|integer|max:50|min:1',
-            'idTrabajador' => 'required|integer|max:50|min:1',
+            'idGimnasio' => 'required|integer|min:1',
+            'idTrabajado' => 'required|integer|min:1',
+            'idTrabajador' => 'required|integer|min:1',
             'descripcion' => 'string|max:150|min:0',
-            'estado' => 'boolean',
+            'estado' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -84,6 +82,15 @@ class DescuentoController extends Controller
 
     public function eliminarDescuento(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->all()
+            ]);
+        }
         $descuento = new Descuento();
         $res = $descuento->eliminarDescuento($request->id);
         if ($res == true) {

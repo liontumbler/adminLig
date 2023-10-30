@@ -78,6 +78,12 @@ Route::post('/editarDescuento', [DescuentoController::class, 'editarDescuento'])
 Route::post('/crearDescuento', [DescuentoController::class, 'crearDescuento'])->name('crearDescuento');
 Route::post('/eliminarDescuento', [DescuentoController::class, 'eliminarDescuento'])->name('eliminarDescuento');
 
+Route::post('/cargarClientes', [ClienteController::class, 'cargarDatos'])->name('cargarDatos');
+Route::post('/editarCliente', [ClienteController::class, 'editarCliente'])->name('editarCliente');
+Route::post('/crearCliente', [ClienteController::class, 'crearCliente'])->name('crearCliente');
+Route::post('/eliminarCliente', [ClienteController::class, 'eliminarCliente'])->name('eliminarCliente');
 
-
-
+Route::post('/cargarEquipos', [EquipoController::class, 'cargarDatos'])->name('cargarDatos');
+Route::post('/editarEquipo', [EquipoController::class, 'editarEquipo'])->name('editarEquipo');
+Route::post('/crearEquipo', [EquipoController::class, 'crearEquipo'])->name('crearEquipo');
+Route::post('/eliminarEquipo', [EquipoController::class, 'eliminarEquipo'])->name('eliminarEquipo');
