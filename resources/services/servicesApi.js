@@ -8,8 +8,10 @@ export async function cargarDatos(url) {
             },
         }).then((res) => {
             if (res.status == 200) {
+                console.log('json', res);
                 return res.json();
             }else{
+                console.log('text', res);
                 return res.text();
             }
         }).catch((res) => {

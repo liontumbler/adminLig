@@ -14,7 +14,7 @@ class EquipoController extends Controller
         return view('general.equipo');
     }
 
-    public function cargarEquipos()
+    public function cargarDatos()
     {
         $descuento = new Equipo();
         $res = $descuento->cargarDatos();

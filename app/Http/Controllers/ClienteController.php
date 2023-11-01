@@ -14,7 +14,7 @@ class ClienteController extends Controller
         return view('general.cliente');
     }
 
-    public function cargarClientes()
+    public function cargarDatos()
     {
         $descuento = new Cliente();
         $res = $descuento->cargarDatos();
