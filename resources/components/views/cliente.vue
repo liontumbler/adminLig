@@ -208,7 +208,7 @@ export default {
         async llenarSelectIdEquipo() {
             let datos =  await cargarDatos('cargarEquiposSelect');
             this.optionsIdEquipo = datos.map(function(btn) {
-                return {text: btn.iniciCaja, value: btn.id};
+                return {text: btn.nombre, value: btn.id};
             });
         },
         async modalContinuar() {

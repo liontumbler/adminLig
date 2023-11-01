@@ -54,12 +54,14 @@ class Equipo
     }
 
     public function selectEquipos() {
-        if (!empty(session()->get('SesionTrabajador'))) {
+        /*if (!empty(session()->get('SesionTrabajador'))) {
             $sesionTrabajador = session()->get('SesionTrabajador');
             return $this->db->obtenerAllEquipoNombre($sesionTrabajador['gimnasioId']);
         }else {
             return 602;
-        }
+        }*/
+
+        return $this->db->obtenerAllEquipoNombre(1);
     }
 
     public function crearEquipoF($data) {
