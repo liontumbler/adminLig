@@ -196,7 +196,7 @@ export default {
         }
     },
     async mounted() {
-        //sawait this.cargarSelects();
+        await this.cargarSelects();
     },
     methods: {
         async llenarSelectIdGimnasio() {
@@ -206,7 +206,7 @@ export default {
             });
         },
         async llenarSelectIdEquipo() {
-            let datos =  await cargarDatos('cargarEquipoSelect');
+            let datos =  await cargarDatos('cargarEquiposSelect');
             this.optionsIdEquipo = datos.map(function(btn) {
                 return {text: btn.iniciCaja, value: btn.id};
             });
@@ -245,8 +245,8 @@ export default {
             this.$refs.modalCliente.show();
         },
         async cargarSelects() {
-            //await this.llenarSelectIdGimnasio();
-            //await this.llenarSelectIdEquipo();
+            await this.llenarSelectIdGimnasio();
+            await this.llenarSelectIdEquipo();
         },
         async editarCliente(index, id) {
             this.$refs.tableCliente.cargando = true;
