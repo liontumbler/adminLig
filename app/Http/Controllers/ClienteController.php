@@ -29,13 +29,13 @@ class ClienteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|min:1',
-            'correo' => 'string|max:100|min:1',
-            'telefono' => 'integer|max:9999999999|min:1000000',
+            'correo' => 'nullable|string|max:100|min:1',
+            'telefono' => 'nullable|integer|max:9999999999|min:1000000',
             'nombresYapellidos' => 'string|max:50|min:1',
-            'documento' => 'integer|max:99999999999|min:1000',
+            'documento' => 'nullable|integer|max:99999999999|min:1000',
             'estado' => 'boolean',
             'idGimnasio' => 'integer|min:1',
-            'idEquipo' => 'integer|min:1',
+            'idEquipo' => 'nullable|integer|min:1',
         ]);
 
         if ($validator->fails()) {
@@ -56,13 +56,13 @@ class ClienteController extends Controller
     public function crearCliente(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'correo' => 'string|max:100|min:1',
-            'telefono' => 'integer|max:9999999999|min:1000000',
+            'correo' => 'nullable|string|max:100|min:1',
+            'telefono' => 'nullable|integer|max:9999999999|min:1000000',
             'nombresYapellidos' => 'required|string|max:50|min:1',
-            'documento' => 'integer|max:99999999999|min:1000',
+            'documento' => 'nullable|integer|max:99999999999|min:1000',
             'estado' => 'required|boolean',
             'idGimnasio' => 'required|integer|min:1',
-            'idEquipo' => 'integer|min:1',
+            'idEquipo' => 'nullable|integer|min:1',
         ]);
 
         if ($validator->fails()) {
