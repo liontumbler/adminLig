@@ -330,7 +330,7 @@ export default {
             this.campos.nombresYapellidos = datos.nombresYapellidos
             this.campos.documento = datos.documento
             this.campos.idGimnasio = datos.idGimnasio
-            this.campos.idEquipo = datos.idTrabajado
+            this.campos.idEquipo = datos.idEquipo
             this.campos.estado = datos.estado == 1 ? true : false
         },
         eliminarCliente(id) {
