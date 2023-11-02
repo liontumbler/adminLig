@@ -48,7 +48,7 @@
                         },
                     }"
                     @ver="verDescuento"
-                    @editar="editatDescuento"
+                    @editar="editarDescuento"
                     @eliminar="eliminarDescuento"
                 >
                 </table-component>
@@ -64,22 +64,22 @@
                 <div class="row">
                     <div class="col-lg-6 mb-1">
                         <label for="titulo" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="titulo" minlength="1" maxlength="50" ref="titulo" v-model="campos.titulo" :disabled="disabled.titulo">
+                        <input type="text" class="form-control" id="titulo" required minlength="1" maxlength="50" ref="titulo" v-model="campos.titulo" :disabled="disabled.titulo">
                         <div id="tituloError" v-show="msgError.titulo" class="form-text text-danger">{{ msgError.titulo }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="total" class="form-label">Total</label>
-                        <input type="number" class="form-control" id="total" min="1000" max="9999999999" ref="total" v-model="campos.total" :disabled="disabled.total">
+                        <input type="number" class="form-control" id="total" required min="1" max="1000000" ref="total" v-model="campos.total" :disabled="disabled.total">
                         <div id="totalError" v-show="msgError.total" class="form-text text-danger">{{ msgError.total }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="fecha" class="form-label">Fecha</label>
-                        <input type="datetime-local" class="form-control" id="fecha"  ref="fecha" v-model="campos.fecha" :disabled="disabled.fecha">
+                        <input type="datetime-local" class="form-control" id="fecha" required ref="fecha" v-model="campos.fecha" :disabled="disabled.fecha">
                         <div id="fechaError" v-show="msgError.fecha" class="form-text text-danger">{{ msgError.fecha }}</div>
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="idGimnasio" class="form-label">IdGimnasio</label>
-                        <select class="form-select" id="idGimnasio" ref="idGimnasio" v-model="campos.idGimnasio" :disabled="disabled.idGimnasio">
+                        <select class="form-select" id="idGimnasio" required ref="idGimnasio" v-model="campos.idGimnasio" :disabled="disabled.idGimnasio">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdGimnasio" :value="option.value" :key="index">
                                 {{ option.text }}
@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="idTrabajado" class="form-label">IdTrabajado</label>
-                        <select class="form-select" id="idTrabajado" ref="idTrabajado" v-model="campos.idTrabajado" :disabled="disabled.idTrabajado">
+                        <select class="form-select" id="idTrabajado" required ref="idTrabajado" v-model="campos.idTrabajado" :disabled="disabled.idTrabajado">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdTrabajado" :value="option.value" :key="index">
                                 {{ option.text }}
@@ -99,7 +99,7 @@
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="idTrabajador" class="form-label">IdTrabajador</label>
-                        <select class="form-select" id="idTrabajador" ref="idTrabajador" v-model="campos.idTrabajador" :disabled="disabled.idTrabajador">
+                        <select class="form-select" id="idTrabajador" required ref="idTrabajador" v-model="campos.idTrabajador" :disabled="disabled.idTrabajador">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdTrabajador" :value="option.value" :key="index">
                                 {{ option.text }}
@@ -113,7 +113,7 @@
                         <div id="descripcionError" v-show="msgError.descripcion" class="form-text text-danger">{{ msgError.descripcion }}</div>
                     </div>
                     <div class="col-lg-6 mt-2">
-                        <input type="checkbox" class="form-check-input" id="estado" ref="estado" v-model="campos.estado" :disabled="disabled.estado">
+                        <input type="checkbox" class="form-check-input" id="estado" required ref="estado" v-model="campos.estado" :disabled="disabled.estado">
                         <label class="form-check-label" for="estado">Estado</label>
                         <div id="estadoError" v-show="msgError.estado" class="form-text text-danger">{{ msgError.estado }}</div>
                     </div>
@@ -286,7 +286,7 @@ export default {
             await this.llenarSelectIdTrabajado();
             await this.llenarSelectIdTrabajador();
         },
-        async editatDescuento(index, id) {
+        async editarDescuento(index, id) {
             this.$refs.tableDescuento.cargando = true;
 
             await this.cargarSelects();
