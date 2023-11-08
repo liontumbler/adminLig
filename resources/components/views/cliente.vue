@@ -39,7 +39,7 @@
                             type: 'text'
                         },
                         nombresYapellidos: {
-                            text: 'NombreYapellidos',
+                            text: 'Nombre Y apellidos',
                             type: 'text'
                         },
                         accion: {
@@ -294,7 +294,7 @@ export default {
             let datos = await enviarData('eliminarCliente', {id: this.campos.id});
             console.log('elimino', datos);
             if(datos == true) {
-                this.mostrarMsg('Exito', 'Se creo el cliente con exito');
+                this.mostrarMsg('Exito', 'Se elimino el cliente con exito');
             }else{
                 this.mostrarMsg('Error', 'Error inesperado');
             }

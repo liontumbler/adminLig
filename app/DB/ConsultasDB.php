@@ -105,16 +105,16 @@ class ConsultasDB
         $array['idGimnasio'] = $data['idGimnasio'];
 
         if (!empty($data['correo']))
-            $array['descripcion'] = $data['descripcion'];
+            $array['correo'] = $data['correo'];
 
         if (!empty($data['telefono']))
-            $array['descripcion'] = $data['descripcion'];
+            $array['telefono'] = $data['telefono'];
 
         if (!empty($data['documento']))
-            $array['descripcion'] = $data['descripcion'];
+            $array['documento'] = $data['documento'];
 
         if (!empty($data['idEquipo']))
-            $array['descripcion'] = $data['descripcion'];
+            $array['idEquipo'] = $data['idEquipo'];
 
         $res = $this->cn->create('cliente', $array);
         return ($res > 0) ? true : $res;
@@ -123,16 +123,16 @@ class ConsultasDB
     public function editarCliente($data)
     {
         $array = [];
-        if (!empty($data['correo']))
+        if (!empty($data['correo']) || $data['correo'] == '')
             $array['correo'] = $data['correo'];
 
-        if (!empty($data['telefono']))
+        if (!empty($data['telefono']) || $data['correo'] == '')
             $array['telefono'] = $data['telefono'];
 
         if (!empty($data['nombresYapellidos']))
             $array['nombresYapellidos'] = $data['nombresYapellidos'];
 
-        if (!empty($data['documento']))
+        if (!empty($data['documento']) || $data['correo'] == '')
             $array['documento'] = $data['documento'];
 
         if ($data['estado'] === false)
@@ -143,7 +143,7 @@ class ConsultasDB
         if (!empty($data['idGimnasio']))
             $array['idGimnasio'] = $data['idGimnasio'];
 
-        if (!empty($data['idEquipo']))
+        if (!empty($data['idEquipo']) || $data['correo'] == '')
             $array['idEquipo'] = $data['idEquipo'];
 
         return $this->cn->update('cliente', $array, $data['id']);
