@@ -60,8 +60,11 @@ class ConsultasDB
         if (!empty($data['descripcion']))
             $array['descripcion'] = $data['descripcion'];
 
-        if (!empty($data['estado']))
-            $array['estado'] = $data['estado'];
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true) {
+            $array['estado'] = 1;
+        }
 
         return $this->cn->update('descuento', $array, $data['id']);
     }
