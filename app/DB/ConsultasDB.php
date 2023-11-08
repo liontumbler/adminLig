@@ -524,20 +524,6 @@ class ConsultasDB
         return ($res > 0) ? true : $res;
     }
 
-    public function crearHoraLiga(array $data, string $gimnasio)
-    {
-        $horaliga = [
-            'nombre' => $data['nombre'],
-            'horas' => $data['horas'],
-            'precio' => $data['precio'],
-            'fecha' => date('Y-m-d H:i:s'),
-            'idGimnasio' => $gimnasio
-        ];
-
-        $res = $this->cn->create('horaliga', $horaliga);
-        return ($res > 0) ? true : $res;
-    }
-
     public function crearListaPagos(array $data)
     {
         $listapagos = [
@@ -912,27 +898,6 @@ class ConsultasDB
             $array,
             $consulta,
             'id, total, tipoPago, fechaInicio, fechaFin, idCliente, idTrabajador'
-        );
-        if (!empty($res)) {
-            return $res;
-        }else{
-            return false;
-        }
-    }
-
-    public function obtenerGimnasios(string $id = null)
-    {
-        $array = [];
-        $consulta = '';
-        if (!empty($id)) {
-            $array = ['id' => $id];
-            $consulta = 'id=:id';
-        }
-        $res = $this->read(
-            'gimnasio',
-            $array,
-            $consulta,
-            'id, correo, nickname, nombre, color, background, direccion, telefono, descripcion, habilitado, minDeMasLiga, idPlan'
         );
         if (!empty($res)) {
             return $res;
