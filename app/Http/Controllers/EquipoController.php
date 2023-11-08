@@ -31,7 +31,7 @@ class EquipoController extends Controller
             'id' => 'required|integer|min:1',
             'nombre' => 'string|max:50|min:1',
             'estado' => 'boolean',
-            'idGimnasio' => 'string|max:50|min:1',
+            'idGimnasio' => 'integer|min:1',
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +54,7 @@ class EquipoController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:50|min:1',
             'estado' => 'required|boolean',
-            'idGimnasio' => 'required|string|max:50|min:1',
+            'idGimnasio' => 'required|integer|min:1',
         ]);
 
         if ($validator->fails()) {
