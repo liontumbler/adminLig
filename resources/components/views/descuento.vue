@@ -55,7 +55,7 @@
             </div>
             <modal-component
                 ref="modalDescuento"
-                :titulo="tutiloModal"
+                :titulo="tituloModal"
                 :visibleBtnCerrar="true"
                 :visibleBtnContinuar="btnContinuar"
                 @cerrar="modalCerrar"
@@ -72,7 +72,7 @@
                         <input type="number" class="form-control" id="total" required min="1" max="1000000" ref="total" v-model="campos.total" :disabled="disabled.total">
                         <div id="totalError" v-show="msgError.total" class="form-text text-danger">{{ msgError.total }}</div>
                     </div>
-                    <div class="col-lg-6 mb-1">
+                    <div class="col-lg-6 mb-1" v-if="fechaVisible">
                         <label for="fecha" class="form-label">Fecha</label>
                         <input type="datetime-local" class="form-control" id="fecha" required ref="fecha" v-model="campos.fecha" :disabled="disabled.fecha">
                         <div id="fechaError" v-show="msgError.fecha" class="form-text text-danger">{{ msgError.fecha }}</div>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="col-lg-12 mb-1">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" minlength="1" maxlength="250" rows="3" ref="descripcion" v-model="campos.descripcion" :disabled="disabled.descripcion"></textarea>
+                        <textarea class="form-control" id="descripcion" minlength="1" maxlength="255" rows="3" ref="descripcion" v-model="campos.descripcion" :disabled="disabled.descripcion"></textarea>
                         <div id="descripcionError" v-show="msgError.descripcion" class="form-text text-danger">{{ msgError.descripcion }}</div>
                     </div>
                     <div class="col-lg-6 mt-2">
@@ -163,12 +163,13 @@ export default {
                 {text: '30', value: 30},
             ],
             buscarInTable: '',
-            tutiloModal: '',
+            tituloModal: '',
             editando: false,
             creando: false,
             btnContinuar: true,
             titleModalSuccess: '',
             msgModalSuccess: '',
+            fechaVisible: false,
 
             campos: {
                 titulo: '',
@@ -235,21 +236,6 @@ export default {
         async modalContinuar() {
             //this.$refs.modalDescuento.hide();
             //campos que no son requridos
-            let noRequired = [
-                'descripcion'
-            ];
-            for (const i in this.campos) {
-                if (!this.campos[i] && noRequired.indexOf(i) < 0) {
-                    console.log('no tiene valor el campo ' + i);
-                    this.$refs[i].focus();
-                    this.msgError[i] = 'El campo no puede estar vacío';
-
-                    return;
-                }else {
-                    //validar los parametros de restriccion que se ponen en los atributos
-                    this.msgError[i] = '';
-                }
-            }
             console.log('campos', this.campos);
             if (this.editando == true) {
                 let datos = await enviarData('editarDescuento', this.campos);
@@ -276,9 +262,11 @@ export default {
             this.editando = false;
             this.creando = true;
 
+            this.fechaVisible = false;
+
             this.vaciarCampos();
 
-            this.tutiloModal = 'Agregar Descuento'
+            this.tituloModal = 'Agregar Descuento'
             this.$refs.modalDescuento.show();
         },
         async cargarSelects() {
@@ -298,9 +286,11 @@ export default {
             this.editando = true;
             this.creando = false;
 
+            this.fechaVisible = false;
+
             this.llenarCampos(index);
 
-            this.tutiloModal = 'Actualizar Descuento '+ id
+            this.tituloModal = 'Actualizar Descuento '+ id
             this.$refs.modalDescuento.show();
             this.$refs.tableDescuento.cargando = false;
         },
@@ -324,7 +314,9 @@ export default {
             this.campos.descripcion = datos.descripcion
             this.campos.estado = datos.estado == 1 ? true : false
 
-            this.tutiloModal = 'ver Descuento'
+            this.fechaVisible = true;
+
+            this.tituloModal = 'ver Descuento'
             this.$refs.modalDescuento.show();
             this.$refs.tableDescuento.cargando = false;
         },
