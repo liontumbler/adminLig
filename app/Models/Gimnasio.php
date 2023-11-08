@@ -10,6 +10,49 @@ class Gimnasio
         $this->db = new ConsultasDB();
     }
 
+    public function cargarDatos() {
+        /*if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerGimnasios($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }*/
+        //cambiar apenas el logueo
+        return $this->db->obtenerGimnasios();
+    }
+
+    public function crearGimnasio($data) {
+        /*if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerGimnasios($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }*/
+        return $this->db->crearGimnasio($data);
+    }
+
+    public function editarGimnasio($data) {
+
+        /*if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerGimnasios($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }*/
+        return $this->db->editarGimnasio($data);
+    }
+
+    public function eliminarGimnasio($id) {
+
+        /*if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerGimnasios($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }*/
+        return $this->db->eliminarGimnasio($id);
+    }
+
     public function loginAdmin($data) {
         $res = $this->db->obtenerAdminNickname($data['nickname']);
         if (empty($res)) {
@@ -71,6 +114,4 @@ class Gimnasio
     public function selectGimnasios() {
         return $this->db->obtenerGimnasiosSelect();
     }
-
-
 }

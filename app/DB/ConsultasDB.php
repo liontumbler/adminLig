@@ -132,8 +132,10 @@ class ConsultasDB
         if (!empty($data['documento']))
             $array['documento'] = $data['documento'];
 
-        if (!empty($data['estado']))
-            $array['estado'] = $data['estado'];
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true)
+            $array['estado'] = 1;
 
         if (!empty($data['idGimnasio']))
             $array['idGimnasio'] = $data['idGimnasio'];
@@ -190,8 +192,10 @@ class ConsultasDB
         if (!empty($data['nombre']))
             $array['nombre'] = $data['nombre'];
 
-        if (!empty($data['estado']))
-            $array['estado'] = $data['estado'];
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true)
+            $array['estado'] = 1;
 
         if (!empty($data['idGimnasio']))
             $array['idGimnasio'] = $data['idGimnasio'];
@@ -212,6 +216,176 @@ class ConsultasDB
             $array,
             $consulta,
             'id, nombre, fecha, estado, idGimnasio'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function eliminarGimnasio($id)
+    {
+        $res = $this->cn->delete('gimnasio', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearGimnasio($data)
+    {
+        //return $data;
+        $array = [];
+        $array['correo'] = $data['correo'];
+        $array['nickname'] = $data['nickname'];
+        $array['nombre'] = $data['nombre'];
+        $array['clave'] = $data['clave'];
+        $array['color'] = $data['color'];
+        $array['background'] = $data['background'];
+        $array['telefono'] = $data['telefono'];
+        $array['habilitado'] = $data['habilitado'];
+        $array['minDeMasLiga'] = $data['minDeMasLiga'];
+        $array['superAdmin'] = $data['superAdmin'];
+        $array['fecha'] = date('Y-m-d H:i:s');
+        $array['estado'] = $data['estado'];
+        $array['idPlan'] = $data['idPlan'];
+        if (!empty($data['direccion']))
+            $array['direccion'] = $data['direccion'];
+        if (!empty($data['descripcion']))
+            $array['descripcion'] = $data['descripcion'];
+
+        $res = $this->cn->create('gimnasio', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarGimnasio($data)
+    {
+        $array = [];
+        if (!empty($data['correo']))
+            $array['correo'] = $data['correo'];
+
+        if (!empty($data['nickname']))
+            $array['nickname'] = $data['nickname'];
+
+        if (!empty($data['nombre']))
+            $array['nombre'] = $data['nombre'];
+
+        if (!empty($data['clave']))
+            $array['clave'] = $data['clave'];
+
+        if (!empty($data['color']))
+            $array['color'] = $data['color'];
+
+        if (!empty($data['background']))
+            $array['background'] = $data['background'];
+
+        if (!empty($data['telefono']))
+            $array['telefono'] = $data['telefono'];
+
+        if (!empty($data['habilitado']))
+            $array['habilitado'] = $data['habilitado'];
+
+        if (!empty($data['minDeMasLiga']))
+            $array['minDeMasLiga'] = $data['minDeMasLiga'];
+
+        if (!empty($data['superAdmin']))
+            $array['superAdmin'] = $data['superAdmin'];
+
+        if (!empty($data['fecha']))
+            $array['fecha'] = $data['fecha'];
+
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true)
+            $array['estado'] = 1;
+
+        if (!empty($data['idPlan']))
+            $array['idPlan'] = $data['idPlan'];
+
+        if (!empty($data['direccion']))
+            $array['direccion'] = $data['direccion'];
+
+        if (!empty($data['descripcion']))
+            $array['descripcion'] = $data['descripcion'];
+
+        return $this->cn->update('gimnasio', $array, $data['id']);
+    }
+
+    public function obtenerGimnasios(string $id = null)
+    {
+        $array = [];
+        $consulta = '';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'gimnasio',
+            $array,
+            $consulta,
+            'id, correo, nickname, nombre, clave, color, background, direccion, telefono, descripcion, habilitado, minDeMasLiga, superAdmin, fecha, estado, idPlan'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
+
+    public function eliminarHoraLiga($id)
+    {
+        $res = $this->cn->delete('gimnasio', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearHoraLiga($data)
+    {
+        //return $data;
+        $array = [];
+        $array['nombre'] = $data['nombre'];
+        $array['horas'] = $data['horas'];
+        $array['precio'] = $data['precio'];
+        $array['estado'] = $data['estado'];
+        $array['idGimnasio'] = $data['idGimnasio'];
+
+        $res = $this->cn->create('horaliga', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarHoraLiga($data)
+    {
+        $array = [];
+        if (!empty($data['nombre']))
+            $array['nombre'] = $data['nombre'];
+
+        if (!empty($data['horas']))
+            $array['horas'] = $data['horas'];
+
+        if (!empty($data['precio']))
+            $array['precio'] = $data['precio'];
+
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true)
+            $array['estado'] = 1;
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        return $this->cn->update('horaliga', $array, $data['id']);
+    }
+
+    public function obtenerHoraLigas(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'gimnasio',
+            $array,
+            $consulta,
+            'id, correo, nickname, nombre, clave, color, background, direccion, telefono, descripcion, habilitado, minDeMasLiga, superAdmin, fecha, estado, idPlan'
         );
         if (!empty($res)) {
             return $res;
