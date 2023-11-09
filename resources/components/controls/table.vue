@@ -20,9 +20,9 @@
                         <input type="checkbox" class="form-check-input" :checked="data[e] == 1 ? true : false" :disabled="true">
                     </div>
                     <div v-if="cabe.type == 'accion'">
-                        <i class="bi bi-eye-fill ms-1" @click="cargando ? null : $emit('ver', i)" :class="{'campo-disabled': cargando}"></i>
-                        <i class="bi bi-pencil-fill ms-1" @click="cargando ? null : $emit('editar', i, data['id'])" :class="{'campo-disabled': cargando}"></i>
-                        <i class="bi bi-x-lg ms-1" @click="cargando ? null : $emit('eliminar', data['id'])" :class="{'campo-disabled': cargando}"></i>
+                        <i class="cursor bi bi-eye-fill ms-1" @click="cargando ? null : $emit('ver', i)" :class="{'campo-disabled': cargando}"></i>
+                        <i class="cursor bi bi-pencil-fill ms-1" @click="cargando ? null : $emit('editar', i, data['id'])" :class="{'campo-disabled': cargando}"></i>
+                        <i class="cursor bi bi-x-lg ms-1" @click="cargando ? null : $emit('eliminar', data['id'])" :class="{'campo-disabled': cargando}"></i>
                     </div>
                 </td>
             </tr>

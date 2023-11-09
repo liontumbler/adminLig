@@ -27,4 +27,9 @@
 
 .campo-disabled {
     color: #818181;
+    cursor: default !important;
+}
+
+.cursor {
+    cursor: pointer;
 }

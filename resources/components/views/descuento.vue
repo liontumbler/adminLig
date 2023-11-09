@@ -6,18 +6,18 @@
                     <button type="button" class="btn btn-primary" @click="agregarDescuento">Agregar</button>
                 </div>
                 <div class="col-lg-3 mb-1">
-                    <select class="form-select" id="mostrar" v-model="mostrar" @change="mostrarChange">
+                    <select class="form-select" id="mostrar" v-model="mostrar" @change="mostrarChange" v-if="false">
                         <option v-for="(option, index) in optionsMostrar" :value="option.value" :key="index">
                             {{ option.text }}
                         </option>
                     </select>
                 </div>
                 <div class="col-lg-3 mb-1">
-                    <div class="input-group">
+                    <div class="input-group" v-if="false">
                         <input class="form-control" type="search" placeholder="Buscar - enter" @search="buscar" id="buscarInTable" v-model="buscarInTable">
                     </div>
                 </div>
-                <div class="col-lg-3 mb-1">
+                <div class="col-lg-3 mb-1" v-if="false">
                     exportar
                 </div>
             </div>
@@ -301,12 +301,12 @@ export default {
             await this.llenarSelectIdTrabajador();
         },
         async editarDescuento(index, id) {
-            this.limpiarErrores();
+            this.$refs.tableDescuento.cargando = true;
+
             await this.cargarSelects();
+            this.limpiarErrores();
             this.desbloquearCampos();
             this.llenarCampos(index);
-
-            this.$refs.tableDescuento.cargando = true;
 
             this.required.estado = false;
             this.btnContinuar = true;
@@ -343,13 +343,14 @@ export default {
             }
         },
         async verDescuento(index) {
+            this.$refs.tableDescuento.cargando = true;
+
             let datos = this.$refs.tableDescuento.datatable[index]
 
             await this.cargarSelects();
+            this.limpiarErrores();
             this.bloquearCampos();
             this.llenarCamposDescuento(datos);
-
-            this.$refs.tableDescuento.cargando = true;
 
             this.btnContinuar = false;
             this.fechaVisible = true;

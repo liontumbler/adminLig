@@ -67,7 +67,7 @@ export class Validador {
                                         return
                                     }
                                     document.getElementById(input.id).focus();
-                                    return {msg: 'El campo '+ nombre.textContent + ' debe tener menos de '+ input.maxLength +' caracteres', id: input.id}
+                                    return {msg: 'El campo ' + nombre.textContent + ' debe tener menos de '+ input.maxLength +' caracteres', id: input.id}
                                 }
                             }
 
@@ -79,7 +79,7 @@ export class Validador {
                                         return
                                     }
                                     document.getElementById(input.id).focus();
-                                    return {msg: 'El campo '+ nombre.textContent + ' debe tener mas de '+ input.minLength +' caracteres', id: input.id}
+                                    return {msg: 'El campo ' + nombre.textContent + ' debe tener mas de '+ input.minLength +' caracteres', id: input.id}
                                 }
                             }
 
@@ -91,7 +91,7 @@ export class Validador {
                                         return
                                     }
                                     document.getElementById(input.id).focus();
-                                    return {msg: 'El campo '+ nombre.textContent + ' debe ser menor a '+ input.max, id: input.id}
+                                    return {msg: 'El campo ' + nombre.textContent + ' debe ser menor a '+ input.max, id: input.id}
                                 }
                             }
 
@@ -103,7 +103,7 @@ export class Validador {
                                         return
                                     }
                                     document.getElementById(input.id).focus();
-                                    return {msg: 'El campo '+ nombre.textContent + ' debe ser mayor a '+ input.min, id: input.id}
+                                    return {msg: 'El campo ' + nombre.textContent + ' debe ser mayor a '+ input.min, id: input.id}
                                 }
                             }
                             break;
@@ -117,7 +117,7 @@ export class Validador {
                                         return
                                     }
                                     document.getElementById(input.id).focus();
-                                    return {msg: 'El campo '+ nombre.textContent + ' debe ser menor a '+ input.max, id: input.id}
+                                    return {msg: 'El campo ' + nombre.textContent + ' debe ser menor a '+ input.max, id: input.id}
                                 }
                             }
 
@@ -129,7 +129,7 @@ export class Validador {
                                         return
                                     }
                                     document.getElementById(input.id).focus();
-                                    return {msg: 'El campo '+ nombre.textContent + ' debe ser mayor a '+ input.min, id: input.id}
+                                    return {msg: 'El campo ' + nombre.textContent + ' debe ser mayor a '+ input.min, id: input.id}
                                 }
                             }
 
@@ -147,7 +147,7 @@ export class Validador {
                                     return
                                 }
                                 document.getElementById(input.id).focus();
-                                return {msg: 'El campo checkbox '+ nombre.textContent + ' es requerido', id: input.id}
+                                return {msg: 'El campo checkbox ' + nombre.textContent + ' es requerido', id: input.id}
                             }
                             break;
 
@@ -159,7 +159,7 @@ export class Validador {
                                     return
                                 }
                                 document.getElementById(input.id).focus();
-                                return {msg: 'El campo '+ nombre.textContent + ' es requerido', id: input.id}
+                                return {msg: 'El campo ' + nombre.textContent + ' es requerido', id: input.id}
                             }
 
                             break;
@@ -174,7 +174,7 @@ export class Validador {
                         return
                     }
                     document.getElementById(input.id).focus();
-                    return {msg: 'El campo '+ nombre.textContent + ' es requerido y está vacío', id: input.id}
+                    return {msg: 'El campo ' + nombre.textContent + ' es requerido y está vacío', id: input.id}
                 }
             }
         }
