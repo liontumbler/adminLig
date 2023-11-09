@@ -29,7 +29,7 @@ class ClienteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|min:1',
-            'correo' => 'nullable|string|max:100|min:1',
+            'correo' => 'nullable|email|max:100|min:1',
             'telefono' => 'nullable|integer|max:9999999999|min:1000000',
             'nombresYapellidos' => 'string|max:50|min:1',
             'documento' => 'nullable|integer|max:99999999999|min:1000',
@@ -56,7 +56,7 @@ class ClienteController extends Controller
     public function crearCliente(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'correo' => 'nullable|string|max:100|min:1',
+            'correo' => 'nullable|email|max:100|min:1',
             'telefono' => 'nullable|integer|max:9999999999|min:1000000',
             'nombresYapellidos' => 'required|string|max:50|min:1',
             'documento' => 'nullable|integer|max:99999999999|min:1000',
