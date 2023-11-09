@@ -57,7 +57,7 @@ class ConsultasDB
         if (!empty($data['idTrabajador']))
             $array['idTrabajador'] = $data['idTrabajador'];
 
-        if (!empty($data['descripcion']))
+        if (!empty($data['descripcion']) || $data['descripcion'] == '')
             $array['descripcion'] = $data['descripcion'];
 
         if ($data['estado'] === false)
@@ -126,13 +126,13 @@ class ConsultasDB
         if (!empty($data['correo']) || $data['correo'] == '')
             $array['correo'] = $data['correo'];
 
-        if (!empty($data['telefono']) || $data['correo'] == '')
+        if (!empty($data['telefono']) || $data['telefono'] == '')
             $array['telefono'] = $data['telefono'];
 
         if (!empty($data['nombresYapellidos']))
             $array['nombresYapellidos'] = $data['nombresYapellidos'];
 
-        if (!empty($data['documento']) || $data['correo'] == '')
+        if (!empty($data['documento']) || $data['documento'] == '')
             $array['documento'] = $data['documento'];
 
         if ($data['estado'] === false)
@@ -143,7 +143,7 @@ class ConsultasDB
         if (!empty($data['idGimnasio']))
             $array['idGimnasio'] = $data['idGimnasio'];
 
-        if (!empty($data['idEquipo']) || $data['correo'] == '')
+        if (!empty($data['idEquipo']) || $data['idEquipo'] == '')
             $array['idEquipo'] = $data['idEquipo'];
 
         return $this->cn->update('cliente', $array, $data['id']);
@@ -303,10 +303,10 @@ class ConsultasDB
         if (!empty($data['idPlan']))
             $array['idPlan'] = $data['idPlan'];
 
-        if (!empty($data['direccion']))
+        if (!empty($data['direccion']) || $data['direccion'] == '')
             $array['direccion'] = $data['direccion'];
 
-        if (!empty($data['descripcion']))
+        if (!empty($data['descripcion']) || $data['descripcion'] == '')
             $array['descripcion'] = $data['descripcion'];
 
         return $this->cn->update('gimnasio', $array, $data['id']);
@@ -385,10 +385,10 @@ class ConsultasDB
             $consulta = 'id=:id';
         }
         $res = $this->cn->read(
-            'gimnasio',
+            'horaliga',
             $array,
             $consulta,
-            'id, correo, nickname, nombre, clave, color, background, direccion, telefono, descripcion, habilitado, minDeMasLiga, superAdmin, fecha, estado, idPlan'
+            'id, nombre, horas, precio, fecha, estado, idGimnasio'
         );
         if (!empty($res)) {
             return $res;
