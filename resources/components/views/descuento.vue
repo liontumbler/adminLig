@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-lg-6 mb-1">
                         <label for="total" class="form-label">Total</label>
-                        <input type="number" class="form-control" id="total" required min="1" max="1000000" ref="total" v-model="campos.total" :disabled="disabled.total">
+                        <input type="numeric" class="form-control" id="total" required min="1" max="1000000" ref="total" v-model="campos.total" :disabled="disabled.total">
                         <div id="totalError" v-show="msgError.total" class="form-text text-danger">{{ msgError.total }}</div>
                     </div>
                     <div class="col-lg-6 mb-1" v-if="fechaVisible">
@@ -113,7 +113,7 @@
                         <div id="descripcionError" v-show="msgError.descripcion" class="form-text text-danger">{{ msgError.descripcion }}</div>
                     </div>
                     <div class="col-lg-6 mt-2">
-                        <input type="checkbox" class="form-check-input" id="estado" required ref="estado" v-model="campos.estado" :disabled="disabled.estado">
+                        <input type="checkbox" class="form-check-input" id="estado" :required="required.estado" ref="estado" v-model="campos.estado" :disabled="disabled.estado">
                         <label class="form-check-label" for="estado">Estado</label>
                         <div id="estadoError" v-show="msgError.estado" class="form-text text-danger">{{ msgError.estado }}</div>
                     </div>
@@ -146,6 +146,7 @@
 import modal from "../../components/controls/modal.vue";
 import table from "../../components/controls/table.vue";
 import { cargarDatos, enviarData } from "../../services/servicesApi.js";
+import { Validador } from "../../services/validador.js";
 
 export default {
     name: 'Descuentos',
@@ -155,6 +156,7 @@ export default {
     },
     data() {
         return {
+            validador: null,
             textSelectGeneral: 'escoja una opcion',
             mostrar: 10,
             optionsMostrar: [
@@ -170,6 +172,10 @@ export default {
             titleModalSuccess: '',
             msgModalSuccess: '',
             fechaVisible: false,
+
+            required: {
+                estado: true,
+            },
 
             campos: {
                 titulo: '',
@@ -234,40 +240,60 @@ export default {
             });
         },
         async modalContinuar() {
-            //this.$refs.modalDescuento.hide();
-            //campos que no son requridos
-            console.log('campos', this.campos);
-            if (this.editando == true) {
-                let datos = await enviarData('editarDescuento', this.campos);
-                console.log('editar', datos);
-                if(datos == true) {
-                    this.mostrarMsg('Exito', 'Se actualizo el descuento con exito');
-                }else{
-                    this.mostrarMsg('Error', 'Error inesperado');
-                }
-            } else if (this.creando == true) {
-                let datos = await enviarData('crearDescuento', this.campos);
-                console.log('crear', datos);
-                if(datos == true) {
-                    this.mostrarMsg('Exito', 'Se creo el descuento con exito');
-                }else{
-                    this.mostrarMsg('Error', 'Error inesperado');
+            this.limpiarErrores();
+
+            let valido = this.validador.validarCampos();
+            if (valido.msg) {
+                this.msgError[valido.id] = valido.msg;
+                return
+            } else if (valido) {
+                console.log('campos', this.campos);
+                if (this.editando == true) {
+                    let datos = await enviarData('editarDescuento', this.campos);
+                    console.log('editar', datos);
+                    if(datos == true) {
+                        this.$refs.modalDescuento.hide();
+                        this.mostrarMsg('Exito', 'Se actualizo el descuento con exito');
+                    }else{
+                        this.mostrarMsg('Error', 'Error inesperado');
+                    }
+                } else if (this.creando == true) {
+                    let datos = await enviarData('crearDescuento', this.campos);
+                    console.log('crear', datos);
+                    if(datos == true) {
+                        this.$refs.modalDescuento.hide();
+                        this.mostrarMsg('Exito', 'Se creo el descuento con exito');
+                    }else{
+                        this.mostrarMsg('Error', 'Error inesperado');
+                    }
                 }
             }
         },
         async agregarDescuento() {
+            this.limpiarErrores();
             this.desbloquearCampos()
-            this.btnContinuar = true;
+            this.vaciarCampos();
 
+            this.fechaVisible = false;
+            this.required.estado = true;
+            this.btnContinuar = true;
             this.editando = false;
             this.creando = true;
 
-            this.fechaVisible = false;
-
-            this.vaciarCampos();
-
             this.tituloModal = 'Agregar Descuento'
             this.$refs.modalDescuento.show();
+
+            setTimeout(() => {
+                this.validador = new Validador([
+                    'titulo',
+                    'total',
+                    'idGimnasio',
+                    'idTrabajado',
+                    'idTrabajador',
+                    'descripcion',
+                    'estado',
+                ])
+            }, 10);
         },
         async cargarSelects() {
             await this.llenarSelectIdGimnasio();
@@ -275,49 +301,62 @@ export default {
             await this.llenarSelectIdTrabajador();
         },
         async editarDescuento(index, id) {
+            this.limpiarErrores();
+            await this.cargarSelects();
+            this.desbloquearCampos();
+            this.llenarCampos(index);
+
             this.$refs.tableDescuento.cargando = true;
 
-            await this.cargarSelects();
-
-            this.desbloquearCampos()
-
+            this.required.estado = false;
             this.btnContinuar = true;
-
             this.editando = true;
             this.creando = false;
-
             this.fechaVisible = false;
-
-            this.llenarCampos(index);
 
             this.tituloModal = 'Actualizar Descuento '+ id
             this.$refs.modalDescuento.show();
+
             this.$refs.tableDescuento.cargando = false;
+
+            setTimeout(() => {
+                this.validador = new Validador([
+                    'titulo',
+                    'total',
+                    'idGimnasio',
+                    'idTrabajado',
+                    'idTrabajador',
+                    'descripcion',
+                    'estado',
+                ])
+            }, 10);
+        },
+        llenarCamposDescuento(datos) {
+            for (const i in this.campos) {
+                if (datos[i]) {
+                    if (i == 'estado') {
+                        this.campos[i] = datos[i] == 1 ? true : false
+                    } else {
+                        this.campos[i] = datos[i];
+                    }
+                }
+            }
         },
         async verDescuento(index) {
-            this.$refs.tableDescuento.cargando = true;
-
-            await this.cargarSelects();
-
-            this.bloquearCampos();
-
-            this.btnContinuar = false;
-
             let datos = this.$refs.tableDescuento.datatable[index]
 
-            this.campos.titulo = datos.titulo
-            this.campos.total = datos.total
-            this.campos.fecha = datos.fecha
-            this.campos.idGimnasio = datos.idGimnasio
-            this.campos.idTrabajado = datos.idTrabajado
-            this.campos.idTrabajador = datos.idTrabajador
-            this.campos.descripcion = datos.descripcion
-            this.campos.estado = datos.estado == 1 ? true : false
+            await this.cargarSelects();
+            this.bloquearCampos();
+            this.llenarCamposDescuento(datos);
 
+            this.$refs.tableDescuento.cargando = true;
+
+            this.btnContinuar = false;
             this.fechaVisible = true;
 
             this.tituloModal = 'ver Descuento'
             this.$refs.modalDescuento.show();
+
             this.$refs.tableDescuento.cargando = false;
         },
         async continuarModalEliminar() {
@@ -344,27 +383,16 @@ export default {
         },
         vaciarCampos() {
             delete this.campos.id
-            this.campos.titulo = ''
-            this.campos.total = ''
-            this.campos.fecha = ''
-            this.campos.idGimnasio = ''
-            this.campos.idTrabajado = ''
-            this.campos.idTrabajador = ''
-            this.campos.descripcion = ''
-            this.campos.estado = ''
+
+            for (const i in this.campos) {
+                this.campos[i] = '';
+            }
         },
         llenarCampos(index){
-            let datos = this.$refs.tableDescuento.datatable[index]
+            let datos = this.$refs.tableDescuento.datatable[index];
+            this.campos.id = datos.id;
 
-            this.campos.id = datos.id
-            this.campos.titulo = datos.titulo
-            this.campos.total = datos.total
-            this.campos.fecha = datos.fecha
-            this.campos.idGimnasio = datos.idGimnasio
-            this.campos.idTrabajado = datos.idTrabajado
-            this.campos.idTrabajador = datos.idTrabajador
-            this.campos.descripcion = datos.descripcion
-            this.campos.estado = datos.estado == 1 ? true : false
+            this.llenarCamposDescuento(datos);
         },
         eliminarDescuento(id) {
             this.campos.id = id
@@ -374,24 +402,19 @@ export default {
             this.$refs.modalEliminar.hide();
         },
         bloquearCampos() {
-            this.disabled.titulo = true;
-            this.disabled.descripcion = true;
-            this.disabled.total = true;
-            this.disabled.fecha = true;
-            this.disabled.idGimnasio = true;
-            this.disabled.idTrabajado = true;
-            this.disabled.idTrabajador = true;
-            this.disabled.estado = true;
+            for (const i in this.disabled) {
+                this.disabled[i] = true;
+            }
         },
         desbloquearCampos() {
-            this.disabled.titulo = false;
-            this.disabled.descripcion = false;
-            this.disabled.total = false;
-            this.disabled.fecha = false;
-            this.disabled.idGimnasio = false;
-            this.disabled.idTrabajado = false;
-            this.disabled.idTrabajador = false;
-            this.disabled.estado = false;
+            for (const i in this.disabled) {
+                this.disabled[i] = false;
+            }
+        },
+        limpiarErrores() {
+            for (const i in this.msgError) {
+                this.msgError[i] = '';
+            }
         },
         buscar(e) {
             console.log(e, 'escucho');
