@@ -843,14 +843,19 @@ class ConsultasDB
         }
     }
 
-    public function obtenerSelectTrabajado(string $trabajado = null)
+    public function obtenerSelectTrabajado(string $trabajador = null, string $trabajado = null)
     {
         $array = [];
         $consulta = '';
+        if (!empty($trabajador)) {
+            $array = ['idTrabajador' => $trabajador];
+            $consulta = 'idTrabajador=:idTrabajador';
+        }
         if (!empty($trabajado)) {
             $array = ['id' => $trabajado];
             $consulta = 'id=:id';
         }
+
         $res = $this->cn->read(
             'trabajado',
             $array,

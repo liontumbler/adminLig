@@ -11,6 +11,13 @@ class Trabajado
     }
 
     public function selectTrabajado() {
-        return $this->db->obtenerSelectTrabajado();
+        /*if (!empty(session()->get('SesionTrabajador'))) {
+            $sesionTrabajador = session()->get('SesionTrabajador');
+            return $this->db->obtenerEquipos($sesionTrabajador['gimnasioId']);
+        }else {
+            return 602;
+        }*/
+        //id trabajador
+        return $this->db->obtenerSelectTrabajado(1);
     }
 }
