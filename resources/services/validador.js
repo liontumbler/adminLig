@@ -1,6 +1,6 @@
 export class Validador {
-    _campos = []
-    constructor(campos = []) {
+    _fields = [];
+    constructor(campos) {
         for (const i in campos) {
             let campo = campos[i]
             let campoInput = document.getElementById(campo);
@@ -14,9 +14,9 @@ export class Validador {
             let campoMascara = campoInput.cloneNode(true);
             let type = campoMascara.getAttribute('type')
             if (type != 'radio') {
-                this._campos.push(campoMascara);
+                this._fields.push(campoMascara);
             } else {
-                this._campos['radio'] = {
+                this._fields['radio'] = {
                     type: 'radio',
                     id: campoMascara.id,
                     name: campoMascara.id,
@@ -26,15 +26,14 @@ export class Validador {
             }
 
             if (campoInput.getAttribute('type') == 'numeric') {
-                campoInput.addEventListener('input', function (e) {
+                campoInput.addEventListener('input', function () {
                     this.value = this.value.replace(/[^0-9]/g, '');
                 })
             }
         }
-        console.log(this._campos);
     }
 
-    tieneLabel(input) {
+    _tieneLabel(input) {
         let nombre = document.querySelector('[for="'+input.id+'"]')
         if (!nombre) {
             console.warn('el input deberia tener un label con atributo for');
@@ -44,9 +43,9 @@ export class Validador {
     }
 
     validarCampos() {
-        console.log(this._campos);
-        for (const i in this._campos) {
-            let input = this._campos[i];
+        console.log(this._fields);
+        for (const i in this._fields) {
+            let input = this._fields[i];
             if (!input.id) {
                 console.warn('el campo necesita un id para funcionar');
                 return
@@ -62,7 +61,7 @@ export class Validador {
                             if (input.maxLength && parseInt(input.maxLength) > 0) {
                                 console.log(input.maxLength, 'maxLength', campo.value.length);
                                 if (campo.value.length > parseInt(input.maxLength)) {
-                                    let nombre = this.tieneLabel(input);
+                                    let nombre = this._tieneLabel(input);
                                     if (!nombre) {
                                         return
                                     }
@@ -74,7 +73,7 @@ export class Validador {
                             if (input.minLength && parseInt(input.minLength) > 0) {
                                 console.log(input.minLength, 'minLength', campo.value.length);
                                 if (campo.value.length < parseInt(input.minLength)) {
-                                    let nombre = this.tieneLabel(input);
+                                    let nombre = this._tieneLabel(input);
                                     if (!nombre) {
                                         return
                                     }
@@ -86,7 +85,7 @@ export class Validador {
                             if (input.max && parseInt(input.max) > 0) {
                                 console.log(input.max, 'max', campo.value.length);
                                 if (parseInt(campo.value) > parseInt(input.max)) {
-                                    let nombre = this.tieneLabel(input);
+                                    let nombre = this._tieneLabel(input);
                                     if (!nombre) {
                                         return
                                     }
@@ -98,7 +97,7 @@ export class Validador {
                             if (input.min && parseInt(input.min) > 0) {
                                 console.log(input.min, 'min', campo.value.length);
                                 if (parseInt(campo.value) < parseInt(input.min)) {
-                                    let nombre = this.tieneLabel(input);
+                                    let nombre = this._tieneLabel(input);
                                     if (!nombre) {
                                         return
                                     }
@@ -112,7 +111,7 @@ export class Validador {
                             if (input.max && parseInt(input.max) > 0) {
                                 console.log(input.max, 'max', campo.value.length);
                                 if (parseInt(campo.value) > parseInt(input.max)) {
-                                    let nombre = this.tieneLabel(input);
+                                    let nombre = this._tieneLabel(input);
                                     if (!nombre) {
                                         return
                                     }
@@ -124,7 +123,7 @@ export class Validador {
                             if (input.min && parseInt(input.min) > 0) {
                                 console.log(input.min, 'min', campo.value.length);
                                 if (parseInt(campo.value) < parseInt(input.min)) {
-                                    let nombre = this.tieneLabel(input);
+                                    let nombre = this._tieneLabel(input);
                                     if (!nombre) {
                                         return
                                     }
@@ -142,7 +141,7 @@ export class Validador {
                         case 'checkbox':
                             console.log(campo.checked);
                             if (!campo.checked) {
-                                let nombre = this.tieneLabel(input);
+                                let nombre = this._tieneLabel(input);
                                 if (!nombre) {
                                     return
                                 }
@@ -154,7 +153,7 @@ export class Validador {
                         case 'radio':
                             console.log(campo);
                             if (!document.querySelector('[name="'+input.id+'"]:checked')) {
-                                let nombre = this.tieneLabel(input);
+                                let nombre = this._tieneLabel(input);
                                 if (!nombre) {
                                     return
                                 }
@@ -169,7 +168,7 @@ export class Validador {
                             break;
                     }
                 } else {
-                    let nombre = this.tieneLabel(input);
+                    let nombre = this._tieneLabel(input);
                     if (!nombre) {
                         return
                     }
