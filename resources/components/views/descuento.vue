@@ -24,6 +24,7 @@
             <div class="tableDescuento">
                 <table-component
                     ref="tableDescuento"
+                    :title="'Descuento'"
                     :url="'cargarDescuentos'"
                     :cabecera="{
                         id: {
