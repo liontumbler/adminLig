@@ -186,7 +186,7 @@ export default {
                 idTrabajado: '',
                 idTrabajador: '',
                 descripcion: '',
-                estado: '',
+                estado: false,
             },
 
             disabled: {
@@ -378,7 +378,7 @@ export default {
         },
         continuarModalSuccess() {
             this.$refs.modalSuccess.hide();
-            location.reload();
+            this.$refs.tableDescuento.cargarTabla()
         },
         modalCerrar() {
             this.$refs.modalDescuento.hide();
@@ -387,7 +387,11 @@ export default {
             delete this.campos.id
 
             for (const i in this.campos) {
-                this.campos[i] = '';
+                if (i == 'estado') {
+                    this.campos[i] = false;
+                } else {
+                    this.campos[i] = '';
+                }
             }
         },
         llenarCampos(index){

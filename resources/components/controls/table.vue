@@ -43,7 +43,7 @@ export default {
         cabecera: Object
     },
     async mounted() {
-        this.datatable = await cargarDatos(this.url);
+        await this.cargarTabla();
     },
     data() {
         return {
@@ -53,6 +53,11 @@ export default {
             titleEditar: 'Editar ' + this.title,
             titleEliminar: 'Eliminar ' + this.title
         };
+    },
+    methods: {
+        async cargarTabla() {
+            this.datatable = await cargarDatos(this.url);
+        }
     },
 }
 </script>
