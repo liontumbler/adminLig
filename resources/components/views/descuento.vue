@@ -64,23 +64,23 @@
             >
                 <div class="row">
                     <div class="col-lg-6 mb-1">
-                        <label for="titulo" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="titulo" required minlength="1" maxlength="50" ref="titulo" v-model="campos.titulo" :disabled="disabled.titulo">
+                        <label for="titulo" class="form-label">Título{{ required.titulo ? '*' : '' }}</label>
+                        <input type="text" class="form-control" id="titulo" :required="required.titulo" minlength="1" maxlength="50" ref="titulo" v-model="campos.titulo" :disabled="disabled.titulo">
                         <div id="tituloError" v-show="msgError.titulo" class="form-text text-danger text-center"><small>{{ msgError.titulo }}</small></div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="total" class="form-label">Total</label>
-                        <input type="numeric" class="form-control" id="total" required min="1" max="1000000" ref="total" v-model="campos.total" :disabled="disabled.total">
+                        <label for="total" class="form-label">Total{{ required.total ? '*' : '' }}</label>
+                        <input type="numeric" class="form-control" id="total" :required="required.total" min="1" max="1000000" ref="total" v-model="campos.total" :disabled="disabled.total">
                         <div id="totalError" v-show="msgError.total" class="form-text text-danger text-center"><small>{{ msgError.total }}</small></div>
                     </div>
                     <div class="col-lg-6 mb-1" v-if="fechaVisible">
-                        <label for="fecha" class="form-label">Fecha</label>
-                        <input type="datetime-local" class="form-control" id="fecha" required ref="fecha" v-model="campos.fecha" :disabled="disabled.fecha">
+                        <label for="fecha" class="form-label">Fecha{{ required.fecha ? '*' : '' }}</label>
+                        <input type="datetime-local" class="form-control" id="fecha" :required="required.fecha" ref="fecha" v-model="campos.fecha" :disabled="disabled.fecha">
                         <div id="fechaError" v-show="msgError.fecha" class="form-text text-danger text-center"><small>{{ msgError.fecha }}</small></div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="idGimnasio" class="form-label">IdGimnasio</label>
-                        <select class="form-select" id="idGimnasio" required ref="idGimnasio" v-model="campos.idGimnasio" :disabled="disabled.idGimnasio">
+                        <label for="idGimnasio" class="form-label">IdGimnasio{{ required.idGimnasio ? '*' : '' }}</label>
+                        <select class="form-select" id="idGimnasio" :required="required.idGimnasio" ref="idGimnasio" v-model="campos.idGimnasio" :disabled="disabled.idGimnasio">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdGimnasio" :value="option.value" :key="index">
                                 {{ option.text }}
@@ -89,8 +89,8 @@
                         <div id="idGimnasioError" v-show="msgError.idGimnasio" class="form-text text-danger text-center"><small>{{ msgError.idGimnasio }}</small></div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="idTrabajado" class="form-label">IdTrabajado</label>
-                        <select class="form-select" id="idTrabajado" required ref="idTrabajado" v-model="campos.idTrabajado" :disabled="disabled.idTrabajado">
+                        <label for="idTrabajado" class="form-label">IdTrabajado{{ required.idTrabajado ? '*' : '' }}</label>
+                        <select class="form-select" id="idTrabajado" :required="required.idTrabajado" ref="idTrabajado" v-model="campos.idTrabajado" :disabled="disabled.idTrabajado">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdTrabajado" :value="option.value" :key="index">
                                 {{ option.text }}
@@ -99,8 +99,8 @@
                         <div id="idTrabajadoError" v-show="msgError.idTrabajado" class="form-text text-danger text-center"><small>{{ msgError.idTrabajado }}</small></div>
                     </div>
                     <div class="col-lg-6 mb-1">
-                        <label for="idTrabajador" class="form-label">IdTrabajador</label>
-                        <select class="form-select" id="idTrabajador" required ref="idTrabajador" v-model="campos.idTrabajador" :disabled="disabled.idTrabajador">
+                        <label for="idTrabajador" class="form-label">IdTrabajador{{ required.idTrabajador ? '*' : '' }}</label>
+                        <select class="form-select" id="idTrabajador" :required="required.idTrabajador" ref="idTrabajador" v-model="campos.idTrabajador" :disabled="disabled.idTrabajador">
                             <option value="" selected>{{ textSelectGeneral }}</option>
                             <option v-for="(option, index) in optionsIdTrabajador" :value="option.value" :key="index">
                                 {{ option.text }}
@@ -109,13 +109,13 @@
                         <div id="idTrabajadorError" v-show="msgError.idTrabajador" class="form-text text-danger text-center"><small>{{ msgError.idTrabajador }}</small></div>
                     </div>
                     <div class="col-lg-12 mb-1">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" minlength="1" maxlength="255" rows="3" ref="descripcion" v-model="campos.descripcion" :disabled="disabled.descripcion"></textarea>
+                        <label for="descripcion" class="form-label">Descripción{{ required.descripcion ? '*' : '' }}</label>
+                        <textarea class="form-control" id="descripcion" :required="required.descripcion" minlength="1" maxlength="255" rows="3" ref="descripcion" v-model="campos.descripcion" :disabled="disabled.descripcion"></textarea>
                         <div id="descripcionError" v-show="msgError.descripcion" class="form-text text-danger text-center"><small>{{ msgError.descripcion }}</small></div>
                     </div>
                     <div class="col-lg-6 mt-2">
                         <input type="checkbox" class="form-check-input" id="estado" :required="required.estado" ref="estado" v-model="campos.estado" :disabled="disabled.estado">
-                        <label class="form-check-label" for="estado">Estado</label>
+                        <label class="form-check-label" for="estado">Estado{{ required.estado ? '*' : '' }}</label>
                         <div id="estadoError" v-show="msgError.estado" class="form-text text-danger text-center"><small>{{ msgError.estado }}</small></div>
                     </div>
                 </div>
@@ -175,6 +175,13 @@ export default {
             fechaVisible: false,
 
             required: {
+                titulo: true,
+                total: true,
+                fecha: false,
+                idGimnasio: true,
+                idTrabajado: true,
+                idTrabajador: true,
+                descripcion: false,
                 estado: true,
             },
 
