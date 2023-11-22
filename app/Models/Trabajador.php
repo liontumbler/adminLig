@@ -37,11 +37,19 @@ class Trabajador
                     $ini = false;
                     $trabajadoId = '';
                     if (empty($yaInicioCaja)) {
-                        $idInsert = $this->db->crearTrabajado($data['caja'], $idGimnasio, $idTrabajador);
+                        $trabajado = [
+                            'iniciCaja' => $data['caja'],
+                            'idGimnasio' => $idGimnasio,
+                            'idTrabajador' => $idTrabajador,
+                        ];
+
+                        $idInsert = $this->db->crearTrabajado($trabajado);
                         //return $idInsert;
-                        if ($idInsert > 0) {
-                            $trabajadoId = $idInsert;
+                        if ($idInsert) {
                             $ini = true;
+                            $work = $this->db->obtenerTrabajados($idGimnasio, null, $data['caja'], $idTrabajador);
+                            $trabajadoId = $work[0]['id'];
+                            //return $trabajadoId;
                         }
                     } else {//sesion ya iniciada
                         $trabajadoId = $yaInicioCaja['id'];

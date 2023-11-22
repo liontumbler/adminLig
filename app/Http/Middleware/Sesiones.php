@@ -19,39 +19,26 @@ class Sesiones
         $routes = Route::getRoutes();
         $rutaActual = explode("/", $request->path())[0];
         //echo 'solicita aceso a '.$rutaActual . "<br>";
-        if ($request->isMethod('get')) {
-            $exiteRuta = false;
-            foreach ($routes as $route) {
-                $rutaPermitida = explode("/", $route->uri())[0];
-                if (in_array('GET', $route->methods()) && $rutaActual == $rutaPermitida) {
-                    $exiteRuta = true;
-                    break;
+        //echo (!empty(session()->get('SesionTrabajador')) || !empty(session()->get('SesionAdmin')));
+        //echo $rutaActual == 'login';
+        //echo 'uno'.!empty(session()->get('SesionTrabajador'));
+        //echo 'dos'.!empty(session()->get('SesionAdmin'));
+        //exit;
+
+        if (!empty(session()->get('SesionTrabajador')) || !empty(session()->get('SesionAdmin'))) {
+            if ($rutaActual == 'login' || $rutaActual == 'loginTrabajador') {
+                if (!empty(session()->get('SesionTrabajador'))) {
+                    return redirect('/homeTrabajador');
+                } elseif (!empty(session()->get('SesionAdmin'))) {
+                    return redirect('/homeAdmin');
                 }
             }
-
-            /*if ((!empty(session()->get('SesionAdmin')))) {
-                return $next($request);
-            } elseif ((!empty(session()->get('SesionTrabajador')))) {
-                return $next($request);
-            } else {
-                return redirect('loginAdmin');
-            }*/
-
-        }elseif ($request->isMethod('post')) {
-
-            foreach ($routes as $route) {
-                $rutaPermitida = explode("/", $route->uri())[0];
-                if (in_array('POST', $route->methods()) && $rutaActual == $rutaPermitida) {
-                    $exiteRuta = true;
-                    break;
-                }
-            }
-            //return new Response("./errorSesionCerrada", 500);
-        }
-
-        if ($exiteRuta) {
             return $next($request);
+        }else {
+            if ($rutaActual == 'login' || $rutaActual == 'loginTrabajador') {
+                return $next($request);
+            }
+            return redirect('/');
         }
-
     }
 }

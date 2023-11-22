@@ -4,6 +4,7 @@ export class Validador {
         for (const i in campos) {
             let campo = campos[i]
             let campoInput = document.getElementById(campo);
+            console.log('campo', campo, campoInput);
             if (!campoInput.id) {
                 console.warn('el campo necesita un id para funcionar');
                 return

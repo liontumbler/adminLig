@@ -27,13 +27,13 @@ use App\Http\Controllers\ProductoController;
 */
 //views
 Route::get('/', [PaginaController::class, 'index'])->name('principal');
-Route::get('/loginAdmin', [LoginController::class, 'loginAdmin'])->name('loginAdmin');//->middleware('sesion.admin.login');
-Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->name('loginTrabajador');
+Route::get('/login', [LoginController::class, 'loginAdmin'])->name('loginAdmin')->middleware('sesion');
+Route::get('/loginTrabajador', [LoginController::class, 'loginTrabajador'])->name('loginTrabajador')->middleware('sesion');
 Route::get('/loginAdmOut', [LoginController::class, 'loginAdmOut'])->name('loginAdmOut');
 Route::get('/loginTraOut', [LoginController::class, 'loginTraOut'])->name('loginTraOut');
 
-Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');
-Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador');
+Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin')->middleware('sesion');
+Route::get('/homeTrabajador', [TrabajadorController::class, 'homeTrabajador'])->name('homeTrabajador')->middleware('sesion');
 
 Route::get('/ligasTrabajador', [TrabajadorController::class, 'ligasTrabajador'])->name('ligasTrabajador');
 
@@ -41,23 +41,23 @@ Route::get('/errorSesionCerrada', [LoginController::class, 'errorSesionCerrada']
 
 Route::get('/mail', [LoginController::class, 'mail'])->name('mail');
 
-Route::get('/clientes', [ClienteController::class, 'index'])->name('index');
+Route::get('/clientes', [ClienteController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/gimnasios', [GimnasioController::class, 'index'])->name('index');
+Route::get('/gimnasios', [GimnasioController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/equipos', [EquipoController::class, 'index'])->name('index');
+Route::get('/equipos', [EquipoController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/descuentos', [DescuentoController::class, 'index'])->name('index');
+Route::get('/descuentos', [DescuentoController::class, 'index'])->name('index');//->middleware('sesion');
 
-Route::get('/plans', [PlanController::class, 'index'])->name('index');
+Route::get('/plans', [PlanController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/horaligas', [HoraLigaController::class, 'index'])->name('index');
+Route::get('/horaligas', [HoraLigaController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/productos', [ProductoController::class, 'index'])->name('index');
+Route::get('/productos', [ProductoController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/trabajadors', [TrabajadorController::class, 'index'])->name('index');
+Route::get('/trabajadors', [TrabajadorController::class, 'index'])->name('index')->middleware('sesion');
 
-Route::get('/ligas', [LigaController::class, 'index'])->name('index');
+Route::get('/ligas', [LigaController::class, 'index'])->name('index')->middleware('sesion');
 
 //accciones
 Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptcha');

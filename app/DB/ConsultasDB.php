@@ -14,6 +14,81 @@ class ConsultasDB
         $this->cn = new Database();
     }
 
+    public function obtenerTrabajadorNickname(string $trabajador)
+    {
+        //$sms = new EnvioSMSLM(USERSMS, KEY);
+        //$sms->saldo()->credits;
+        //return $sms->preciosXPais();
+        $res = $this->cn->read(
+            'trabajador',
+            ['nickname' => $trabajador],
+            'nickname=:nickname',
+            'clave, id, idGimnasio, nombresYapellidos, nickname, correo, telefono'
+        );
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerGimnasioPorIdBasic(string $id)
+    {
+        $res = $this->cn->read('gimnasio', ['id' => $id], 'id=:id', 'habilitado, nombre, idPlan');
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function obtenerTrabajadoTrabajador(string $gimnasio, string $trabajador)
+    {
+        $res = $this->cn->read(
+            'trabajado',
+            ['idGimnasio' => $gimnasio, 'idTrabajador' => $trabajador],
+            "`idGimnasio`=:idGimnasio
+            AND `idTrabajador`=:idTrabajador
+            AND fechaFin is null;",
+            'id, iniciCaja'
+        );
+        if (!empty($res)) {
+            return $res[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function actualizarCaja(string $trabajador, string $medio)
+    {
+        $claveCajaNueva = rand(1000, 9999);
+        $mj = 'AdminLig: El codigo para ingresar a la su caja el dia hoy '.date('Y-m-d H:i:s').' es '.$claveCajaNueva;
+
+        if (is_numeric($medio)) {
+            return 1;
+            $sms = new EnvioSMSLM(USERSMS, KEY);
+            $smsRes = $sms->enviarSMS($mj, $medio);
+            if ($smsRes->code == '0') {
+                $this->cn->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
+                return 1;
+            }elseif ($smsRes->code == '403') {
+                return 403;
+            }elseif ($smsRes->code == '35') {
+                return 35;
+            }
+        } else {
+            try {
+                Mail::to($medio)
+                ->send(new ClaveCajaMail($claveCajaNueva));
+                $this->cn->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
+                return 1;
+            } catch (\Exception $e) {
+                \Log::error('Error al enviar el correo: ' . $e->getMessage());
+                return 500;
+            }
+        }
+    }
+
     /*CRUD*/
     public function eliminarDescuento($id)
     {
@@ -396,7 +471,189 @@ class ConsultasDB
             return false;
         }
     }
+
+    public function eliminarTrabajado($id)
+    {
+        $res = $this->cn->delete('trabajado', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearTrabajado($data)
+    {
+        //return $data;
+        $array = [];
+        $array['idTrabajador'] = $data['idTrabajador'];
+        $array['fechaInicio'] = date('Y-m-d H:i:s');
+        $array['iniciCaja'] = $data['iniciCaja'];
+        $array['idGimnasio'] = $data['idGimnasio'];
+        if (!empty($data['fechaFin']))
+            $array['fechaFin'] = $data['fechaFin'];
+
+        if (!empty($data['finCaja']))
+            $array['finCaja'] = $data['finCaja'];
+
+        $res = $this->cn->create('trabajado', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarTrabajado($data)
+    {
+        $array = [];
+        if (!empty($data['idTrabajador']))
+            $array['idTrabajador'] = $data['idTrabajador'];
+
+        if (!empty($data['fechaInicio']))
+            $array['fechaInicio'] = $data['fechaInicio'];
+
+        if (!empty($data['iniciCaja']))
+            $array['iniciCaja'] = $data['iniciCaja'];
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        if (!empty($data['fechaFin']) || $data['fechaFin'] == '')
+            $array['fechaFin'] = $data['fechaFin'];
+
+        if (!empty($data['finCaja']) || $data['finCaja'] == '')
+            $array['finCaja'] = $data['finCaja'];
+
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true) {
+            $array['estado'] = 1;
+        }
+
+        return $this->cn->update('trabajado', $array, $data['id']);
+    }
+
+    public function obtenerTrabajados(string $gimnasio, string $id = null, $iniciCaja = null, $idTrabajador = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array['id'] = $id;
+            $consulta .= ' and id=:id';
+        }
+
+        if (!empty($iniciCaja)) {
+            $array['iniciCaja'] = $iniciCaja;
+            $consulta .= ' and iniciCaja=:iniciCaja';
+        }
+
+        if (!empty($idTrabajador)) {
+            $array['idTrabajador'] = $idTrabajador;
+            $consulta .= ' and idTrabajador=:idTrabajador';
+        }
+        $consulta .= " ORDER BY fechaInicio DESC";
+
+        $res = $this->cn->read(
+            'trabajado',
+            $array,
+            $consulta,
+            'idTrabajador, fechaInicio, fechaFin, id, iniciCaja, finCaja, estado, idGimnasio'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
     /*CRUD*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -616,16 +873,6 @@ class ConsultasDB
         return ($res > 0) ? true : $res;
     }
 
-    public function crearTrabajado(string $caja, string $gimnasio, string $trabajador)
-    {
-        $trabajado = [
-            'iniciCaja' => $caja,
-            'idGimnasio' => $gimnasio,
-            'idTrabajador' => $trabajador,
-        ];
-        return $this->cn->create('trabajado', $trabajado);
-    }
-
     public function crearClienteF(array $data, string $gimnasio)
     {
         $cliente = [
@@ -771,7 +1018,7 @@ class ConsultasDB
     {
         $array = ['idGimnasio' => $gimnasio];
         $consulta = '`idGimnasio`=:idGimnasio';
-        $petition = $this->cn->read('horaliga', $array, $consulta, 'id, nombre');
+        $petition = $this->cn->read('horaliga', $array, $consulta, 'id, nombre, precio');
         if (!empty($petition)) {
             return $petition;
         } else {
@@ -779,23 +1026,7 @@ class ConsultasDB
         }
     }
 
-    public function obtenerTrabajadorNickname(string $trabajador)
-    {
-        //$sms = new EnvioSMSLM(USERSMS, KEY);
-        //$sms->saldo()->credits;
-        //return $sms->preciosXPais();
-        $res = $this->cn->read(
-            'trabajador',
-            ['nickname' => $trabajador],
-            'nickname=:nickname',
-            'clave, id, idGimnasio, nombresYapellidos, nickname, correo, telefono'
-        );
-        if (!empty($res)) {
-            return $res[0];
-        }else{
-            return false;
-        }
-    }
+
 
     public function obtenerAdminNickname(string $nickname)
     {
@@ -812,15 +1043,7 @@ class ConsultasDB
         }
     }
 
-    public function obtenerGimnasioPorIdBasic(string $id)
-    {
-        $res = $this->cn->read('gimnasio', ['id' => $id], 'id=:id', 'habilitado, nombre, idPlan');
-        if (!empty($res)) {
-            return $res[0];
-        }else{
-            return false;
-        }
-    }
+
 
     public function obtenerSelectTrabajador(string $trabajador = null)
     {
@@ -931,22 +1154,7 @@ class ConsultasDB
         }
     }
 
-    public function obtenerTrabajadoTrabajador(string $gimnasio, string $trabajador)
-    {
-        $res = $this->cn->read(
-            'trabajado',
-            ['idGimnasio' => $gimnasio, 'idTrabajador' => $trabajador],
-            "`idGimnasio`=:idGimnasio
-            AND `idTrabajador`=:idTrabajador
-            AND fechaFin is null;",
-            'id, iniciCaja'
-        );
-        if (!empty($res)) {
-            return $res[0];
-        }else{
-            return false;
-        }
-    }
+
     /*VER*/
 
 
@@ -975,34 +1183,6 @@ class ConsultasDB
 
 
 
-    public function actualizarCaja(string $trabajador, string $medio)
-    {
-        $claveCajaNueva = rand(1000, 9999);
-        $mj = 'AdminLig: El codigo para ingresar a la su caja el dia hoy '.date('Y-m-d H:i:s').' es '.$claveCajaNueva;
 
-        if (is_numeric($medio)) {
-            return 1;
-            $sms = new EnvioSMSLM(USERSMS, KEY);
-            $smsRes = $sms->enviarSMS($mj, $medio);
-            if ($smsRes->code == '0') {
-                $this->cn->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
-                return 1;
-            }elseif ($smsRes->code == '403') {
-                return 403;
-            }elseif ($smsRes->code == '35') {
-                return 35;
-            }
-        } else {
-            try {
-                Mail::to($medio)
-                ->send(new ClaveCajaMail($claveCajaNueva));
-                $this->cn->update('trabajador', ['claveCaja' => $claveCajaNueva], $trabajador);
-                return 1;
-            } catch (\Exception $e) {
-                \Log::error('Error al enviar el correo: ' . $e->getMessage());
-                return 500;
-            }
-        }
-    }
 }
 ?>

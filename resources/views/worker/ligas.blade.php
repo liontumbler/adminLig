@@ -4,7 +4,11 @@
 
 @section('contenedor')
 
-    <ligastrabajador-component>
-    </ligastrabajador-component>
+
+    <div id="app">
+        <ligastrabajador-component>
+        </ligastrabajador-component>
+        <!--liga-component></liga-component-->
+    </div>
 
 @endsection

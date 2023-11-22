@@ -254,7 +254,7 @@ export default {
             if (valido.msg) {
                 this.msgError[valido.id] = valido.msg;
                 return
-            } else if (valido) {
+            } else if (valido) {///'∞'
                 console.log('campos', this.campos);
                 if (this.editando == true) {
                     let datos = await enviarData('editarDescuento', this.campos);

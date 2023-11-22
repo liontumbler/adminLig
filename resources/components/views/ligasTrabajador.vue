@@ -3,142 +3,51 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 mb-1">
-                    <checkbox-component
-                        ref="exiteCliente"
-                        :id="'exiteCliente'"
-                        :required="false"
-                        v-model="exiteCliente"
-                        @model="updateExiteCliente"
-                    ></checkbox-component>
-                    <label class="form-check-label" for="exiteCliente">
-                        Cliente existe?
-                    </label>
-                </div>
-                <div class="col-lg-12 mb-1" v-if="exiteCliente">
-                    <label for="cliente" class="form-label">Clientes *</label>
-                    <select-component
-                        :id="'cliente'"
-                        :required="true"
-                        :predeterminado="{ text: 'Seleccione una opción', value: '' }"
-                        :options="dataClientes"
-                        ref="cliente"
-                        :value="cliente"
-                        @model="updateCliente"
-                    ></select-component>
-                </div>
-                <div class="col-lg-6 mb-1" v-if="!exiteCliente">
-                    <label for="nombreYapellido" class="form-label">Nombre Y Apellido *</label>
-                    <input-component
-                        :id="'nombreYapellido'"
-                        :type="'text'"
-                        :minlength="1"
-                        :maxlength="50"
-                        :required="true"
-                        :placeholder="'Nombre Y Apellido del Cliente'"
-                        ref="nombreYapellido"
-                        :value="nombreYapellido"
-                        @model="updateNombreYapellido"
-                    ></input-component>
-                </div>
-                <div class="col-lg-6 mb-1" v-if="!exiteCliente">
-                    <label for="documento" class="form-label">Documento</label>
-                    <input-component
-                        :id="'documento'"
-                        :type="'number'"
-                        :minlength="1"
-                        :maxlength="50"
-                        :min="'1'"
-                        :max="'999999999999'"
-                        :required="false"
-                        :placeholder="'Documento del Cliente'"
-                        ref="documento"
-                        :value="documento"
-                        @model="updateDocumento"
-                    ></input-component>
-                </div>
-                <div class="col-lg-12 mb-1" v-if="!exiteCliente">
-                    <label for="equipo" class="form-label">Equipo</label>
-                    <select-component
-                        :id="'equipo'"
-                        :required="false"
-                        :predeterminado="{ text: 'Seleccione una opción', value: '' }"
-                        :options="dataEquipos"
-                        ref="equipo"
-                        :value="equipo"
-                        @model="updateEquipo"
-                    ></select-component>
+                    <label for="cliente" class="form-label">Cliente{{ required.cliente ? '*' : '' }}</label>
+                    <select class="form-select" id="cliente" :required="required.cliente" ref="cliente" v-model="campos.cliente" :disabled="disabled.cliente">
+                        <option value="" selected>{{ textSelectGeneral }}</option>
+                        <option v-for="(option, index) in optionsCliente" :value="option.value" :key="index">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                    <div id="clienteError" v-show="msgError.cliente" class="form-text text-danger text-center"><small>{{ msgError.cliente }}</small></div>
                 </div>
                 <div class="col-lg-12 mb-1">
-                    <label for="selectHora" class="form-label">Hora *</label>
-                    <select-component
-                        :id="'selectHora'"
-                        :required="true"
-                        :predeterminado="{ text: 'Seleccione una opción', value: '' }"
-                        :options="dataSelectHoras"
-                        ref="selectHora"
-                        :value="selectHora"
-                        @model="updateSelectHora"
-                    ></select-component>
+                    <label for="selectHora" class="form-label">Hora{{ required.selectHora ? '*' : '' }}</label>
+                    <select class="form-select" id="selectHora" :required="required.selectHora" ref="selectHora" v-model="campos.selectHora" :disabled="disabled.selectHora">
+                        <option value="" selected>{{ textSelectGeneral }}</option>
+                        <option v-for="(option, index) in optionsSelectHora" :value="option.value" :key="index" :precio="option.precio">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                    <div id="selectHoraError" v-show="msgError.selectHora" class="form-text text-danger text-center"><small>{{ msgError.selectHora }}</small></div>
                 </div>
-                <div class="col-lg-12 mb-1">
-                    <checkbox-component
-                        ref="fechaDefault"
-                        :id="'fechaDefault'"
-                        :required="false"
-                        v-model="fechaDefault"
-                        @model="updateFechaDefault"
-                    ></checkbox-component>
-                    <label class="form-check-label" for="fechaDefault">
-                        Fecha default
-                    </label>
+                <div class="col-lg-12 mt-2">
+                    <input type="checkbox" class="form-check-input" id="fechaDefault" ref="fechaDefault" v-model="fechaDefault" @click="cambiarEstadoFechaDefault">
+                    <label class="form-check-label" for="fechaDefault">fechaDefault</label>
                 </div>
                 <div class="col-lg-12 mb-1" v-if="!fechaDefault">
-                    <label for="fechaInicio" class="form-label">Fecha Y hora de inicio *</label>
-                    <input-component
-                        :id="'fechaInicio'"
-                        :type="'datetime-local'"
-                        :min="fechaActualHoraCC()"
-                        :max="ultimodiaFechaActualHoraCC()"
-                        :required="true"
-                        :placeholder="'fecha y hora de inicio'"
-                        ref="fechaInicio"
-                        :value="fechaInicio"
-                        @model="updateFechaInicio"
-                    ></input-component>
+                    <label for="fechaInicio" class="form-label">Fecha Y hora de inicio{{ required.fechaInicio ? '*' : '' }}</label>
+                    <input type="datetime-local" class="form-control" id="fechaInicio" :required="required.fechaInicio" min="1" max="1000000" ref="fechaInicio" v-model="campos.fechaInicio" :disabled="disabled.fechaInicio">
+                    <div id="fechaInicioError" v-show="msgError.fechaInicio" class="form-text text-danger text-center"><small>{{ msgError.fechaInicio }}</small></div>
                 </div>
-                <div class="col-lg-12 mb-1">
-                    <checkbox-component
-                        ref="pago"
-                        :id="'pago'"
-                        :required="false"
-                        v-model="pago"
-                        @model="updatePago"
-                    ></checkbox-component>
-                    <label class="form-check-label" for="pago">
-                        Pago?
-                    </label>
+                <div class="col-lg-12 mt-2">
+                    <input type="checkbox" class="form-check-input" id="pago" ref="pago" v-model="pago" @click="cambiarEstadoPago">
+                    <label class="form-check-label" for="pago">Pago?</label>
                 </div>
                 <div class="col-lg-12 mb-1 ms-3" v-if="pago">
-                    <radio-component
-                        :radios="[
-                            {
-                                value: 'efectivo',
-                                checked: true,
-                                label: 'Efectivo'
-                            },
-                            {
-                                value: 'digital',
-                                checked: false,
-                                label: 'Digital'
-                            }
-                        ]"
-                        :required="false"
-                        :value="'efectivo'"
-                        :name="'tipoPago'"
-                        ref="tipoPago"
-                        v-model="tipoPago"
-                        @model="updateTipoPago"
-                    ></radio-component>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoPago" id="efectivo" checked value="efectivo">
+                        <label class="form-check-label" for="efectivo">
+                            Efectivo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoPago" id="digital" value="digital">
+                        <label class="form-check-label" for="digital">
+                            Digital
+                        </label>
+                    </div>
                 </div>
                 <hr>
                 <div class="col-lg-12 mb-1">
@@ -178,61 +87,74 @@
 <script>
 import { ApiService } from "../../services/services.js";
 import { Methods } from "../../services/methods.js";
-import inputp from "../../components/controls/input.vue";
-import selectp from "../../components/controls/select.vue";
-import checkboxp from "../../components/controls/checkbox.vue";
-import radiop from "../../components/controls/radio.vue";
 import modalp from "../../components/controls/modal.vue";
 export default {
     name: 'ligasTrabajador',
     components: {
         "modal-component": modalp,
-        "input-component": inputp,
-        "select-component": selectp,
-        "checkbox-component": checkboxp,
-        "radio-component": radiop,
     },
-    mounted() {
-        this.selectCliente();
-        this.selectEquipo();
-        this.selectTarifaHora();
+    async mounted() {
+        await this.cargarSelects();
     },
     data() {
         return {
-            exiteCliente: true,
+            textSelectGeneral: 'escoja una opcion',
             fechaDefault: true,
             pago: true,
             btnDisabledAgregarLiga: false,
             total: 0,
-            nombreYapellido: '',
-            documento: '',
-            fechaInicio: '',
-            cliente: '',
-            equipo: '',
-            tipoPago: 'efectivo',
-            selectHora: '',
-            dataClientes: [],
-            dataEquipos: [],
-            dataSelectHoras: [],
+
+            required: {
+                cliente: true,
+                selectHora: true,
+                fechaInicio: true
+            },
+
+            campos: {
+                cliente: '',
+                selectHora: '',
+                fechaInicio: '',
+                tipoPago: '',
+            },
+
+            disabled: {
+                cliente: false,
+                selectHora: false,
+                fechaInicio: false,
+            },
+
+            msgError: {
+                cliente: '',
+                selectHora: '',
+                fechaInicio: '',
+            },
+
+
+            optionsCliente: [],
+            optionsSelectHora: [],
         }
     },
     methods: {
+        async cargarSelects() {
+            await this.selectCliente();
+            await this.selectTarifaHora();
+        },
+        cambiarEstadoFechaDefault() {
+            this.fechaDefault = !this.fechaDefault;
+        },
+        cambiarEstadoPago() {
+            this.pago = !this.pago;
+        },
         async selectCliente() {
             let data = await ApiService.post('cargarClientesSelect', {});
-            this.dataClientes = data.map(function(cliente) {
+            this.optionsCliente = data.map(function(cliente) {
                 return { text: cliente.id +' - '+ cliente.nombresYapellidos, value: cliente.id}
-            });
-        },
-        async selectEquipo() {
-            let data = await ApiService.post('cargarEquiposSelect', {});
-            this.dataEquipos = data.map(function(equipo) {
-                return { text: equipo.id +' - '+ equipo.nombre, value: equipo.id}
             });
         },
         async selectTarifaHora() {
             let data = await ApiService.post('cargarSelectHora', {});
-            this.dataSelectHoras = data.map(function(selectHora) {
-                return { text: selectHora.id +' - '+ selectHora.nombre, value: selectHora.id}
+            this.optionsSelectHora = data.map(function(selectHora) {
+                return { text: selectHora.id +' - '+ selectHora.nombre, value: selectHora.id, precio: selectHora.precio}
             });
         },
         fechaActualHoraCC() {
@@ -255,7 +177,7 @@ export default {
             return year + '-' + month + '-' + day + 'T00:00';
         },
         async agregarLiga() {
-            let array = []
+            /*let array = []
             if(this.exiteCliente && this.pago && this.fechaDefault){
                 array = ['cliente', 'selectHora', 'tipoPago']
             } else if(this.exiteCliente && !this.pago && this.fechaDefault){
@@ -311,37 +233,7 @@ export default {
                 }
             }else{
                 console.log(validCampos, 'resedwin');
-            }
-        },
-        updateExiteCliente(value) {
-            this.exiteCliente = value;
-        },
-        updateNombreYapellido(value) {
-            this.nombreYapellido = value;
-        },
-        updateDocumento(value) {
-            this.documento = value;
-        },
-        updateFechaInicio(value) {
-            this.fechaInicio = value;
-        },
-        updateCliente(value) {
-            this.cliente = value;
-        },
-        updateEquipo(value) {
-            this.equipo = value;
-        },
-        updateTipoPago(value) {
-            this.tipoPago = value;
-        },
-        updatePago(value) {
-            this.pago = value;
-        },
-        updateFechaDefault(value) {
-            this.fechaDefault = value;
-        },
-        updateSelectHora(value) {
-            this.selectHora = value;
+            }*/
         },
         modalConfirmacion() {
             location.href = './ligas';
