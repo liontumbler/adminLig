@@ -64,7 +64,7 @@ Route::post('/recaptcha', [LoginController::class, 'recaptcha'])->name('recaptch
 Route::post('/loginAdm', [LoginController::class, 'loginAdm'])->name('loginAdm');
 Route::post('/loginTra', [LoginController::class, 'loginTra'])->name('loginTra');
 
-Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga');
+Route::post('/crearLigaTrabajador', [LigaController::class, 'crearLigaTrabajador'])->name('crearLigaTrabajador')->middleware('sesion');
 
 Route::post('/cargarClientesSelect', [GeneralController::class, 'cargarClientesSelect'])->name('cargarClientesSelect');
 Route::post('/cargarEquiposSelect', [GeneralController::class, 'cargarEquiposSelect'])->name('cargarEquiposSelect');
@@ -87,3 +87,8 @@ Route::post('/cargarEquipos', [EquipoController::class, 'cargarDatos'])->name('c
 Route::post('/editarEquipo', [EquipoController::class, 'editarEquipo'])->name('editarEquipo');
 Route::post('/crearEquipo', [EquipoController::class, 'crearEquipo'])->name('crearEquipo');
 Route::post('/eliminarEquipo', [EquipoController::class, 'eliminarEquipo'])->name('eliminarEquipo');
+
+Route::post('/cargarLigas', [LigaController::class, 'cargarDatos'])->name('cargarDatos')->middleware('sesion');
+Route::post('/editarLiga', [LigaController::class, 'editarLiga'])->name('editarLiga')->middleware('sesion');
+Route::post('/crearLiga', [LigaController::class, 'crearLiga'])->name('crearLiga')->middleware('sesion');
+Route::post('/eliminarLiga', [LigaController::class, 'eliminarLiga'])->name('eliminarLiga')->middleware('sesion');

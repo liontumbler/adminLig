@@ -558,6 +558,90 @@ class ConsultasDB
             return false;
         }
     }
+
+    public function eliminarLiga($id)
+    {
+        $res = $this->cn->delete('ligas', $id);
+        return ($res == 1) ? true : $res;
+    }
+
+    public function crearLiga($data)
+    {
+        //return $data;
+        $array = [];
+        $array['total'] = $data['total'];
+        $array['tipoPago'] = $data['tipoPago'];
+        $array['estado'] = $data['estado'];
+        $array['idGimnasio'] = $data['idGimnasio'];
+        $array['idTrabajado'] = $data['idTrabajado'];
+        $array['idTrabajador'] = $data['idTrabajador'];
+        $array['idCliente'] = $data['idCliente'];
+        if (!empty($data['fechaInicio']))
+            $array['fechaInicio'] = $data['fechaInicio'];
+
+        if (!empty($data['fechaFin']))
+            $array['fechaFin'] = $data['fechaFin'];
+
+        $res = $this->cn->create('ligas', $array);
+        return ($res > 0) ? true : $res;
+    }
+
+    public function editarLiga($data)
+    {
+        $array = [];
+        if (!empty($data['total']))
+            $array['total'] = $data['total'];
+
+        if (!empty($data['tipoPago']))
+            $array['tipoPago'] = $data['tipoPago'];
+
+        if (!empty($data['idGimnasio']))
+            $array['idGimnasio'] = $data['idGimnasio'];
+
+        if (!empty($data['idTrabajado']))
+            $array['idTrabajado'] = $data['idTrabajado'];
+
+        if (!empty($data['idTrabajador']))
+            $array['idTrabajador'] = $data['idTrabajador'];
+
+        if (!empty($data['idCliente']))
+            $array['idCliente'] = $data['idCliente'];
+
+        if (!empty($data['fechaInicio']) || $data['fechaInicio'] == '')
+            $array['fechaInicio'] = $data['fechaInicio'];
+
+        if (!empty($data['fechaFin']) || $data['fechaFin'] == '')
+            $array['fechaFin'] = $data['fechaFin'];
+
+        if ($data['estado'] === false)
+            $array['estado'] = 0;
+        elseif ($data['estado'] === true) {
+            $array['estado'] = 1;
+        }
+
+        return $this->cn->update('ligas', $array, $data['id']);
+    }
+
+    public function obtenerLigas(string $gimnasio, string $id = null)
+    {
+        $array = ['idGimnasio' => $gimnasio];
+        $consulta = '`idGimnasio`=:idGimnasio';
+        if (!empty($id)) {
+            $array = ['id' => $id];
+            $consulta = 'id=:id';
+        }
+        $res = $this->cn->read(
+            'ligas',
+            $array,
+            $consulta,
+            'id, total, tipoPago, fechaInicio, fechaFin, estado, idGimnasio, idTrabajado, idTrabajador, idCliente'
+        );
+        if (!empty($res)) {
+            return $res;
+        }else{
+            return false;
+        }
+    }
     /*CRUD*/
 
 
@@ -664,7 +748,7 @@ class ConsultasDB
 
 
     /*CREAR*/
-    public function crearLigas(array $data, string $gimnasio, string $trabajado, string $trabajador)
+    public function crearLigasTrabajador(array $data, string $gimnasio, string $trabajado, string $trabajador)
     {
         $ligas = [
             'total' => $data['total'],
@@ -1105,27 +1189,6 @@ class ConsultasDB
             $array,
             $consulta,
             'id, nombre'
-        );
-        if (!empty($res)) {
-            return $res;
-        }else{
-            return false;
-        }
-    }
-
-    public function obtenerLigas(string $gimnasio, string $id = null)
-    {
-        $array = ['idGimnasio' => $gimnasio];
-        $consulta = '`idGimnasio`=:idGimnasio';
-        if (!empty($id)) {
-            $array = ['id' => $id];
-            $consulta = 'id=:id';
-        }
-        $res = $this->read(
-            'ligas',
-            $array,
-            $consulta,
-            'id, total, tipoPago, fechaInicio, fechaFin, idCliente, idTrabajador'
         );
         if (!empty($res)) {
             return $res;

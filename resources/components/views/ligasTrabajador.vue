@@ -37,17 +37,18 @@
                 </div>
                 <div class="col-lg-12 mb-1 ms-3" v-if="pago">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="tipoPago" id="efectivo" checked value="efectivo">
+                        <input class="form-check-input" type="radio" v-model="campos.tipoPago" name="tipoPago" id="efectivo" value="efectivo" :required="required.tipoPago" :disabled="disabled.tipoPago">
                         <label class="form-check-label" for="efectivo">
                             Efectivo
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="tipoPago" id="digital" value="digital">
+                        <input class="form-check-input" type="radio" v-model="campos.tipoPago" name="tipoPago" id="digital" value="digital" :required="required.tipoPago" :disabled="disabled.tipoPago">
                         <label class="form-check-label" for="digital">
                             Digital
                         </label>
                     </div>
+                    <div id="tipoPagoError" v-show="msgError.tipoPago" class="form-text text-danger text-center"><small>{{ msgError.tipoPago }}</small></div>
                 </div>
                 <hr>
                 <div class="col-lg-12 mb-1">
@@ -61,6 +62,8 @@
                     </div>
                 </div>
             </div>
+
+            <liga-component :c="false" :r="true" :u="false" :d="false"></liga-component>
         </div>
     </div>
     <modal-component
@@ -85,9 +88,11 @@
     </modal-component>
 </template>
 <script>
-import { ApiService } from "../../services/services.js";
-import { Methods } from "../../services/methods.js";
 import modalp from "../../components/controls/modal.vue";
+import { Validador } from "../../services/validador.js";
+
+import { cargarDatos, enviarData } from "../../services/servicesApi.js";
+
 export default {
     name: 'ligasTrabajador',
     components: {
@@ -95,9 +100,14 @@ export default {
     },
     async mounted() {
         await this.cargarSelects();
+        this.validador = new Validador([
+            'cliente',
+            'selectHora',
+        ])
     },
     data() {
         return {
+            validador: null,
             textSelectGeneral: 'escoja una opcion',
             fechaDefault: true,
             pago: true,
@@ -107,28 +117,30 @@ export default {
             required: {
                 cliente: true,
                 selectHora: true,
-                fechaInicio: true
+                fechaInicio: true,
+                tipoPago: false,
             },
 
             campos: {
                 cliente: '',
                 selectHora: '',
-                fechaInicio: '',
-                tipoPago: '',
+                fechaInicio: null,
+                tipoPago: 'efectivo',
             },
 
             disabled: {
                 cliente: false,
                 selectHora: false,
                 fechaInicio: false,
+                tipoPago: false,
             },
 
             msgError: {
                 cliente: '',
                 selectHora: '',
                 fechaInicio: '',
+                tipoPago: '',
             },
-
 
             optionsCliente: [],
             optionsSelectHora: [],
@@ -136,8 +148,8 @@ export default {
     },
     methods: {
         async cargarSelects() {
-            await this.selectCliente();
-            await this.selectTarifaHora();
+            await this.llenarSelectCliente();
+            await this.llenarSelectTarifaHora();
         },
         cambiarEstadoFechaDefault() {
             this.fechaDefault = !this.fechaDefault;
@@ -145,14 +157,14 @@ export default {
         cambiarEstadoPago() {
             this.pago = !this.pago;
         },
-        async selectCliente() {
-            let data = await ApiService.post('cargarClientesSelect', {});
+        async llenarSelectCliente() {
+            let data = await cargarDatos('cargarClientesSelect');
             this.optionsCliente = data.map(function(cliente) {
                 return { text: cliente.id +' - '+ cliente.nombresYapellidos, value: cliente.id}
             });
         },
-        async selectTarifaHora() {
-            let data = await ApiService.post('cargarSelectHora', {});
+        async llenarSelectTarifaHora() {
+            let data = await cargarDatos('cargarSelectHora');
             this.optionsSelectHora = data.map(function(selectHora) {
                 return { text: selectHora.id +' - '+ selectHora.nombre, value: selectHora.id, precio: selectHora.precio}
             });
@@ -177,46 +189,37 @@ export default {
             return year + '-' + month + '-' + day + 'T00:00';
         },
         async agregarLiga() {
-            /*let array = []
-            if(this.exiteCliente && this.pago && this.fechaDefault){
-                array = ['cliente', 'selectHora', 'tipoPago']
-            } else if(this.exiteCliente && !this.pago && this.fechaDefault){
-                array = ['cliente', 'selectHora']
-            } else if(!this.exiteCliente && !this.pago && this.fechaDefault){
-                array = ['nombreYapellido', 'documento', 'equipo', 'selectHora']
-            } else if(!this.exiteCliente && this.pago && this.fechaDefault){
-                array = ['nombreYapellido', 'documento', 'equipo', 'selectHora', 'tipoPago']
-            } else if(this.exiteCliente && !this.pago && !this.fechaDefault){
-                array = ['cliente', 'selectHora', 'fechaInicio']
-            } else if(!this.exiteCliente && !this.pago && !this.fechaDefault){
-                array = ['nombreYapellido', 'documento', 'equipo', 'selectHora', 'fechaInicio']
-            } else if(!this.exiteCliente && this.pago && !this.fechaDefault){
-                array = ['nombreYapellido', 'documento', 'equipo', 'selectHora', 'tipoPago', 'fechaInicio']
-            } else if(this.exiteCliente && this.pago && !this.fechaDefault){
-                array = ['cliente', 'selectHora', 'tipoPago', 'fechaInicio']
+            this.limpiarErrores();
+
+            if (this.fechaDefault) {
+                this.campos.fechaDefault = null;
+                this.validador.eliminarCampo('fechaInicio');
+            } else {
+                this.validador.agregarCampo('fechaInicio');
             }
 
-            let validCampos = await Methods.validarCampos(this, array);
-            if (validCampos) {
-                let data = await Methods.armardatos(this, array);
+            if (!this.pago) {
+                this.campos.tipoPago = null;
+            }
 
-                console.log('b', data);
+            let valido = this.validador.validarCampos();
+            if (valido.msg) {
+                this.msgError[valido.id] = valido.msg;
+                return
+            } else if (valido) {
+                console.log('valido', valido);
+
+                console.log('b', this.campos);
                 this.btnDisabledAgregarLiga = true
-                let rdta = await ApiService.post('crearLiga', data)
+                let rdta = await enviarData('crearLigaTrabajador', this.campos);
                 this.btnDisabledAgregarLiga = false
-                console.log(rdta);
+                console.log('rdta', rdta);
 
                 if (rdta == true) {
                     this.msgConfirmacion = 'Se insertó la liga';
                     this.$refs.modalConfirmar.show();
                 }else{
-                    if (rdta == './loginTrabajador') {
-                        location.href = rdta
-                    }else if (rdta == -1) {
-                        //el usuario ya existe
-                        this.msgError = 'El usuario ya existe';
-                        this.$refs.modalError.show();
-                    }else if (rdta == 601) {
+                    if (rdta == 601) {
                         //su plan llego al limite
                         this.msgError = 'Su plan llegó al límite';
                         this.$refs.modalError.show();
@@ -227,19 +230,21 @@ export default {
                         });
                         this.$refs.modalError.show();
                     } else {
-                        this.msgError = 'Error desconocido';
-                        this.$refs.modalError.show();
+                        document.querySelector('body').innerHTML = rdta;
                     }
                 }
-            }else{
-                console.log(validCampos, 'resedwin');
-            }*/
+            }
         },
         modalConfirmacion() {
-            location.href = './ligas';
+            location.href = './ligasTrabajador';
         },
         modalError() {
             this.$refs.modalError.hide();
+        },
+        limpiarErrores() {
+            for (const i in this.msgError) {
+                this.msgError[i] = '';
+            }
         },
     },
 };

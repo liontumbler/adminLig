@@ -3,35 +3,55 @@ export class Validador {
     constructor(campos) {
         for (const i in campos) {
             let campo = campos[i]
-            let campoInput = document.getElementById(campo);
-            console.log('campo', campo, campoInput);
-            if (!campoInput.id) {
-                console.warn('el campo necesita un id para funcionar');
-                return
-            }
-
-            campoInput.setAttribute('type', campoInput.getAttribute('type') ? campoInput.getAttribute('type') : campoInput.type);
-
-            let campoMascara = campoInput.cloneNode(true);
-            let type = campoMascara.getAttribute('type')
-            if (type != 'radio') {
-                this._fields.push(campoMascara);
-            } else {
-                this._fields['radio'] = {
-                    type: 'radio',
-                    id: campoMascara.id,
-                    name: campoMascara.id,
-                    value: 'on',
-                    required: campoMascara.required
-                };
-            }
-
-            if (campoInput.getAttribute('type') == 'numeric') {
-                campoInput.addEventListener('input', function () {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                })
-            }
+            this.agregarCampo(campo);
         }
+    }
+
+    eliminarCampo(campo) {
+        if (this._fields.some(input => input.id === campo)) {
+            this._fields = this._fields.filter(input => input.id !== campo);
+        }
+    }
+
+    agregarCampo(campo) {
+
+        let campoInput = document.getElementById(campo);
+
+        if (this._fields.some(input => input.id === campo)) {
+            console.log('el campo ya estaba registrado');
+            return;
+        }
+
+        console.log('campo', campo, campoInput);
+        if (!campoInput.id) {
+            console.warn('el campo necesita un id para funcionar');
+            return
+        }
+
+        campoInput.setAttribute('type', campoInput.getAttribute('type') ? campoInput.getAttribute('type') : campoInput.type);
+
+        let campoMascara = campoInput.cloneNode(true);
+        let type = campoMascara.getAttribute('type')
+        if (type != 'radio') {
+            this._fields.push(campoMascara);
+        } else {
+            console.log('hay un radio', campoMascara);
+            this._fields['radio'] = {
+                type: 'radio',
+                id: campoMascara.id,
+                name: campoMascara.id,
+                value: 'on',
+                required: campoMascara.required
+            };
+        }
+
+        if (campoInput.getAttribute('type') == 'numeric') {
+            campoInput.addEventListener('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            })
+        }
+
+        console.log('campos agregados', this._fields);
     }
 
     _tieneLabel(input) {

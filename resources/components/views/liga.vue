@@ -1,7 +1,7 @@
 <template>
     <div class="m-4">
         <div class="container">
-            <div class="row">
+            <div class="row" v-if="c">
                 <div class="d-grid gap-2 col-lg-3 mb-1">
                     <button type="button" class="btn btn-primary" @click="agregarLiga">Agregar</button>
                 </div>
@@ -22,30 +22,40 @@
                 </div>
             </div>
             <div class="tableLiga">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Tipo Pago</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="contenidoLiga">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>
-                                <i class="bi bi-eye-fill ms-1" @click="verLiga"></i>
-                                <i class="bi bi-pencil-fill ms-1" @click="editatLiga"></i>
-                                <i class="bi bi-x-lg ms-1" @click="eliminarLiga"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <table-component
+                    ref="tableLiga"
+                    :title="'Liga'"
+                    :url="'cargarLigas'"
+                    :cabecera="{
+                        id: {
+                            text: '#',
+                            type: 'text'
+                        },
+                        total: {
+                            text: 'Total',
+                            type: 'text'
+                        },
+                        tipoPago: {
+                            text: 'Tipo Pago',
+                            type: 'text'
+                        },
+                        estado: {
+                            text: 'Estado',
+                            type: 'estado'
+                        },
+                        accion: {
+                            text: 'Acción',
+                            type: 'accion'
+                        },
+                    }"
+                    :r="r"
+                    :u="u"
+                    :d="d"
+                    @ver="verLiga"
+                    @editar="editatLiga"
+                    @eliminar="eliminarLiga"
+                >
+                </table-component>
             </div>
             <modal-component
                 ref="modalLiga"
@@ -100,7 +110,7 @@
                         <label for="idCliente" class="form-label">IdCliente</label>
                         <select class="form-select" id="idCliente" ref="idCliente" v-model="campos.idCliente" :disabled="disabled.idCliente">
                             <option value="" selected>{{ textSelectGeneral }}</option>
-                            <option v-for="(option, index) in optionsIdCliente" :value="option.value" :key="index">
+                            <option v-for="(option, index) in optionsCliente" :value="option.value" :key="index">
                                 {{ option.text }}
                             </option>
                         </select>
@@ -113,23 +123,66 @@
                     </div>
                 </div>
             </modal-component>
+            <modal-component
+                ref="modalEliminar"
+                :titulo="'Eliminar'"
+                :visibleBtnCerrar="true"
+                :visibleBtnContinuar="true"
+                @cerrar="cerrarModalEliminar"
+                @continuar="continuarModalEliminar"
+            >
+                Seguro que desea borrar el descuento
+            </modal-component>
+            <modal-component
+                ref="modalSuccess"
+                :titulo="titleModalSuccess"
+                :visibleBtnCerrar="false"
+                :visibleBtnContinuar="true"
+                @continuar="continuarModalSuccess"
+            >
+                {{ msgModalSuccess }}
+            </modal-component>
         </div>
     </div>
 
 </template>
 <script>
 import modal from "../../components/controls/modal.vue";
+import table from "../../components/controls/table.vue";
+
+import { cargarDatos, enviarData } from "../../services/servicesApi.js";
 
 export default {
     name: 'Ligas',
     components: {
         "modal-component": modal,
+        "table-component": table,
     },
-    mounted() {
-        //llenarselects
+    async mounted() {
+        await this.cargarSelects();
+    },
+    props: {
+        c: {
+            type: Boolean,
+            default: true,
+        },
+        r: {
+            type: Boolean,
+            default: true,
+        },
+        u: {
+            type: Boolean,
+            default: true,
+        },
+        d: {
+            type: Boolean,
+            default: true,
+        }
     },
     data() {
         return {
+            titleModalSuccess: '',
+            msgModalSuccess: '',
             textSelectGeneral: 'escoja una opcion',
             mostrar: 10,
             optionsMostrar: [
@@ -177,84 +230,203 @@ export default {
                 idCliente: '',
             },
 
-            optionsIdGimnasio:[
-                {text: 'text', value: 1}
-            ],
-
-            optionsIdEquipo:[
-                {text: 'text', value: 1}
-            ],
+            optionsCliente: [],
+            optionsIdGimnasio: [],
+            optionsIdTrabajado: []
         }
     },
     methods: {
+        async llenarSelectCliente() {
+            let data = await cargarDatos('cargarClientesSelect');
+            this.optionsCliente = data.map(function(cliente) {
+                return { text: cliente.id +' - '+ cliente.nombresYapellidos, value: cliente.id}
+            });
+        },
+        async llenarSelectIdGimnasio() {
+            let datos = await cargarDatos('cargarGimnasiosSelect');
+            this.optionsIdGimnasio = datos.map(function(btn) {
+                return {text: btn.nombre, value: btn.id};
+            });
+        },
+        async llenarSelectIdTrabajado() {
+            let datos =  await cargarDatos('cargarTrabajadoSelect');
+            this.optionsIdTrabajado = datos.map(function(btn) {
+                return {text: btn.iniciCaja, value: btn.id};
+            });
+        },
+        async cargarSelects() {
+            await this.llenarSelectCliente();
+            await this.llenarSelectIdGimnasio();
+            await this.llenarSelectIdTrabajado();
+        },
         modalCerrar() {
             this.$refs.modalLiga.hide();
         },
-        modalContinuar() {
-            this.$refs.modalLiga.hide();
+        async modalContinuar() {
+            this.limpiarErrores();
+
+            let valido = this.validador.validarCampos();
+            if (valido.msg) {
+                this.msgError[valido.id] = valido.msg;
+                return
+            } else if (valido) {///'∞'
+                console.log('campos', this.campos);
+                if (this.editando == true) {
+                    let datos = await enviarData('editarLiga', this.campos);
+                    console.log('editar', datos);
+                    if(datos == true) {
+                        this.$refs.modalLiga.hide();
+                        this.mostrarMsg('Exito', 'Se actualizo el descuento con exito');
+                    }else{
+                        this.mostrarMsg('Error', 'Error inesperado');
+                    }
+                } else if (this.creando == true) {
+                    let datos = await enviarData('crearLiga', this.campos);
+                    console.log('crear', datos);
+                    if(datos == true) {
+                        this.$refs.modalLiga.hide();
+                        this.mostrarMsg('Exito', 'Se creo el descuento con exito');
+                    }else{
+                        this.mostrarMsg('Error', 'Error inesperado');
+                    }
+                }
+            }
         },
         buscar(e) {
             console.log(e, 'escucho');
         },
         agregarLiga() {
+            this.limpiarErrores();
             this.desbloquearCampos()
-            this.btnContinuar = true;
+            this.vaciarCampos();
 
+            this.fechaVisible = false;
+            this.required.estado = true;
+            this.btnContinuar = true;
             this.editando = false;
             this.creando = true;
-            this.viendo = false;
 
-            this.tutiloModal = 'Agregar Liga'
+            this.tituloModal = 'Agregar Liga';
             this.$refs.modalLiga.show();
-        },
-        editatLiga() {
-            this.desbloquearCampos()
-            this.btnContinuar = true;
 
+            setTimeout(() => {
+                this.validador = new Validador([
+                    'total',
+                    'tipoPago',
+                    'fechaInicio',
+                    'fechaFin',
+                    'estado',
+                    'idGimnasio',
+                    'idTrabajado',
+                    'idCliente',
+                ])
+            }, 10);
+        },
+        async editatLiga() {
+            this.$refs.tableLiga.cargando = true;
+
+            await this.cargarSelects();
+            this.limpiarErrores();
+            this.desbloquearCampos();
+            this.llenarCampos(index);
+
+            this.required.estado = false;
+            this.btnContinuar = true;
             this.editando = true;
             this.creando = false;
-            this.viendo = false;
+            this.fechaVisible = false;
 
-            this.tutiloModal = 'Actualizar Liga'
+            this.tituloModal = 'Actualizar Liga '+ id
             this.$refs.modalLiga.show();
+
+            this.$refs.tableLiga.cargando = false;
+
+            setTimeout(() => {
+                this.validador = new Validador([
+                    'total',
+                    'tipoPago',
+                    'fechaInicio',
+                    'fechaFin',
+                    'estado',
+                    'idGimnasio',
+                    'idTrabajado',
+                    'idCliente',
+                ])
+            }, 10);
         },
-        verLiga() {
-            this.bloquearCampos()
+        async verLiga(index) {
+            this.$refs.tableLiga.cargando = true;
+
+            let datos = this.$refs.tableLiga.datatable[index]
+
+            await this.cargarSelects();
+            this.limpiarErrores();
+            this.bloquearCampos();
+            this.llenarCampos(datos);
+
             this.btnContinuar = false;
+            this.fechaVisible = true;
 
-            this.editando = false;
-            this.creando = false;
-            this.viendo = true;
-
-            this.tutiloModal = 'ver Liga'
+            this.tituloModal = 'ver Liga'
             this.$refs.modalLiga.show();
+
+            this.$refs.tableLiga.cargando = false;
         },
         eliminarLiga() {
-            console.log('eliminar');
+            this.campos.id = id
+            this.$refs.modalEliminar.show();
+        },
+        cerrarModalEliminar() {
+            this.$refs.modalEliminar.hide();
+        },
+        async continuarModalEliminar() {
+            this.$refs.modalEliminar.hide();
+            let datos = await enviarData('eliminarLiga', {id: this.campos.id});
+            console.log('elimino', datos);
+            if(datos == true) {
+                this.mostrarMsg('Exito', 'Se eliminó el descuento con exito');
+            }else{
+                this.mostrarMsg('Error', 'Error inesperado');
+            }
+        },
+        mostrarMsg(title, msg) {
+            this.titleModalSuccess = title;
+            this.msgModalSuccess = msg;
+            this.$refs.modalSuccess.show();
+        },
+        continuarModalSuccess() {
+            this.$refs.modalSuccess.hide();
+            this.$refs.tableLiga.cargarTabla()
         },
         bloquearCampos() {
-            this.disabled.total = true;
-            this.disabled.tipoPago = true;
-            this.disabled.fechaInicio = true;
-            this.disabled.fechaFin = true;
-            this.disabled.idGimnasio = true;
-            this.disabled.idTrabajado = true;
-            this.disabled.idCliente = true;
-            this.disabled.estado = true;
+            for (const i in this.disabled) {
+                this.disabled[i] = true;
+            }
         },
         desbloquearCampos() {
-            this.disabled.total = false;
-            this.disabled.tipoPago = false;
-            this.disabled.fechaInicio = false;
-            this.disabled.fechaFin = false;
-            this.disabled.idGimnasio = false;
-            this.disabled.idTrabajado = false;
-            this.disabled.idCliente = false;
-            this.disabled.estado = false;
+            for (const i in this.disabled) {
+                this.disabled[i] = false;
+            }
         },
         mostrarChange() {
             console.log('escucho');
-        }
+        },
+        llenarCampos(datos) {
+            for (const i in this.campos) {
+                if (datos[i]) {
+                    if (i == 'estado') {
+                        this.campos[i] = datos[i] == 1 ? true : false
+                    } else {
+                        this.campos[i] = datos[i];
+                    }
+                }
+            }
+        },
+        limpiarErrores() {
+            for (const i in this.msgError) {
+                this.msgError[i] = '';
+            }
+        },
     },
 };
 </script>

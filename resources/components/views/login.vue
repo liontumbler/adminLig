@@ -54,7 +54,7 @@
 </template>
 <script>
 import { RecaptchaV2 } from '../../js/libs/RecaptchaV2/recaptchaV2.js';
-import { ApiService } from "../../services/services.js";
+import { enviarData } from "../../services/servicesApi.js";
 import modalp from "../../components/controls/modal.vue";
 import { Validador } from "../../services/validador.js";
 
@@ -179,7 +179,7 @@ export default {
                             urlLogin = 'loginTra';
                         }
                         this.disabledLoginAccion = true;
-                        let rdta = await ApiService.post(urlLogin, this.campos);
+                        let rdta = await enviarData(urlLogin, this.campos);
                         this.disabledLoginAccion = false;
                         console.log(rdta);
 
